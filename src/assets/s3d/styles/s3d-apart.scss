@@ -1,0 +1,232 @@
+.s3d {
+  &-flat {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding-top: 105px;
+    &__left{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-left: 30px;
+      height: 100%;
+      //width: 33.3%;
+    }
+    &__center{
+      flex: 1 1 50%;
+    }
+    &__right{
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-end;
+      flex: 1 1 50%;
+    }
+    &__image{
+      display: block;
+      width: 80%;
+      margin: 0 auto;
+    }
+    &__mini-info{
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    &__back{
+      height: 52px;
+      width: 52px;
+      background: #1C4954;
+      border: none;
+      cursor: pointer;
+      svg{
+        width: 9px;
+        height: 12px;
+      }
+    }
+    &__table{
+      display: flex;
+      flex-direction: column;
+      height: 60%;
+      margin: 60px 0 60px;
+      &__subtitle{
+        font-family: Gilroy;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 24px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #EB8271;
+        text-align: left;
+      }
+      &__title{
+        font-family: Gilroy;
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 38px;
+        color: #221F20;
+        text-align: left;
+      }
+    }
+    &__list{
+      margin-top: 20px;
+      padding-left: 52px;
+      height: 100%;
+      flex: 1 1 100%;
+      overflow-y: auto;
+    }
+    &__el{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+      padding: 0 25px;
+      border-bottom: 1px solid #DDD9D3;
+
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 24px;
+      color: #221F20;
+    }
+    &__favourites{
+      display: flex;
+      align-items: center;
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 24px;
+      margin-right: 35px;
+      &-icon{
+        position: relative;
+        width: initial;
+        height: 26px;
+        margin-left: 20px;
+      }
+      &-amount{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -55%);
+
+        font-family: Gilroy;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 1.5em;
+        color: #FFFFFF;
+        pointer-events: none;
+      }
+      svg{
+        height: 26px;
+        width: 28px;
+        fill: #1C4954;
+        cursor: pointer;
+      }
+
+    }
+    .s3d-tell{
+      margin: 0 0 20px 0;
+      &__text{
+        color: #221F20;
+      }
+    }
+    &__links{
+      padding: 35px 10px;
+      background: #EB8271;
+      column-count: 2;
+      margin: auto 0 0 0;
+      a{
+        position: relative;
+        font-family: Gilroy;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 24px;
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.1em;
+        text-decoration-line: underline;
+        text-transform: lowercase;
+        color: #FFFFFF;
+        margin: 5px 15px;
+        padding: 0 0 0 36px;
+      }
+      img{
+        position: absolute;
+        top: 50%;
+        left: 13px;
+        margin: 0 10px 0 0;
+        transform: translate(-50%, -50%);
+      }
+    }
+    &__floor{
+      display: flex;
+      height: 100%;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      svg{
+        width: 80%;
+        height: 90%;
+      }
+    }
+
+  }
+  &-mini-info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 110px;
+    width: 110px;
+    padding: 20px;
+    &__title{
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 13px;
+      line-height: 24px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #221F20;
+    }
+    &__amount{
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 30px;
+      line-height: 38px;
+      color: #221F20;
+      margin-top: 8px;
+    }
+    &:nth-child(2){
+      background: #DDD9D3;
+    }
+    &:nth-child(3){
+      background: #E8E6E4;
+    }
+    &:nth-child(4){
+      background: #F3F3F3;
+    }
+  }
+}
+
+@media screen and ( max-width : 1640px ) {
+  .s3d {
+    &-flat {
+
+    }
+  }
+}
+
+@media screen and ( max-width : 1023px ) {
+  .s3d {
+    &-flat {
+
+    }
+  }
+}
+
+@media screen and ( max-width : 767px ) {
+  .s3d {
+    &-flat {
+
+    }
+  }
+}

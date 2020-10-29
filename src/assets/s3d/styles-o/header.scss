@@ -1,0 +1,354 @@
+.header {
+  @include to(1199px) {
+    padding: 10px;
+  }
+  @include to(768px) {
+    justify-content: flex-end;
+    padding: 10px 20px;
+  }
+  @include to(480px) {
+    padding: 5px 20px;
+  }
+  z-index: 200;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 72px;
+  align-items: center;
+  background-color: transparent !important;
+  padding: 10px 45px;
+
+  .logo {
+    @include to(768px) {
+      margin-right: auto;
+    }
+    height: auto;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    svg {
+      @include to(768px) {
+        width: 150px;
+        height: 30px;
+      }
+      width: 190px;
+      height: 40px;
+    }
+  }
+
+  .row {
+    justify-content: space-between;
+  }
+}
+
+.lang-list {
+  @include to(480px) {
+    margin-left: 10px;
+  }
+  margin-left: 20px;
+
+  &__item {
+    padding: 0 10px;
+
+    a {
+      color: $textDark;
+      text-decoration: none;
+    }
+
+    &.active {
+      background: $mc2;
+
+      a {
+        color: $textLight;
+      }
+    }
+  }
+}
+
+.menu-button {
+  display: flex;
+  border: none;
+  align-items: center;
+  background-color: transparent;
+
+  &__text {
+    font-size: 10px;
+  }
+}
+
+.menu {
+  z-index: 50;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  background-color: rgb(102, 197, 226);
+  transition: all .4s;
+  visibility: visible;
+}
+
+.top-menu {
+  @include to(1024px) {
+    display: none;
+  }
+  display: flex;
+  font-family: "Montserrat";
+  font-size: 10px;
+  font-weight: 500;
+  height: 100%;
+  line-height: 1.2em;
+  margin-left: auto;
+
+  &__list {
+    position: relative;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 15px;
+    text-transform: uppercase;
+
+    a {
+      color: $textDark;
+    }
+
+    &--item {
+      margin-right: 10px;
+      white-space: nowrap;
+    }
+
+    &.hover {
+      color: $mc2;
+
+      .top-menu__nested {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .top-menu__arrow {
+        fill: $mc2;
+        transform: rotate(180deg);
+        transition: .3s;
+      }
+    }
+  }
+
+  &__phone {
+    @include to(768px) {
+      display: none;
+      margin: 0 0 0 auto;
+    }
+    align-items: center;
+    display: flex;
+    height: 100%;
+    margin: 0 auto;
+
+    &.hover {
+
+      .phone__list__tel {
+        background: $wc;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+    }
+  }
+
+  &__arrow {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+  }
+
+  &__nested {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: auto;
+    background: #ffffff;
+    box-shadow: 0 40px 40px rgba(41, 48, 68, .25);
+    margin: 0 -5px;
+    opacity: 0;
+    transition: opacity .2s linear;
+    visibility: hidden;
+
+    &--link {
+      white-space: nowrap;
+    }
+
+    &--item {
+      display: inline-block;
+      padding: 10px 20px;
+    }
+  }
+
+  a {
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
+
+.phone__list {
+  position: relative;
+  display: inline-block;
+  justify-content: flex-start;
+  height: 100%;
+  flex-direction: column;
+  flex-shrink: 0;
+  order: -1;
+  padding: 10px 0;
+
+  &__tel {
+    z-index: 5;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding: 10px;
+  }
+
+  &--icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  &--number {
+    @include to(480px) {
+      padding-left: 10px;
+    }
+    color: $textDark;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2em;
+    padding-left: 20px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  &--arrow {
+    cursor: pointer;
+    padding: 10px;
+  }
+}
+
+.header .phone__list__tel:nth-child( 1n+2 ) {
+  opacity: 0;
+  visibility: hidden;
+  z-index: 2;
+}
+
+.burger {
+  @include to(1024px) {
+    display: flex;
+  }
+  @include to(480px) {
+    margin: 0 0 0 10px;
+  }
+  display: none;
+  justify-content: space-around;
+  width: 50px;
+  height: 50px;
+  border: none;
+  overflow: hidden;
+  background: transparent;
+  cursor: pointer;
+  flex-direction: column;
+  margin: 0 0 0 20px;
+  padding: 12px 5px;
+
+  span {
+    width: 30px;
+    height: 3px;
+    border-radius: 10px;
+    background: $mc3;
+    transition: translate .2s linear;
+  }
+
+  & span:nth-child( 2 ) {
+    transform: translateX(0);
+  }
+
+  &:hover span:nth-child( 2 ) {
+    transform: translateX(10px);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.btn-res {
+  background: transparent;
+  border: none;
+}
+
+.menu-main-list {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  &__link {
+    display: block;
+    color: $mc;
+    font-size: 4vw;
+    line-height: 2em;
+    opacity: 0;
+    transition: all .3s;
+
+    &:hover {
+      color: $text;
+
+      &:after {
+        height: 4px;
+      }
+    }
+  }
+}
+

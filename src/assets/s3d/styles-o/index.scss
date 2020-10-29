@@ -1,0 +1,69 @@
+.header {
+  display: none;
+}
+
+.active {
+  display: box;
+  display: flexbox;
+  display: flex;
+  opacity: 1;
+}
+
+.close {
+  z-index: 120;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transform: translateX(-50%);
+  transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.close:hover:after {
+  transform: rotate(-45deg) scale(1.2);
+  transform: rotate(-45deg) scale(1.2);
+  transform: rotate(-45deg) scale(1.2);
+}
+
+.close:hover:before {
+  transform: rotate(45deg) scale(1.2);
+  transform: rotate(45deg) scale(1.2);
+  transform: rotate(45deg) scale(1.2);
+}
+
+.close:hover:before,
+.close:hover:after {
+  background: #8fac5c;
+}
+
+.close:before,
+.close:after {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #ffffff;
+  content: "";
+  margin-top: -1px;
+  transition: .3s all linear;
+  transition: .3s all linear;
+  transition: .3s all linear;
+}
+
+.close:before {
+  transform: rotate(45deg);
+  transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.close:after {
+  transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+

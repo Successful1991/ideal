@@ -1,0 +1,148 @@
+.s3d {
+
+  &__button {
+    z-index: 2000;
+    position: absolute;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    overflow: hidden;
+    align-items: center;
+    background: #F2F2F2;
+    fill: #EB8271;
+    padding: 8px;
+    transform: translateY(-100%);
+    transition: all .3s ease-in;
+    outline-color: #EB8271;
+
+    * {
+      pointer-events: none;
+    }
+
+    svg {
+      display: flex;
+      fill: $wc;
+      flex: 1 1 100%;
+    }
+    &:focus{
+      outline-style: outset;
+      outline-color: rgba(235,130,113,0.3);
+    }
+    &:hover {
+      border: none;
+      background: $--bg;
+
+      svg {
+        fill: $wc;
+      }
+    }
+
+    &-left {
+      left: 30px;
+    }
+
+    &-right {
+      right: 30px;
+
+      //svg {
+      //  transform: rotate(180deg);
+      //}
+    }
+  }
+
+  &__infoBox {
+    z-index: 200;
+    position: absolute;
+    top: -10000px;
+    left: -10000px;
+    color: #140101;
+    border: none;
+    background: $wc;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 10px 30px;
+    pointer-events: none;
+    text-align: center;
+    text-transform: uppercase;
+    transform: translate(-50%, calc(-100% + 10px));
+    white-space: nowrap;
+
+    &__house {
+      color: $--bg;
+    }
+
+    &:after {
+      z-index: 199;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background: url("../images/icon/helper-logo.svg") no-repeat center /cover;
+      content: "";
+      transform: translate(-50%, -75%);
+    }
+
+    &:before {
+      z-index: 199;
+      position: absolute;
+      left: 50%;
+      bottom: -5px;
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: $wc;
+      content: "";
+      transform: translate(-50%, 0)rotate(45deg);
+    }
+  }
+
+  .s3d-active-vertical {
+
+    .s3d__button {
+      border-width: 1px;
+    }
+  }
+}
+
+@media screen and ( max-width : 1640px ) {
+
+  .s3d {
+
+    &__infoBox {
+      font-size: 10px;
+      padding: 10px 20px;
+    }
+  }
+}
+
+@media screen and ( max-width : 767px ) {
+
+  .s3d {
+
+    &__button {
+      width: 26px;
+      height: 26px;
+      border-width: 1px;
+      padding: 0;
+
+      svg {
+        width: 10px;
+        height: 10px;
+        flex: 0 0 10px;
+      }
+    }
+
+    &__infoBox {
+      font-size: 9px;
+      line-height: 14px;
+      padding: 5px 10px;
+    }
+  }
+}
