@@ -12,14 +12,14 @@ function createFilter(wrap) {
 	const floor = createRange('s3d-filter__floor js-s3d-filter__floor', 'floor', 1, 15, 'Поверх')
 	const room = createCheckbox('s3d-filter__rooms js-s3d-filter__rooms js-s3d-filter__select', 'rooms', [{ id: 1, value: 1 }, { id: 2, value: 2 }, { id: 3, value: 3 }, { id: 4, value: 4 }], 'Кімнат')
 	// const house = createCheckbox('s3d-filter__house js-s3d-filter__house js-s3d-filter__select', 'house', [{ id: 1, value: 1 }, { id: 2, value: 2 }], 'Будинок')
-	const res = document.createElement("div")
-	res.classList = "s3d-filter-wrap js-s3d-filter"
+	const res = document.createElement('div')
+	res.classList = 's3d-filter-wrap js-s3d-filter'
 	res.innerHTML = `<div class="s3d-filter"><div class="s3d-filter__title">Подбор по параметрам</div>
 			<div class="s3d__favourites js-s3d__favourites">
 				<svg role="presentation"><use xlink:href="#icon-favourites"></use></svg>
 	        	<span class="s3d__favourites-amount js-s3d__favourites-amount">0</span>
 			</div>
-	        <div class="s3d-filter__buttons js-s3d-filter__buttons"></div>
+<!--	        <div class="s3d-filter__buttons js-s3d-filter__buttons"></div>-->
 	        </div>
 	        <div  class="s3d-filter__table js-s3d-filter__table">
 	        	<table>
@@ -76,8 +76,8 @@ function createFilter(wrap) {
 	        </div>
 	`
 
-	$(wrap).append(res);
-	let title = $(res).find('.s3d-filter__title')[0];
+	$(wrap).append(res)
+	const title = $(res).find('.s3d-filter__title')[0]
 	title.insertAdjacentElement('afterend', reset)
 	title.insertAdjacentElement('afterend', close)
 	// $(res).find('.s3d-filter__title')[0].insertAdjacentElement('afterend', house)
@@ -88,7 +88,9 @@ function createFilter(wrap) {
 
 	// $(res).find('.s3d-filter__amount-flat')[0].insertAdjacentElement('afterend', reset)
 
-	return {area,floor,room,close, reset}
+	return {
+		area, floor, room, close, reset,
+	}
 }
 
 function createClose(cs = 's3d-filter__close', text) {

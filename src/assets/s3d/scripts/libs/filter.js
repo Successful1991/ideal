@@ -21,12 +21,10 @@ class Filter {
 	init(config) {
 		this.filterHtml = createFilter('.js-s3d__slideModule')
 
-		$(this.filterHtml.reset).on('click',  () => this.resetFilter())
+		$(this.filterHtml.reset).on('click', () => this.resetFilter())
 		$(this.filterHtml.house).on('click', 'input', () => this.showSvgSelect())
 		$(this.filterHtml.room).on('click', 'input', () => this.showSvgSelect())
-		$(this.filterHtml.close).on('click', ev => {
-			$('.js-s3d-filter').removeClass('active')
-		})
+		$(this.filterHtml.close).on('click', () => this.hidden())
 
 		// $('.js-s3d-filter__button--reset').on('click', () => this.resetFilter())
 		// $('.js-s3d-filter__button--apply').on('click', () => this.showSvgSelect());
@@ -46,7 +44,7 @@ class Filter {
 		})
 
 		this.filterName.checkbox.forEach(name => {
-			$('.js-s3d-filter [data-type=name]').each( (i,el) => el.data(name,i+1))
+			$('.js-s3d-filter [data-type=name]').each((i, el) => el.data(name, i + 1))
 		})
 
 		this.filterName.range.forEach(name => {
@@ -152,6 +150,14 @@ class Filter {
 				self.showSvgSelect()
 			}
 		}
+	}
+
+	show() {
+		$('.js-s3d-filter').addClass('active')
+	}
+
+	hidden() {
+		$('.js-s3d-filter').removeClass('active')
 	}
 
 	setRange(config) {

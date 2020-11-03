@@ -17,7 +17,7 @@ class Slider {
 		this.flagMouse = false
 		this.currentSlide = data.activeSlide
 		this.nextSlide = data.activeSlide
-		this.openHouses = [2,8]
+		this.openHouses = [2, 8]
 
 		this.eventsName = {
 			start: 'mousedown',
@@ -40,6 +40,8 @@ class Slider {
 		}
 		this.startDegCompass = (360 / this.numberSlide.max)
 		this.infoBox = ''
+		this.infoBoxActive = false
+		this.infoBoxHidden = true
 		this.activeSvg = null
 		this.activeFloor = null
 		this.rotate = true
@@ -80,6 +82,7 @@ class Slider {
 				this.amount = 0
 				if (this.flagMouse) {
 					this.flagMouse = false
+					this.infoBoxHidden = false
 					this.rewindToPoint.call(this)
 					// $(this.activeSvg).css({'fill':''});
 				}
@@ -87,13 +90,18 @@ class Slider {
 
 			this.wrapper.on(this.eventsName.start, e => {
 				if (e.target.classList.contains('s3d__button') || !this.rotate) return
-				this.hiddenInfo(e)
+				// this.hiddenInfo(e)
 				this.rotateStart.call(this, e)
 				this.activeAnimate(true)
 			})
 
 			this.wrapper.on(this.eventsName.move, this.wrapperEvent, e => {
+
 				if (this.flagMouse && this.rotate) {
+					if (!this.infoBoxHidden) {
+						this.hiddenInfo(e)
+						this.infoBoxHidden = true
+					}
 					// console.log(e.target);
 					this.activeSvg = $(e.target).closest('svg')
 					// this.activeSvg[0].style.opacity = 0
@@ -101,9 +109,9 @@ class Slider {
 					// $(this.activeSvg).css({'fill':'transparent'});
 
 					this.checkMouseMovement.call(this, e)
-				} else if (e.target.tagName === 'polygon') {
+				} else if (e.target.tagName === 'polygon' && !this.infoBoxActive) {
 					this.updateInfo(e)
-				} else {
+				} else if (!this.infoBoxActive) {
 					this.hiddenInfo(e)
 				}
 			})
@@ -111,25 +119,31 @@ class Slider {
 		this.updateImage()
 
 		this.wrapper.on('click', 'polygon', e => {
-			this.ActiveHouse.set(+e.target.dataset.build)
-			if (this.openHouses.includes(+e.target.dataset.build)) {
-				let conf = JSON.parse(window.sessionStorage.getItem('chooseFlatDefaults'))
-				if (conf !== undefined) {
-					conf = {}
-					conf.build = $(e.currentTarget).data('build')
-				} else {
-					conf = {
-						build: $(e.currentTarget).data('build'), counter: 12, type: '1', rooms: '1',
-					}
-				}
-				window.sessionStorage.setItem('chooseFlatDefaults', JSON.stringify(conf))
-				window.location.href = $(e.currentTarget).attr('href')
-
-				// this._ActiveHouse.set(+e.target.dataset.build);
-				// this.updateInfo(e);
-				return
+			e.preventDefault()
+			this.infoBoxActive = true
+			// this.ActiveHouse.set(+e.target.dataset.build)
+			// if (this.openHouses.includes(+e.target.dataset.build)) {
+			// 	let conf = JSON.parse(window.sessionStorage.getItem('chooseFlatDefaults'))
+			// 	if (conf !== undefined) {
+			// 		conf = {}
+			// 		conf.build = $(e.currentTarget).data('build')
+			// 	} else {
+			// 		conf = {
+			// 			build: $(e.currentTarget).data('build'), counter: 12, type: '1', rooms: '1',
+			// 		}
+			// 	}
+			// 	window.sessionStorage.setItem('chooseFlatDefaults', JSON.stringify(conf))
+			// 	window.location.href = $(e.currentTarget).attr('href')
+			//
+			// 	// this._ActiveHouse.set(+e.target.dataset.build);
+			// 	// this.updateInfo(e);
+			// 	return
+			// }
+			if (!this.infoBox.hasClass('s3d-infoBox-active')) {
+				this.infoBox.addClass('s3d-infoBox-active')
+				this.infoBox.removeClass('s3d-infoBox-hover')
 			}
-			this.updateInfo(e)
+			// this.updateInfo(e)
 
 			// this.activeFloor = +e.target.dataset.floor;
 			// $('.js-s3d__svgWrap .active-floor').removeClass('active-floor');
@@ -144,7 +158,9 @@ class Slider {
 		this.createSvg()
 		this.createInfo()
 		this.createArrow()
-
+		this.infoBox.on('click', '.js-s3d-infoBox__close', () => {
+			this.hiddenInfo()
+		})
 		$('.js-s3d__wrap').scrollLeft($('.js-s3d__wrap').width() / 4)
 
 		// createMarkup('div' , '#js-s3d__wrapper', {
@@ -320,38 +336,103 @@ class Slider {
 		this.result.max = this.numberSlide.max
 	}
 
-	createInfo() {
-		const infoBox = createMarkup('div', '.js-s3d__slideModule', { class: 'js-s3d__infoBox s3d__infoBox' })
+	// createInfo() {
+	// 	const infoBox = createMarkup('div', '.js-s3d__slideModule', { class: 'js-s3d-infoBox s3d-infoBox' })
+	//
+	// 	const infoBoxContent = `<ul>
+	//       <li class="js-s3d-infoBox__house s3d-infoBox__house">house: <span>5</span></li>
+	//       <!--<li class="js-s3d-infoBox__section">section: <span>7</span>-->
+	//       <!--<li class="js-s3d-infoBox__apartments">apartments: <span>10</span></li>-->
+	//       <li class="js-s3d-infoBox__floor s3d-infoBox__floor">floor: <span>10</span></li>
+	//   </ul>`
+	// 	$(infoBox).append(infoBoxContent)
+	// 	this.infoBox = $(infoBox)
+	// }
 
-		const infoBoxContent = `<ul>
-        <li class="js-s3d__infoBox__house s3d__infoBox__house">house: <span>5</span></li>
-        <!--<li class="js-s3d__infoBox__section">section: <span>7</span>-->
-        <!--<li class="js-s3d__infoBox__apartments">apartments: <span>10</span></li>-->
-        <li class="js-s3d__infoBox__floor s3d__infoBox__floor">floor: <span>10</span></li>
-    </ul>`
+	createInfo() {
+		const infoBox = createMarkup('div', '.js-s3d-controller', { class: 'js-s3d-infoBox s3d-infoBox' })
+
+		const infoBoxContent = `
+<!--<ul>-->
+<!--				<div class="s3d-infoBox s3d-infoBox-active">-->
+                <div class="s3d-infoBox__static">
+                  <div class="s3d-infoBox__icon"><img src="assets/s3d/images/icon/house.svg"></div>
+                  <div class="s3d-infoBox__text">выберите квартиру на доме</div>
+                </div>
+                <div class="s3d-infoBox__hover js-s3d-infoBox__hover">
+                  <div class="s3d-infoBox__icon"><img src="assets/s3d/images/icon/house.svg"></div>
+                  <div class="s3d-infoBox__text js-s3d-infoBox__hover__text">квартира №45</div>
+                </div>
+                <div class="s3d-infoBox__image">
+                  <div class="s3d-infoBox__close js-s3d-infoBox__close"></div>
+                  <div class="s3d-infoBox__type js-s3d-infoBox__type">тип 2А</div><img src="assets/s3d/images/KV.png">
+                </div>
+                <div class="s3d-infoBox__table">
+                  <table>
+                    <tr>
+                      <td class="js-s3d-infoBox__table-number">134</td>
+                      <td>№ квартиры</td>
+                    </tr>
+                    <tr>
+                      <td class="js-s3d-infoBox__table-floor">4</td>
+                      <td>Этаж</td>
+                    </tr>
+                    <tr>
+                      <td class="js-s3d-infoBox__table-room">2</td>
+                      <td>Комнаты</td>
+                    </tr>
+                    <tr>
+                      <td class="js-s3d-infoBox__table-area">56</td>
+                      <td>Площадь м2</td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="s3d-infoBox__buttons"><a class="s3d-infoBox__link" href="#">Подробнее</a>
+                  <button class="s3d-infoBox__add-favourites js-s3d-add__favourites" type="button">
+                    <svg>
+                      <use xlink:href="#icon-favourites"></use>
+                    </svg>
+                  </button>
+                </div>
+<!--              </div>-->
+
+
+<!--        <li class="js-s3d-infoBox__house s3d-infoBox__house">house: <span>5</span></li>-->
+<!--        &lt;!&ndash;<li class="js-s3d-infoBox__section">section: <span>7</span>&ndash;&gt;-->
+<!--        &lt;!&ndash;<li class="js-s3d-infoBox__apartments">apartments: <span>10</span></li>&ndash;&gt;-->
+<!--        <li class="js-s3d-infoBox__floor s3d-infoBox__floor">floor: <span>10</span></li>-->
+<!--    </ul>-->
+`
 		$(infoBox).append(infoBoxContent)
 		this.infoBox = $(infoBox)
 	}
 
 	updateInfo(e) {
-		const pos = $('.s3d__wrap').offset()
-		// положение курсора внутри элемента
-		const Xinner = e.pageX - pos.left
-		const Yinner = e.pageY - pos.top
-		this.infoBox.css({ opacity: '1' })
-		this.infoBox.css({ top: Yinner - 40 })
-		this.infoBox.css({ left: Xinner })
-		if (this.openHouses.includes(+e.target.dataset.build)) {
-			this.infoBox.find('.js-s3d__infoBox__house')[0].innerHTML = `house:  ${e.target.dataset.build || ''}`
-			this.infoBox.find('.js-s3d__infoBox__floor')[0].innerHTML = `floor:  ${e.target.dataset.floor || ''}`
-			this.infoBox.find('.js-s3d__infoBox__floor')[0].style.display = ''
-		} else {
-			this.infoBox.find('.js-s3d__infoBox__house')[0].innerHTML = 'Будинок не у продажу'
-			this.infoBox.find('.js-s3d__infoBox__floor')[0].style.display = 'none'
+	// const pos = $('.s3d__wrap').offset()
+	// положение курсора внутри элемента
+	// const Xinner = e.pageX - pos.left
+	// const Yinner = e.pageY - pos.top
+	// this.infoBox.css({ opacity: '1' })
+	// this.infoBox.css({ top: Yinner - 40 })
+	// this.infoBox.css({ left: Xinner })
+
+		if (this.infoBox.hasClass('s3d-infoBox-active')) {
+			return
+		} else if (!this.infoBox.hasClass('s3d-infoBox-hover')) {
+			this.infoBox.addClass('s3d-infoBox-hover')
 		}
-		// this.infoBox.find('.js-s3d__infoBox__house span')[0].innerHTML = e.target.dataset.build || '';
-		// this.infoBox.find('.js-s3d__infoBox__section span')[0].innerHTML = e.target.dataset.section || '';
-		// this.infoBox.find('.js-s3d__infoBox__floor span')[0].innerHTML = e.target.dataset.floor || '';
+		console.log(e.target)
+		if (this.openHouses.includes(+e.target.dataset.build)) {
+			this.infoBox.find('.js-s3d-infoBox__house')[0].innerHTML = `house:  ${e.target.dataset.build || ''}`
+			this.infoBox.find('.js-s3d-infoBox__floor')[0].innerHTML = `floor:  ${e.target.dataset.floor || ''}`
+			this.infoBox.find('.js-s3d-infoBox__floor')[0].style.display = ''
+		} else {
+			this.infoBox.find('.js-s3d-infoBox__house')[0].innerHTML = 'Будинок не у продажу'
+			this.infoBox.find('.js-s3d-infoBox__floor')[0].style.display = 'none'
+		}
+		// this.infoBox.find('.js-s3d-infoBox__house span')[0].innerHTML = e.target.dataset.build || '';
+		// this.infoBox.find('.js-s3d-infoBox__section span')[0].innerHTML = e.target.dataset.section || '';
+		// this.infoBox.find('.js-s3d-infoBox__floor span')[0].innerHTML = e.target.dataset.floor || '';
 	}
 
 	updateInfoFloorList(e) {
@@ -394,9 +475,13 @@ class Slider {
 	}
 
 	hiddenInfo() {
-		this.infoBox.css({ opacity: '0' })
-		this.infoBox.css({ top: '-10000px' })
-		this.infoBox.css({ left: '-10000px' })
+		console.log(this.infoBox)
+		this.infoBoxActive = false
+		this.infoBox.removeClass('s3d-infoBox-active')
+		this.infoBox.removeClass('s3d-infoBox-hover')
+		// this.infoBox.css({ opacity: '0' })
+		// this.infoBox.css({ top: '-10000px' })
+		// this.infoBox.css({ left: '-10000px' })
 	}
 
 	hiddenInfoFloor() {
@@ -432,7 +517,7 @@ class Slider {
 
 	createArrow() {
 		const arrowLeft = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-left js-s3d__button-left unselectable' })
-		$(arrowLeft).append(`<svg width="7" height="9" viewBox="0 0 7 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 9L-1.96701e-07 4.5L7 0L7 3.82025L7 5.17975L7 9Z" fill="#EB8271"/></svg>`)
+		$(arrowLeft).append('<svg width="7" height="9" viewBox="0 0 7 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 9L-1.96701e-07 4.5L7 0L7 3.82025L7 5.17975L7 9Z" fill="#EB8271"/></svg>')
 		$('.js-s3d__button-left').on('click', this.left)
 
 		const arrowRight = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-right js-s3d__button-right unselectable' })
@@ -460,7 +545,7 @@ class Slider {
 	}
 
 	left() {
-		console.log(this.rotate);
+		console.log(this.rotate)
 		if (this.rotate) {
 			this.rotate = false
 			let amount = 0

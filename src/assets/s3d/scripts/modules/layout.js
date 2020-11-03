@@ -7,7 +7,7 @@ class Layout {
         this.type = data.type;
         this.loader = data.loader;
         this._wrapperId = data.idCopmlex;
-        this._wrapper = $('.js-s3d__wrapper__' + this._wrapperId);
+        this._wrapper = $(`.js-s3d__wrapper__${  this._wrapperId}`);
         this.click = data.click;
         this.configProject = data.configProject;
         this.scrollToBlock = data.scrollToBlock;
@@ -25,15 +25,15 @@ class Layout {
         this._wrapper.on('click', 'g', (e) => {
             e.preventDefault();
             this.activeSvg = $(e.target).closest("svg");
-            $(this.activeSvg).css({'fill': ''});
-            $('.s3d-floor__helper').css({'visibility': 'hidden','opacity': 0, 'top': '-10000px'});
+            $(this.activeSvg).css({fill: ''});
+            $('.s3d-floor__helper').css({visibility: 'hidden',opacity: 0, top: '-10000px'});
             if(!isDevice()){
                 this.click(e, this.type);
             } else{
                 this.updateInfoFloor(e);
                 event = e;
                 $('.s3d-floor__helper-close').on('click', e => {
-                    $('.s3d-floor__helper').css({'visibility': 'hidden','opacity': 0, 'top': '-10000px'});
+                    $('.s3d-floor__helper').css({visibility: 'hidden',opacity: 0, top: '-10000px'});
                 })
             }
 
@@ -41,7 +41,7 @@ class Layout {
 
         $('.s3d-floor__helper').on('click', e => {
             if($(e.target).closest('.s3d-floor__helper-close').length === 0) {
-                $('.s3d-floor__helper').css({'visibility': 'hidden','opacity': 0, 'top': '-10000px'});
+                $('.s3d-floor__helper').css({visibility: 'hidden',opacity: 0, top: '-10000px'});
                 this.click(event, this.type);
             }
         });
@@ -74,10 +74,10 @@ class Layout {
     }
 
     changeFloorHtml(conf) {
-        let s3dSelectFloorTitle = 'Оберіть квартиру';
-        let s3dSelectFloorName = 'поверх';
-        let s3dSelectHouseName = 'дом';
-        let min = this.configProject.floor.min;
+        const s3dSelectFloorTitle = 'Оберіть квартиру';
+        const s3dSelectFloorName = 'поверх';
+        const s3dSelectHouseName = 'дом';
+        const {min} = this.configProject.floor;
         const activeFloor = conf.floor;
         const activeHouse = this._ActiveHouse.get();
         let florList = ``;
@@ -110,15 +110,15 @@ class Layout {
                                    ${florList}
                             </div>
                         </div>`;
-        createMarkup('div', '#js-s3d__wrapper__' + this._wrapperId, {
-            class: 's3d-nav-' + this._wrapperId + '',
+        createMarkup('div', `#js-s3d__wrapper__${  this._wrapperId}`, {
+            class: `s3d-nav-${  this._wrapperId  }`,
             content: panel
         });
 
         if(!isDevice()) {
             $('.js-s3d-nav-floor__hover').on('mouseover', function () {
-                let list = $('.js-s3d-nav-floor__list');
-                let button = $('.js-s3d-nav-floor__select');
+                const list = $('.js-s3d-nav-floor__list');
+                const button = $('.js-s3d-nav-floor__select');
                 list.addClass('active');
                 button.addClass('active');
                 $(this).addClass('.s3d-nav-floor-active');
@@ -126,8 +126,8 @@ class Layout {
             });
         } else {
             $('.js-s3d-nav-floor__select').on('click', function () {
-                let list = $('.js-s3d-nav-floor__list');
-                let button = $('.js-s3d-nav-floor__select');
+                const list = $('.js-s3d-nav-floor__list');
+                const button = $('.js-s3d-nav-floor__select');
                 if(!list.hasClass('active') ){
                     closeNumList(this);
                 } else {
@@ -152,24 +152,24 @@ class Layout {
         }
 
         $('.js-s3d-nav-floor__list').on('click', (e) => {
-            let num = $(e.target).data('nav-floor');
+            const num = $(e.target).data('nav-floor');
             if (num) this.changeFloor(num);
         });
 
         $('.js-s3d-nav-floor__up').on('click', () => {
-            let res = $('.s3d-nav-floor__left-num').data('active');
+            const res = $('.s3d-nav-floor__left-num').data('active');
             if (res < this.configProject.floor.max) this.changeFloor(res + 1);
         });
 
         $('.js-s3d-nav-floor__down').on('click', () => {
-            let res = $('.s3d-nav-floor__left-num').data('active');
+            const res = $('.s3d-nav-floor__left-num').data('active');
             if (res > this.configProject.floor.min) this.changeFloor(res - 1);
         });
         // $(window).resize(this.resize);
     }
 
     getFloor(data, callback) {
-        let dat = `action=getFloor&house=${data.house}&floor=${data.floor}`;
+        const dat = `action=getFloor&house=${data.house}&floor=${data.floor}`;
         $.ajax({
             type: 'POST',
             // url: '/wp-admin/apParse.php',
@@ -180,34 +180,34 @@ class Layout {
     }
 
     resize() {
-        let width = $(document).width();
-        let height = $(document).height();
+        const width = $(document).width();
+        const height = $(document).height();
         if (width <= 1024) {
-            $('#js-s3d__floor svg').css({'width': '', 'height': ($('#js-s3d__floor').width() - 20) + 'px'});
-            $('#js-s3d__floor').css({'width': '', 'height': ($('#js-s3d__floor').width() - 20 ) + 'px'});
+            $('#js-s3d__floor svg').css({width: '', height: `${$('#js-s3d__floor').width() - 20  }px`});
+            $('#js-s3d__floor').css({width: '', height: `${$('#js-s3d__floor').width() - 20   }px`});
         } else if (width > height) {
-            $('#js-s3d__floor svg').css({'width': $('#js-s3d__floor').height() + 'px', 'height': '100%'});
-            $('#js-s3d__floor').css({'width': $('#js-s3d__floor').height() + 'px', 'height': '100%'});
+            $('#js-s3d__floor svg').css({width: `${$('#js-s3d__floor').height()  }px`, height: '100%'});
+            $('#js-s3d__floor').css({width: `${$('#js-s3d__floor').height()  }px`, height: '100%'});
         } else {
             $('#js-s3d__floor svg').css({
-                'width': $('#js-s3d__floor').height() + 'px',
-                'height': $('#js-s3d__floor').width() + 'px'
+                width: `${$('#js-s3d__floor').height()  }px`,
+                height: `${$('#js-s3d__floor').width()  }px`
             });
             $('#js-s3d__floor').css({
-                'width': $('#js-s3d__floor').height() + 'px',
-                'height': $('#js-s3d__floor').width() + 'px'
+                width: `${$('#js-s3d__floor').height()  }px`,
+                height: `${$('#js-s3d__floor').width()  }px`
             });
         }
     }
 
     setFloorInPage(data) {
-        $('#js-s3d__' + this._wrapperId).html(JSON.parse(data));
+        $(`#js-s3d__${  this._wrapperId}`).html(JSON.parse(data));
         updateSizeTip(1, $('.entrance-flats__item_floor--active'), '.svg-tip-plan-floor-', $('#floor--svg'));
 
         // this.resize();
         this.loader.hide(this.type);
         $('#js-floor svg').on(this.floorEventType, this.updateInfoFloor);
-        $('#js-floor svg polygon').on('mouseout', () => $('.s3d-floor__helper').css({'top': '', 'left': '', 'opacity': ''}));
+        $('#js-floor svg polygon').on('mouseout', () => $('.s3d-floor__helper').css({top: '', left: '', opacity: ''}));
     }
 
 
@@ -224,7 +224,7 @@ class Layout {
         // }
         if (e.target.tagName === 'polygon') {
             // const height = $('.s3d-floor__helper').height();
-            $('.s3d-floor__helper').css({'opacity': 0});
+            $('.s3d-floor__helper').css({opacity: 0});
             const Xinner = e.pageX || e.targetTouches[0].pageX;
             const Yinner = e.pageY || e.targetTouches[0].pageY;
 
@@ -241,10 +241,10 @@ class Layout {
             if (param.square) $('.js-s3d-floor__helper-area').html(param.square);
             if (param.living) $('.js-s3d-floor__helper-place').html(param.living);
 
-            $('.s3d-floor__helper').css({'visibility': 'visible','top': Yinner - 120 , 'left': Xinner, 'opacity': 1});
+            $('.s3d-floor__helper').css({visibility: 'visible',top: Yinner - 120 , left: Xinner, opacity: 1});
 
         } else {
-            $('.s3d-floor__helper').css({'visibility': 'hidden','top': '', 'left': '', 'opacity': ''})
+            $('.s3d-floor__helper').css({visibility: 'hidden',top: '', left: '', opacity: ''})
         }
     }
 }

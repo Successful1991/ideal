@@ -46,7 +46,6 @@
       margin: 0 15px;
     }
 
-
     &__title {
       position: relative;
       width: 100%;
@@ -124,7 +123,7 @@
     }
 
     &__rooms {
-      margin: 0 auto 30px 0;
+      margin: 0 auto 15px 0;
 
       .s3d-filter-select__list {
         justify-content: flex-end;
@@ -397,7 +396,7 @@
       font-size: 12px;
       font-weight: 500;
       line-height: 22px;
-      margin: auto 0 30px 10px;
+      margin: auto 0 15px 10px;
       transition: color .4s ease-in-out;
       cursor: pointer;
       &-icon {
@@ -442,6 +441,7 @@
   //    padding: 20px 30px 40px;
   //  }
   //}
+
 }
 
 .plannings-filter{
@@ -451,9 +451,12 @@
   grid-area: filter;
   visibility: visible;
   opacity: 1;
-  transform: none;
-  transition-duration: 0.2s!important;
+
   background: transparent;
+  &.s3d-filter-wrap{
+    transform: none;
+    transition: none;
+  }
   .s3d{
     &__favourites{
       display: none;

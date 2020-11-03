@@ -3,8 +3,8 @@ class App {
 		this.config = data
 		this.id = data.id
 		// this.sectionName = ['complex']
-		this.sectionName = ['complex','plannings', 'apart'];
-		this.activeSectionList = ['complex', 'plannings', 'apart'];
+		this.sectionName = ['complex', 'plannings', 'apart']
+		this.activeSectionList = ['complex', 'plannings', 'apart']
 		this.activeSection = 'complex'
 		this.activeHouse = undefined
 		// this.flatList = {};
@@ -27,7 +27,7 @@ class App {
 		}
 		this.configProject = {}
 		// this.changeCurrentFloor = this.changeCurrentFloor.bind(this);
-		this.scrollToBlock = this.scrollToBlock.bind(this);
+		this.scrollToBlock = this.scrollToBlock.bind(this)
 		// this.animateBlock = this.animateBlock.bind(this);
 		// eslint-disable-next-line no-underscore-dangle
 		this.ActiveHouse = {
@@ -66,8 +66,8 @@ class App {
 	}
 
 	init() {
-		this.history = new History({scrollToBlock:this.scrollToBlock,animateBlock:this.animateBlock});
-		this.history.init();
+		this.history = new History({ scrollToBlock: this.scrollToBlock, animateBlock: this.animateBlock })
+		this.history.init()
 
 		this.getFlatList('static/package.json', this.filterInit)
 		// this.getFlatList('static/apPars.php', this.filterInit)
@@ -77,23 +77,23 @@ class App {
 		const config = this.config.complex
 		config.idCopmlex = 'complex'
 		config.type = 'complex'
-		config.click = this.selectSlider.bind(this);
+		config.click = this.selectSlider.bind(this)
 		config.loader = this.loader
 		config.ActiveHouse = this.ActiveHouse
 		config.compass = this.compass
 		this.createWrap(config, 'canvas')
 		this.complex = new Slider(config)
 		this.complex.init()
-		$('.js-s3d__wrapper__complex').css('z-index', '100');
+		$('.js-s3d__wrapper__complex').css('z-index', '100')
 
-
-		$('.js-s3d__slideModule').on('click', '.js-s3d__favourites',function () {
-			console.log(this);
+		$('.js-s3d__slideModule').on('click', '.js-s3d__favourites', function () {
+			console.log(this)
 			$('.js-s3d__fv').addClass('s3d__active')
-		});
-		$('.js-s3d__fv').on('click', '.js-s3d__fv__close',function () {
+		})
+
+		$('.js-s3d__fv').on('click', '.js-s3d__fv__close', () => {
 			$('.js-s3d__fv').removeClass('s3d__active')
-		});
+		})
 
 		// $('.s3d-select__head').on('click', e => {
 		// 	const self = this
@@ -109,7 +109,7 @@ class App {
 		// 	$('body').on('mousedown', select)
 		// });
 
-		this.animateFlag = true;
+		this.animateFlag = true
 
 		// scroll blocks
 		// $('body').on('mousewheel', (e) =>  {
@@ -119,10 +119,10 @@ class App {
 		$('.js-s3d-controller__elem').on('click', '.s3d-select', e => {
 			const { type } = e.currentTarget.dataset
 			if (type && type !== this.activeSection) {
-				this.history.update(type);
-				this.scrollBlock(e,type);
+				this.history.update(type)
+				this.scrollBlock(e, type)
 			}
-		});
+		})
 
 		const helper = new Helper()
 		helper.init()
@@ -150,53 +150,52 @@ class App {
 		}
 	}
 
-	scrollBlock(e,active) {
-		console.log(active);
-	    let ind = this.activeSectionList.findIndex((el)=>{ if(el === active) return true});
-		console.log(this.animateFlag, this.activeSectionList);
-	    if(this.animateFlag && this.activeSectionList.length >= 2 ) {
-	      this.complex.hiddenInfo();
-	        this.animateFlag = false;
-	        if(e.originalEvent && e.originalEvent.wheelDelta /120 > 0 ) {
-	            this.animateBlock('translate', 'up');
-	            if(ind > 0){
-	              this.history.update(this.activeSectionList[ind - 1]);
-	              this.scrollToBlock(700)(this.activeSectionList[ind - 1]);
-	            } else if(ind === 0) {
-	              this.history.update(this.activeSectionList[this.activeSectionList.length - 1]);
-	              this.scrollToBlock(700)(this.activeSectionList[this.activeSectionList.length - 1]);
-	            }
-	        }
-	        else if(e.originalEvent && e.originalEvent.wheelDelta /120 < 0 ){
-	            this.animateBlock('translate', 'down');
-	            if(ind < this.activeSectionList.length - 1){
-	              this.history.update(this.activeSectionList[ind + 1]);
-	              this.scrollToBlock(700)(this.activeSectionList[ind + 1]);
-	            } else if(ind === this.activeSectionList.length - 1) {
-	              this.history.update(this.activeSectionList[0]);
-	              this.scrollToBlock(700)(this.activeSectionList[0]);
-	            }
-	        } else {
-				console.log('else');
-	            this.animateBlock('translate', 'down');
-	            this.scrollToBlock(700)(active);
-	        }
-	    }
+	scrollBlock(e, active) {
+		console.log(active)
+		const ind = this.activeSectionList.findIndex(el => { if (el === active) return true })
+		console.log(this.animateFlag, this.activeSectionList)
+		if (this.animateFlag && this.activeSectionList.length >= 2) {
+			this.complex.hiddenInfo()
+			this.animateFlag = false
+			if (e.originalEvent && e.originalEvent.wheelDelta / 120 > 0) {
+				this.animateBlock('translate', 'up')
+				if (ind > 0) {
+					this.history.update(this.activeSectionList[ind - 1])
+					this.scrollToBlock(700)(this.activeSectionList[ind - 1])
+				} else if (ind === 0) {
+					this.history.update(this.activeSectionList[this.activeSectionList.length - 1])
+					this.scrollToBlock(700)(this.activeSectionList[this.activeSectionList.length - 1])
+				}
+			} else if (e.originalEvent && e.originalEvent.wheelDelta / 120 < 0) {
+				this.animateBlock('translate', 'down')
+				if (ind < this.activeSectionList.length - 1) {
+					this.history.update(this.activeSectionList[ind + 1])
+					this.scrollToBlock(700)(this.activeSectionList[ind + 1])
+				} else if (ind === this.activeSectionList.length - 1) {
+					this.history.update(this.activeSectionList[0])
+					this.scrollToBlock(700)(this.activeSectionList[0])
+				}
+			} else {
+				console.log('else')
+				this.animateBlock('translate', 'down')
+				this.scrollToBlock(700)(active)
+			}
+		}
 	}
 
 	filterButtonShowHide(type) {
-	  if(type !== 'complex') {
-	    $('.js-s3d-filter').removeClass('active');
-	    // $('.js-s3d-filter__show').css('display','none');
-	    // return;
-	  } else if(type !== 'apart') {
-	      // $('.js-s3d-filter__open').css('display','flex');
-	      // $('.js-s3d-filter__show').css('display','flex');
-	      // return;
-	  }
-	  // $('.js-s3d-filter').show();
-	  // $('.js-s3d-filter__open').css('display','flex');
-	  // $('.js-s3d-filter__show').css('display','flex');
+		if (type !== 'complex') {
+			$('.js-s3d-filter').removeClass('active')
+			// $('.js-s3d-filter__show').css('display','none');
+			// return;
+		} else if (type !== 'apart') {
+			// $('.js-s3d-filter__open').css('display','flex');
+			// $('.js-s3d-filter__show').css('display','flex');
+			// return;
+		}
+		// $('.js-s3d-filter').show();
+		// $('.js-s3d-filter__open').css('display','flex');
+		// $('.js-s3d-filter__show').css('display','flex');
 	}
 
 	getFlatList(url, callback) {
@@ -217,20 +216,20 @@ class App {
 		})
 	}
 
-	getMinMaxParam(data){
-	    const names = this.filter.getNameFilterFlat();
-	    data.forEach(el=> {
-	      for(let key in el) {
-	        for(let nameKey in names) {
-	            if(key === names[nameKey]) {
-	                const num = typeof el[key] === 'string' ? el[key].replace(/\s+/g, '') : el[key];
-	                if(!this.configProject[key])  this.configProject[key] = {min:num, max:num};
-	                if(num < +this.configProject[key].min ) this.configProject[key].min = num;
-	                if(num > +this.configProject[key].max ) this.configProject[key].max = num;
-	            }
-	        }
-	      }
-	    });
+	getMinMaxParam(data) {
+		const names = this.filter.getNameFilterFlat()
+		data.forEach(el => {
+			for (const key in el) {
+				for (const nameKey in names) {
+					if (key === names[nameKey]) {
+						const num = typeof el[key] === 'string' ? el[key].replace(/\s+/g, '') : el[key]
+						if (!this.configProject[key]) this.configProject[key] = { min: num, max: num }
+						if (num < +this.configProject[key].min) this.configProject[key].min = num
+						if (num > +this.configProject[key].max) this.configProject[key].max = num
+					}
+				}
+			}
+		})
 	}
 
 	filterInit(data) {
@@ -254,125 +253,128 @@ class App {
 	// }
 
 	selectSlider(e, type) {
-	    let houseNum = e.currentTarget.dataset.build || e.currentTarget.value;
-	    this.loader.show();
-	    switch (type) {
-	        case 'complex':
-	            // this.selectSliderType(e, 'house', Slider);
-	            this.selectSliderType(e, 'floor', Layout);
-	            break;
-	        // case 'house':
-	        //     this.selectSliderType(e, 'floor', Layout);
-	        //     break;
-	        case 'floor':
-	            $('.fs-preloader').addClass('s3d-preloader__full');
-	            this.selectSliderType(e, 'apart', Apartments);
-	            break;
-	    }
-	  this.resize();
+		const houseNum = e.currentTarget.dataset.build || e.currentTarget.value
+		this.loader.show()
+		switch (type) {
+		case 'complex':
+			// this.selectSliderType(e, 'house', Slider);
+			this.selectSliderType(e, 'floor', Layout)
+			break
+			// case 'house':
+			//     this.selectSliderType(e, 'floor', Layout);
+			//     break;
+		case 'floor':
+			$('.fs-preloader').addClass('s3d-preloader__full')
+			this.selectSliderType(e, 'apart', Apartments)
+			break
+		default:
+			break
+		}
+		this.resize()
 	}
 
-	selectSliderType(e, type, fn) {
-	    let config;
-	    this.history.update(type);
-	    console.log(type);
-	    if(type === 'house') {
-	        config = this.config.house.config[this.activeHouse];
-	        // config = this.config.house.config[houseNum];
-	        // config.activeHouse = houseNum;
-	        $('.js-s3d-select__number-house').html(this.activeHouse);
-	    } else {
-	        config = this.config[type];
-	        // config.activeHouse = houseNum;
-	        // if( e.currentTarget.dataset.house || e.target.dataset.build) config.house = e.currentTarget.dataset.house || e.currentTarget.dataset.build;
-	        if(e.currentTarget.dataset.section) config.section = e.currentTarget.dataset.section;
-	        if(e.currentTarget.dataset.floor) config.floor = e.currentTarget.dataset.floor;
-	        // if(e.currentTarget.dataset.id) config.flat = e.currentTarget.dataset.id;
-	        if(e.currentTarget.dataset.flat_id) config.flat = e.currentTarget.dataset.flat_id;
-	    }
+	selectSliderType(e, type, Fn) {
+		let config
+		this.history.update(type)
+		console.log(type)
+		if (type === 'house') {
+			config = this.config.house.config[this.activeHouse]
+			// config = this.config.house.config[houseNum];
+			// config.activeHouse = houseNum;
+			$('.js-s3d-select__number-house').html(this.activeHouse)
+		} else {
+			config = this.config[type]
+			// config.activeHouse = houseNum;
+			// if( e.currentTarget.dataset.house || e.target.dataset.build) config.house = e.currentTarget.dataset.house || e.currentTarget.dataset.build;
+			if (e.currentTarget.dataset.section) config.section = e.currentTarget.dataset.section
+			if (e.currentTarget.dataset.floor) config.floor = e.currentTarget.dataset.floor
+			// if(e.currentTarget.dataset.id) config.flat = e.currentTarget.dataset.id;
+			if (e.currentTarget.dataset.flat_id) config.flat = e.currentTarget.dataset.flat_id
+		}
 
-	    config.idCopmlex = type;
-	    config.type = type;
-	    config.loader = this.loader;
-	    config.configProject = this.configProject;
-	    config.changeCurrentFloor = this.changeCurrentFloor;
-	    config._ActiveHouse = this._ActiveHouse;
-	    config.compass = this.compass;
+		config.idCopmlex = type
+		config.type = type
+		config.loader = this.loader
+		config.configProject = this.configProject
+		config.changeCurrentFloor = this.changeCurrentFloor
+		config._ActiveHouse = this._ActiveHouse
+		config.compass = this.compass
 
-	    if ($('#js-s3d__'+type).length > 0) {
-	        this[type].update(config);
-	        // this.activeSectionList.push(config.idCopmlex);
-	    } else {
-	        config.click = this.selectSlider.bind(this);
-	        config.scrollToBlock = this.scrollToBlock.bind(this);
-	        this.createWrap(config, type !== 'house'?'div': 'canvas');
-	        this[type] = new fn(config);
-	        this[type].init(config);
+		if ($(`#js-s3d__${type}`).length > 0) {
+			this[type].update(config)
+			// this.activeSectionList.push(config.idCopmlex);
+		} else {
+			config.click = this.selectSlider.bind(this)
+			config.scrollToBlock = this.scrollToBlock.bind(this)
+			this.createWrap(config, type !== 'house' ? 'div' : 'canvas')
+			this[type] = new Fn(config)
+			this[type].init(config)
 
-	        this.activeSectionList.push(config.idCopmlex);
-	        $('.js-s3d-select__'+ config.type).prop("disabled", false);
-	    }
+			this.activeSectionList.push(config.idCopmlex)
+			$(`.js-s3d-select__${config.type}`).prop('disabled', false)
+		}
 	}
 
-	scrollToBlock(time = 0){
-	   return (block) => {
-	       $('.js-s3d-select__'+ this.activeSection).removeClass('active');
-	       $('.js-s3d-select__'+ block).addClass('active');
-	       $('.js-s3d-filter').removeClass('active');
-	       if(block !== 'apart') {
-	           $('.fs-preloader').removeClass('s3d-preloader__full');
-	       }
-	       setTimeout(() => {
+	scrollToBlock(time = 0) {
+		return block => {
+			$(`.js-s3d-select__${this.activeSection}`).removeClass('active')
+			$(`.js-s3d-select__${block}`).addClass('active')
+			setTimeout(() => {
+				$('.js-s3d-filter').removeClass('plannings-filter')
+			}, 500)
+			this.filter.hidden()
+			if (block !== 'apart') {
+				$('.fs-preloader').removeClass('s3d-preloader__full')
+			}
+			setTimeout(() => {
+				switch (block) {
+				case 'apart':
+					this.complex.hiddenInfo()
+					this.complex.hiddenInfoFloor()
+					this.compass.save(this.compass.current)
+					this.compass.setApart()
+					break
+				case 'floor':
+					this.complex.hiddenInfo()
+					this.complex.hiddenInfoFloor()
+					this.compass.save(this.compass.current)
+					this.compass.setFloor()
+					break
+				case 'plannings':
+					this.filter.show()
+					$('.js-s3d-filter').addClass('plannings-filter')
+					this.complex.hiddenInfo()
+					this.complex.hiddenInfoFloor()
+					this.compass.save(this.compass.current)
+					break
+				default:
+					this.complex.showInfoFloor()
+					this.compass.set(this.compass.lastDeg)
+				}
 
-	           switch (block){
-				   case 'apart':
-					   this.complex.hiddenInfo();
-					   this.complex.hiddenInfoFloor();
-					   this.compass.save(this.compass.current);
-					   this.compass.setApart();
-					   break;
-				   case 'floor':
-					   this.complex.hiddenInfo();
-					   this.complex.hiddenInfoFloor();
-					   this.compass.save(this.compass.current);
-					   this.compass.setFloor();
-					   break;
-				   case 'plannings':
-					   $('.js-s3d-filter').addClass('active plannings-filter');
-					   this.complex.hiddenInfo();
-					   this.complex.hiddenInfoFloor();
-					   this.compass.save(this.compass.current);
-					   break;
-				   default:
-					   this.complex.showInfoFloor();
-					   this.compass.set(this.compass.lastDeg);
-			   }
-
-
-	          // this.filterButtonShowHide(block);
-	          this.sectionName.forEach(name => {
-	            if(name === block){
-	                this.activeSection = name;
-	                $('.js-s3d__wrapper__'+name).css("z-index","100");
-	            } else {
-	                $('.js-s3d__wrapper__'+name).css("z-index","");
-	            }
-	        })
-	       },time);
-	   }
+				// this.filterButtonShowHide(block);
+				this.sectionName.forEach(name => {
+					if (name === block) {
+						this.activeSection = name
+						$(`.js-s3d__wrapper__${name}`).css('z-index', '100')
+					} else {
+						$(`.js-s3d__wrapper__${name}`).css('z-index', '')
+					}
+				})
+			}, time)
+		}
 	}
 
 	changeCurrentFloor(floor) {
-	    this.complex.updateActiveFloor(floor);
+		this.complex.updateActiveFloor(floor)
 	}
 
-	animateBlock(id, clas){
-	    const layers = document.querySelectorAll("." + id+ "-layer");
-	    layers[0].classList.remove('translate-layer__down','translate-layer__up','active');
-	    layers[0].classList.add('translate-layer__'+ clas);
-	    setTimeout(()=> layers[0].classList.add('active') ,100);
-	    setTimeout(()=> this.animateFlag = true ,1000)
-
+	animateBlock(id, clas) {
+		const layers = document.querySelectorAll(`.${id}-layer`)
+		layers[0].classList.remove('translate-layer__down', 'translate-layer__up', 'active')
+		layers[0].classList.add(`translate-layer__${clas}`)
+		setTimeout(() => layers[0].classList.add('active'), 100)
+		setTimeout(() => this.animateFlag = true, 1000)
 	}
 
 	// helpsInfo(){

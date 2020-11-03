@@ -11,13 +11,13 @@
     width: 100%;
     height: 100%;
     background: transparent;
-    grid-template-rows: 1fr auto 3fr auto auto;
+    grid-template-rows: 1fr auto 3fr 1fr auto;
     grid-template-columns: 1fr 1fr 1fr ;
     pointer-events: none;
     grid-template-areas: '. . .'
                 'filter . .'
                 '. . .'
-                'compass . apart'
+                'compass . info-flat'
                 'call buttons title';
 
     &__elem {
@@ -35,9 +35,9 @@
     }
 
 
-    &-small {
-      height: 50%;
-    }
+    //&-small {
+    //  height: 50%;
+    //}
 
     //&__showFilter {
       //grid-area: filter;
@@ -146,6 +146,9 @@
       }
 
       &__text{
+        display: flex;
+        align-items: center;
+        height: 100%;
         padding: 10px 20px;
         text-align: left;
         font-family: Gilroy;

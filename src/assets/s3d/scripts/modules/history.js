@@ -25,7 +25,7 @@ class History{
                 null,
                 null
             );
-            return;
+            
         }
 
     }

@@ -1,5 +1,5 @@
 function CreateMarkup(tag, wrapper, config){
-    let wrap = document.createElement( tag );
+    const wrap = document.createElement( tag );
     wrap.classList =  config.class || '';
     if(config.id ) wrap.id =  config.id;
     if(config.style) wrap.style.cssText = config.style;

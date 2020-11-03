@@ -6,7 +6,7 @@ class Apartments{
         this.loader = data.loader;
 
         this._wrapperId = data.idCopmlex;
-        this._wrapper = $('.js-s3d__wrapper__' + this._wrapperId);
+        this._wrapper = $(`.js-s3d__wrapper__${  this._wrapperId}`);
         this.click = data.click;
         this.scrollToBlock = data.scrollToBlock;
     }
@@ -17,7 +17,7 @@ class Apartments{
 
       const self = this;
       $('.js-switch-btn').on('change', function() {
-                let has = $(this).is(':checked');
+                const has = $(this).is(':checked');
                 if(has && self.conf.plan3d) {
                     self.conf.$img.src = self.conf.plan3dSrc;
                     self.conf.$mfpLink.href = self.conf.plan3dSrc;
@@ -30,7 +30,7 @@ class Apartments{
     update(config){
         $('.s3d-filter__plan').removeClass('s3d-filter__plan-active');
       this.getPlane(config);
-    };
+    }
 
     updateImage(){
         const type = $('.js-flat-plan-mfp').data('type');
@@ -45,9 +45,9 @@ class Apartments{
     }
 
     checkImage() {
-        let conf = this.conf;
+        const {conf} = this;
         fetch(conf.plan3dSrc)
-            .then(res => res.ok ? res : Promise.reject(res))
+            .then(res => (res.ok ? res : Promise.reject(res)))
             .then(res => {
                 $('.s3d-filter__plan').addClass('s3d-filter__plan-active');
                 conf.plan3d = true;
@@ -55,7 +55,7 @@ class Apartments{
                 $('.s3d-filter__plan').removeClass('s3d-filter__plan-active');
             })
     }
-    /**Буква "Є" не воспринимается в адресной строке */
+    /** Буква "Є" не воспринимается в адресной строке */
     changeYe() {
         $('.s3d-floor__helper-img img').src = $('.s3d-floor__helper-img img').src.replace(/%D0%84/, 'Ye');
         $('.s3d-floor__helper-img img').src = $('.s3d-floor__helper-img img').src.replace(/Є/, 'Ye');
@@ -67,7 +67,7 @@ class Apartments{
 
 
     getPlane(config){
-        let attr = 'action=getFlatById&id='+config.flat;
+        const attr = `action=getFlatById&id=${config.flat}`;
         $.ajax({
             type: 'POST',
             // url: './static/apPars.php',
@@ -78,7 +78,7 @@ class Apartments{
     }
 
     setPlaneInPage(response){
-      $('#js-s3d__'+ this.idCopmlex).html(JSON.parse(response));
+      $(`#js-s3d__${ this.idCopmlex}`).html(JSON.parse(response));
       this.loader.hide(this.type);
       $('.flat-group2 ').on('click','polygon',this.openPopup);
       $('#js-s3d__wrapper__apart .form-js').on('click',()=> $('.common-form-popup-js').addClass('active'));
@@ -88,8 +88,8 @@ class Apartments{
       });
       $('.js-s3d-popup__mini-plan svg').on('click', 'polygon', (e)=>{
         this.activeSvg = $(e.target).closest("svg");
-        $(this.activeSvg).css({'fill':''});
-        $('.s3d-floor__helper').css({'opacity':0,'top':'-10000px'});
+        $(this.activeSvg).css({fill:''});
+        $('.s3d-floor__helper').css({opacity:0,top:'-10000px'});
         this.click(e, 'floor');
         $('.js-s3d-popup__mini-plan').removeClass('active');
       });

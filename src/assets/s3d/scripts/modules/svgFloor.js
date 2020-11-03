@@ -15,8 +15,8 @@ function updateSizeTip(divided, polygon={}, tips={}, svg={}){
     tip.attr({
       x: center.x - width/2,
       y: center.y - height/2,
-      width: width,
-      height: height
+      width,
+      height
     });
   });
 }

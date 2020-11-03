@@ -1,7 +1,7 @@
-var smartgrid = require('smart-grid');
+const smartgrid = require('smart-grid');
 
 /* It's principal settings in smart grid project */
-var settings = {
+const settings = {
     outputStyle: 'scss', /* less || scss || sass || styl */
     columns: 12, /* number of grid columns */
     offset: '30px', /* gutter width px || % || rem */

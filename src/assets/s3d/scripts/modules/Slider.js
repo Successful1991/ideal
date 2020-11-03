@@ -1,7 +1,7 @@
 // import $ from 'jquery';
+import $ from "jquery";
 import Svg from './Svg';
 import isDevice from './checkDevice';
-import $ from "jquery";
 // import Svg from './Svg';
 
 class Slider {
@@ -15,8 +15,8 @@ class Slider {
     this._imageUrl = data.imageUrl;
     this._activeElem = data.activeSlide;
     this._wrapperId = data.idCopmlex;
-    this._wrapper = $('.js-s3d__wrapper__' + this._wrapperId);
-    this._ctx = document.getElementById('js-s3d__'+this._wrapperId).getContext('2d'); // Контекст
+    this._wrapper = $(`.js-s3d__wrapper__${  this._wrapperId}`);
+    this._ctx = document.getElementById(`js-s3d__${this._wrapperId}`).getContext('2d'); // Контекст
     this._wrapperEvent = '.js-s3d__svgWrap';
     this._height = 1080;
     this._width = 1920;
@@ -81,7 +81,7 @@ class Slider {
         }
       } else {
           console.log('else', this._wrapper);
-          this._wrapper.on( this._eventsName.end +' '+this._eventsName.leave , e => {
+          this._wrapper.on( `${this._eventsName.end } ${this._eventsName.leave}` , e => {
               if(e.target.classList.contains('s3d__button')) return;
               this.activeAnimate(false);
               this.amount = 0;
@@ -103,7 +103,7 @@ class Slider {
               console.log('rotate');
               if(this.flagMouse && this.rotate){
                   this.activeSvg = $(e.target).closest("svg");
-                  $(this.activeSvg).css({'opacity':'0'});
+                  $(this.activeSvg).css({opacity:'0'});
                   // $(this.activeSvg).css({'fill':'transparent'});
 
                   this.checkMouseMovement.call(this, e);
@@ -125,7 +125,7 @@ class Slider {
                 conf = {};
                 conf.build = $(e.currentTarget).data('build');
             } else {
-                conf = {build:$(e.currentTarget).data('build'),"counter":12,"type":"1","rooms":"1"};
+                conf = {build:$(e.currentTarget).data('build'),counter:12,type:"1",rooms:"1"};
             }
             window.sessionStorage.setItem('chooseFlatDefaults', JSON.stringify(conf));
             window.location.href = $(e.currentTarget).attr('href');
@@ -133,15 +133,15 @@ class Slider {
             // this._ActiveHouse.set(+e.target.dataset.build);
             // this.updateInfo(e);
             return;
-        } else {
+        } 
             this.updateInfo(e);
-        }
+        
         // this.activeFloor = +e.target.dataset.floor;
         // $('.js-s3d__svgWrap .active-floor').removeClass('active-floor');
         // $(e.target).addClass('active-floor');
         // this.activeSvg = $(e.target).closest("svg");
 
-        $(this.activeSvg).css({'opacity':''});
+        $(this.activeSvg).css({opacity:''});
         // this.compass.save(this.compass.current);
         // this.click(e, this.type);
     });
@@ -177,13 +177,13 @@ class Slider {
       this.updateImage();
   }
   updateImage(){
-    let self = this;
+    const self = this;
     this._ctx.canvas.width = this._width;
     this._ctx.canvas.height = this._height;
     let index = 1;
     for(let i = 0; i <= self.numberSlide.max; i++){
-      let img = new Image();
-      img.src = self._imageUrl + i +'.jpg';
+      const img = new Image();
+      img.src = `${self._imageUrl + i }.jpg`;
       img.onload = function() {
         index++;
         self.images[i] = this;
@@ -206,12 +206,12 @@ class Slider {
   }
 
   resizeCanvas() {
-      let factorW = this._width / this._height;
-      let factorH = this._height / this._width;
-      let canvasWrapp = $('.js-s3d__wrapper__complex');
-      let canvas = $('#js-s3d__complex');
-      let diffW = this._width / canvasWrapp.width();
-      let diffH = this._height / canvasWrapp.height();
+      const factorW = this._width / this._height;
+      const factorH = this._height / this._width;
+      const canvasWrapp = $('.js-s3d__wrapper__complex');
+      const canvas = $('#js-s3d__complex');
+      const diffW = this._width / canvasWrapp.width();
+      const diffH = this._height / canvasWrapp.height();
 
       if(diffW < diffH ) {
         canvas.width( canvasWrapp.width() );
@@ -224,7 +224,7 @@ class Slider {
 
   setActiveSvg(house){
     $('.js-s3d__container-active').removeClass('js-s3d__container-active');
-    $('.js-s3d__svg-container'+ house).addClass('js-s3d__container-active');
+    $(`.js-s3d__svg-container${ house}`).addClass('js-s3d__container-active');
   }
 
   changeNext() {
@@ -284,10 +284,10 @@ class Slider {
   }
 
   updateSvgActive(wrap,current){
-      $(this.activeSvg).css({'opacity':''});
-      let clas = this.type === 'house'?'.js-s3d__svg-container'+ this._ActiveHouse.get() + ' ': '.js-s3d__svg-container__complex ';
-      $( clas + '.js-s3d__svg__active').removeClass('js-s3d__svg__active');
-      $( clas + '.'+ wrap + '__' + this[current]).addClass('js-s3d__svg__active');
+      $(this.activeSvg).css({opacity:''});
+      const clas = this.type === 'house'?`.js-s3d__svg-container${ this._ActiveHouse.get()  } `: '.js-s3d__svg-container__complex ';
+      $( `${clas  }.js-s3d__svg__active`).removeClass('js-s3d__svg__active');
+      $( `${clas  }.${ wrap  }__${  this[current]}`).addClass('js-s3d__svg__active');
       this.currentSlide = this[current];
   }
 
@@ -297,7 +297,7 @@ class Slider {
          if( this._activeElem === this.nextSlide) {
              this.cancelAnimateSlide();
              this.updateSvgActive(this.type,'nextSlide');
-             $(this.activeSvg).css({'opacity':''});
+             $(this.activeSvg).css({opacity:''});
          }
      },30);
   }
@@ -329,9 +329,9 @@ class Slider {
   }
 
   createInfo(){
-    let infoBox = createMarkup('div','.js-s3d__slideModule', {class:'js-s3d__infoBox s3d__infoBox'} );
+    const infoBox = createMarkup('div','.js-s3d__slideModule', {class:'js-s3d__infoBox s3d__infoBox'} );
 
-    let infoBoxContent = `<ul>
+    const infoBoxContent = `<ul>
         <li class="js-s3d__infoBox__house s3d__infoBox__house">house: <span>5</span></li>
         <!--<li class="js-s3d__infoBox__section">section: <span>7</span>-->
         <!--<li class="js-s3d__infoBox__apartments">apartments: <span>10</span></li>-->
@@ -346,9 +346,9 @@ class Slider {
     // положение курсора внутри элемента
       const Xinner = e.pageX - pos.left;
       const Yinner = e.pageY - pos.top;
-      this.infoBox.css({'opacity' : '1'});
-      this.infoBox.css({'top' : Yinner - 40});
-      this.infoBox.css({'left' : Xinner});
+      this.infoBox.css({opacity : '1'});
+      this.infoBox.css({top : Yinner - 40});
+      this.infoBox.css({left : Xinner});
       if(this.openHouses.includes(+e.target.dataset.build)){
           this.infoBox.find('.js-s3d__infoBox__house')[0].innerHTML = `house:  ${e.target.dataset.build || ''}` ;
           this.infoBox.find('.js-s3d__infoBox__floor')[0].innerHTML =`floor:  ${e.target.dataset.floor || ''}` ;
@@ -364,16 +364,16 @@ class Slider {
 
   updateInfoFloorList(e){
       const data =  (e.target || e).dataset;
-      let list = $('.js-s3d__svgWrap .floor-svg-polygon[data-build='+ data.build +'][ data-floor='+ data.floor +']');
+      const list = $(`.js-s3d__svgWrap .floor-svg-polygon[data-build=${ data.build }][ data-floor=${ data.floor }]`);
 
       list.each((i,el) =>{
           this.updateInfoFloor(el, data);
       });
 
       if(this.openHouses.includes(+data.build)){
-          $('[data-build='+ data.build +'] .floor-text').html(data.floor);
+          $(`[data-build=${ data.build }] .floor-text`).html(data.floor);
       } else {
-          $('[data-build='+ data.build +'] .floor-text').html('будинок не у продажу');
+          $(`[data-build=${ data.build }] .floor-text`).html('будинок не у продажу');
       }
    }
 
@@ -384,7 +384,7 @@ class Slider {
       const bbox = e.getBBox();
       const height = (widthSvgPhoto / 13) * 0.2;
       const y =  (bbox.y + (bbox.height / 2));
-      $(parent).find('.floor-info-svg[data-build='+ data.build +']').addClass("active-floor-info").attr('y', y - (height/2));
+      $(parent).find(`.floor-info-svg[data-build=${ data.build }]`).addClass("active-floor-info").attr('y', y - (height/2));
 
       // if(this.openHouses.includes(+data.build)){
       //     $('[data-build='+ data.build +'] .floor-text').html(data.floor);
@@ -395,16 +395,16 @@ class Slider {
 
   updateActiveFloor(floor){
       this.activeFloor = floor;
-      let nextFloorSvg = $('.js-s3d__svg__active [data-build='+this._ActiveHouse.get()+'][data-floor='+this.activeFloor+']')[0];
+      const nextFloorSvg = $(`.js-s3d__svg__active [data-build=${this._ActiveHouse.get()}][data-floor=${this.activeFloor}]`)[0];
       this.updateInfoFloorList(nextFloorSvg);
       $('.js-s3d__svgWrap .active-floor').removeClass('active-floor');
-      $('.js-s3d__svgWrap [data-build='+this._ActiveHouse.get()+'][data-floor='+this.activeFloor+']').addClass('active-floor');
+      $(`.js-s3d__svgWrap [data-build=${this._ActiveHouse.get()}][data-floor=${this.activeFloor}]`).addClass('active-floor');
   }
 
   hiddenInfo(){
-      this.infoBox.css({'opacity' : '0'});
-      this.infoBox.css({'top' : '-10000px'});
-      this.infoBox.css({'left' : '-10000px'});
+      this.infoBox.css({opacity : '0'});
+      this.infoBox.css({top : '-10000px'});
+      this.infoBox.css({left : '-10000px'});
   }
   hiddenInfoFloor(){
       // $('.active-floor-info').removeClass("active-floor-info");
@@ -420,7 +420,7 @@ class Slider {
         this._pret = e.pageX || e.targetTouches[0].pageX;
         this.flagMouse = true;
         this.activeSvg = $(e.target).closest("svg");
-        $(this.activeSvg).css({'opacity':'0'});
+        $(this.activeSvg).css({opacity:'0'});
     }
 
   resize() {
@@ -432,16 +432,16 @@ class Slider {
   }
 
   createSvg(){
-    let svg = new Svg(this.svgConfig);
+    const svg = new Svg(this.svgConfig);
     svg.init(this.setActiveSvg.bind(this, this._ActiveHouse.get()));
   }
 
   createArrow() {
-      let arrowLeft = createMarkup('button', this._wrapper, {class: 's3d__button s3d__button-left js-s3d__button-left unselectable'});
+      const arrowLeft = createMarkup('button', this._wrapper, {class: 's3d__button s3d__button-left js-s3d__button-left unselectable'});
       $(arrowLeft).append('<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.49097 15.4348V0.991333H0.565173V15.4348H2.49097Z"/><path d="M15.0085 15.4348V13.509H0.565091V15.4348H15.0085Z"/><path d="M15.6169 1.74492L14.2551 0.383179L0.637707 14.0006L1.99945 15.3623L15.6169 1.74492Z"/></svg>');
       $('.js-s3d__button-left').on('click', this.left);
 
-      let arrowRight = createMarkup('button', this._wrapper, {class: 's3d__button s3d__button-right js-s3d__button-right unselectable'});
+      const arrowRight = createMarkup('button', this._wrapper, {class: 's3d__button s3d__button-right js-s3d__button-right unselectable'});
       $(arrowRight).append('<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.49097 15.4348V0.991333H0.565173V15.4348H2.49097Z"/><path d="M15.0085 15.4348V13.509H0.565091V15.4348H15.0085Z"/><path d="M15.6169 1.74492L14.2551 0.383179L0.637707 14.0006L1.99945 15.3623L15.6169 1.74492Z"/></svg>');
       $('.js-s3d__button-right').on('click', this.right);
   }
@@ -483,15 +483,15 @@ class Slider {
 
   changeSlide(amount, fn){
       let index = 0;
-      $('.js-s3d__svg-container').css({'opacity':0});
-      let timeout = setInterval(() => {
+      $('.js-s3d__svg-container').css({opacity:0});
+      const timeout = setInterval(() => {
           fn();
           if(index >= amount) {
               clearInterval(timeout);
               this.updateSvgActive(this.type,'_activeElem');
-              $(this.activeSvg).css({'opacity':''});
+              $(this.activeSvg).css({opacity:''});
               // $(this.activeSvg).css({'fill':''});
-              $('.js-s3d__svg-container').css({'opacity':1});
+              $('.js-s3d__svg-container').css({opacity:1});
               this.rotate = true;
               return;
           }
@@ -506,7 +506,7 @@ class Slider {
       } else {
           window.cancelAnimationFrame(this.animates);
       }
-  };
+  }
   animate() {
         if( this.amount >= 1 ){
             this.changeNext();

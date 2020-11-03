@@ -10,7 +10,7 @@ class Helper {
     init(){
         // if(window.localStorage.getItem('info')) return;
         this.createHelper();
-        $('.js-s3d__helper__figure').addClass('s3d__helper-'+this.conf[0][1]);
+        $('.js-s3d__helper__figure').addClass(`s3d__helper-${this.conf[0][1]}`);
         $('.js-s3d__helper__button').on('click', () => {
             $('.js-s3d__helper__content').removeClass('active');
             this.currentWindow++;
@@ -46,16 +46,16 @@ class Helper {
     }
 
     update(conf) {
-        let target = $(conf[0]);
-        let height = target.outerHeight();
-        let width = target.outerWidth();
-        let position = target.offset();
-        var centerX = position.left + width / 2;
-        var centerY = position.top + height / 2;
-        let scale = conf[3];
-        let list = $('.js-s3d__helper__figure')[0].classList;
+        const target = $(conf[0]);
+        const height = target.outerHeight();
+        const width = target.outerWidth();
+        const position = target.offset();
+        const centerX = position.left + width / 2;
+        const centerY = position.top + height / 2;
+        const scale = conf[3];
+        const list = $('.js-s3d__helper__figure')[0].classList;
 
-        for(let cl of list){
+        for(const cl of list){
             if(cl !== 'js-s3d__helper__figure') {
                 $('.js-s3d__helper__figure').removeClass(cl);
             }
@@ -67,9 +67,9 @@ class Helper {
             size = (width < height) ? width * scale : height * scale;
         }
 
-        $('.js-s3d__helper__figure').addClass('s3d__helper-'+ conf[1]);
+        $('.js-s3d__helper__figure').addClass(`s3d__helper-${ conf[1]}`);
         $('.js-s3d__helper__content').addClass('active');
-        $('.js-s3d__helper__figure').css({'height': size+'px', 'width': size +'px', 'left':''+ centerX +'px', 'top': ''+ centerY +'px'});
+        $('.js-s3d__helper__figure').css({height: `${size}px`, width: `${size }px`, left:`${ centerX }px`, top: `${ centerY }px`});
         $('.js-s3d__helper__text').html(conf[2]);
 
         const x = this.checkPosContent(centerX, size , $('.js-s3d__helper__content').width(), $('.js-s3d__helper').width() / 2, scale,  20 );
@@ -77,7 +77,7 @@ class Helper {
         // else position in center screen translate on top
         if( x === centerX && y === centerY ) y = centerY - (size / 2) - 20 - ($('.js-s3d__helper__content').height() / 2);
 
-        $('.js-s3d__helper__content').css({ 'left':''+ x +'px', 'top': ''+ y +'px'});
+        $('.js-s3d__helper__content').css({ left:`${ x }px`, top: `${ y }px`});
 
         // $('.js-s3d__helper__figure')[0].classList.map(cl => {console.log(cl)});
     }
@@ -88,9 +88,9 @@ class Helper {
          if(pos >= centerScreen ){
              return pos - (size / 2) - padding - (sizeWrap / 2);
          }
-         else{
+         
              return pos + (size / 2) + padding + (sizeWrap / 2);
-         }
+         
 
 
     }

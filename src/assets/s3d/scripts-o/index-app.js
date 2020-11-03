@@ -1,8 +1,8 @@
-import $ from 'jquery';
-import App from './modules/App';
-import isDevice from './modules/checkDevice';
-import CreateMarkup from './modules/markup';
-import loader from './modules/loaderTime';
+import $ from 'jquery'
+import App from './modules/App'
+import isDevice from './modules/checkDevice'
+import CreateMarkup from './modules/markup'
+import loader from './modules/loaderTime'
 
 // var arrTimes = [];
 // var i = 0; // start
@@ -47,50 +47,47 @@ import loader from './modules/loaderTime';
 //     }
 // }
 function init() {
-    window.createMarkup = CreateMarkup;
-    const config = {
-        complex: {
-            url: '',
-            imageUrl: '/wp-content/themes/idealist/assets/s3d/images/idealist/complex/',
-            id: 'js-s3d__wrapper',
-            numberSlide: {
-                min: 0,
-                max: 179
-            },
-            controllPoint : [11,52,109,144],
-            activeSlide: 11,
-            mouseSpeed: 1,
-            // mouseSpeed: 300,
-        },
-        floor: {
-            id: 'js-s3d__wrapper'
-        },
-        apart: {
-            id: 'js-s3d__wrapper'
-        },
+	window.createMarkup = CreateMarkup
+	const config = {
+		complex: {
+			url: '',
+			imageUrl: '/wp-content/themes/idealist/assets/s3d/images/idealist/complex/',
+			id: 'js-s3d__wrapper',
+			numberSlide: {
+				min: 0,
+				max: 179,
+			},
+			controllPoint: [11, 52, 109, 144],
+			activeSlide: 11,
+			mouseSpeed: 1,
+			// mouseSpeed: 300,
+		},
+		floor: {
+			id: 'js-s3d__wrapper',
+		},
+		apart: {
+			id: 'js-s3d__wrapper',
+		},
 
-    };
+	}
 
-    let app;
-    new Promise((resolve) =>{
-        loader(resolve);
-    }).then(value => {
-        if(isDevice('mobile') || !value ) {
-            $('.js-s3d__slideModule').addClass('s3d-mobile');
-            config.complex.imageUrl += 'mobile/';
-        }
+	let app
+	new Promise(resolve => {
+		loader(resolve)
+	}).then(value => {
+		if (isDevice('mobile') || !value) {
+			$('.js-s3d__slideModule').addClass('s3d-mobile')
+			config.complex.imageUrl += 'mobile/'
+		}
 
-        app = new App(config);
-        app.init();
+		app = new App(config)
+		app.init()
 
-        $(window).resize(()=>{
-            app.resize();
-        });
-    });
-
-
-
+		$(window).resize(() => {
+			app.resize()
+		})
+	})
 }
-document.addEventListener('DOMContentLoaded',function (global) {
-    init();
-});
+document.addEventListener('DOMContentLoaded', global => {
+	init()
+})
