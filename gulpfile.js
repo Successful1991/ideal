@@ -38,7 +38,7 @@ const paths = {
 	},
 	styles: {
 		main: './src/assets/s3d/styles/main.scss',
-		src: ['./src/assets/s3d/styles/**/*.scss','./src/assets/s3d/styles/**/*.css'],
+		src: ['./src/assets/s3d/styles/**/*.scss', './src/assets/s3d/styles/**/*.css'],
 		dest: './wp-content/themes/idealist/assets/s3d/styles',
 	},
 	scripts: {
@@ -130,18 +130,6 @@ function styles() {
 		.pipe(sourcemaps.write())
 		.pipe(rename('3d.min.css'))
 		.pipe(gulp.dest(paths.styles.dest))
-}
-
-function cssLinter() {
-	return gulp.src(['src/assets/styles/**/*.scss', '!src/assets/styles/main.scss'])
-		.pipe(gulpStylelint({
-			reporters: [
-				{
-					formatter: 'string',
-					console: true,
-				},
-			],
-		}))
 }
 
 // fonts

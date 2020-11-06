@@ -21,9 +21,9 @@ function init() {
 		// floor: {
 		// 	id: 'js-s3d__wrapper',
 		// },
-		// apart: {
-		// 	id: 'js-s3d__wrapper',
-		// },
+		apart: {
+			id: 'js-s3d__wrapper',
+		},
 	}
 
 	let app

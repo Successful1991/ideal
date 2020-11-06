@@ -24,6 +24,8 @@ class Apartments {
 				self.conf.$mfpLink.href = self.conf.planStandartSrc
 			}
 		})
+
+		$('.js-s3d-flat__back').on('click', () => this.click('complex'))
 	}
 
 	update(config) {
@@ -65,13 +67,14 @@ class Apartments {
 	}
 
 	getPlane(config) {
-		$.ajax({
-			type: 'POST',
-			// url: './static/apPars.php',
-			url: '/wp-admin/admin-ajax.php',
-			data: `action=getFlatById&id=${config.flat}`,
-			success: response => (this.setPlaneInPage(response)),
-		})
+		console.log('нужно раскоментировать')
+		// $.ajax({
+		// 	type: 'POST',
+		// 	url: './static/apPars.php',
+		// 	// url: '/wp-admin/admin-ajax.php',
+		// 	data: `action=getFlatById&id=${config.flat}`,
+		// 	success: response => (this.setPlaneInPage(response)),
+		// })
 	}
 
 	setPlaneInPage(response) {

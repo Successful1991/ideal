@@ -87,7 +87,7 @@ function createFilter(wrap) {
 	// $(res).find('.s3d-filter__title')[0].insertAdjacentElement('afterend', living)
 
 	// $(res).find('.s3d-filter__amount-flat')[0].insertAdjacentElement('afterend', reset)
-
+	console.log(res)
 	return {
 		area, floor, room, close, reset,
 	}

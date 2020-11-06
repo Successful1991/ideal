@@ -278,7 +278,6 @@
       background: #ffffff;
     }
     &__link{
-      line-height: 24px;
       height: 100%;
       flex: 1 1 auto;
       display: flex;
@@ -286,13 +285,19 @@
       align-items: center;
       justify-content: center;
       background: #EB8271;
+      border: none;
       font-family: Gilroy;
       font-weight: 500;
       font-size: 14px;
+      line-height: 24px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       text-decoration: none;
       color: #FFFFFF;
+      cursor: pointer;
+      &:focus{
+        outline: 1px solid #aaaaaa;
+      }
     }
     &__add-favourites{
       height: 100%;

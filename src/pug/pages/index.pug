@@ -91,10 +91,9 @@ block content
                                 .s3d-pl__favourites-icon.js-s3d__favourites
                                     svg
                                         use(xlink:href="#icon-favourites")
-                                    span.s3d-pl__favourites-amount.js-s3d-favourites-amount 0
+                                    span.s3d-pl__favourites-amount.js-s3d__favourites-amount 0
 
-
-                            .s3d-pl__list
+                            .s3d-pl__list.js-s3d__pl__list
                                 .s3d-pl__plane(data-id=1)
                                     .s3d-pl__type тип 2А
                                     img(src="assets/s3d/images/KV.png").s3d-pl__image
@@ -137,71 +136,6 @@ block content
                                         button(type="button").s3d-pl__add-favourites.js-s3d-add__favourites
                                             svg
                                                 use(xlink:href="#icon-favourites")
-                                .s3d-pl__plane(data-id=3)
-                                    .s3d-pl__type тип 2А
-                                    img(src="assets/s3d/images/KV.png").s3d-pl__image
-                                    table.s3d-pl__table
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 134
-                                            td.s3d-pl__name № квартиры
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 4
-                                            td.s3d-pl__name Этаж
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 2
-                                            td.s3d-pl__name Комнаты
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 34
-                                            td.s3d-pl__name Площадь м2
-                                    .s3d-pl__buttons
-                                        a(href="#").s3d-pl__link Подробнее
-                                        button(type="button").s3d-pl__add-favourites.js-s3d-add__favourites
-                                            svg
-                                                use(xlink:href="#icon-favourites")
-                                .s3d-pl__plane(data-id=4)
-                                    .s3d-pl__type тип 2А
-                                    img(src="assets/s3d/images/KV.png").s3d-pl__image
-                                    table.s3d-pl__table
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 134
-                                            td.s3d-pl__name № квартиры
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 4
-                                            td.s3d-pl__name Этаж
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 2
-                                            td.s3d-pl__name Комнаты
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 34
-                                            td.s3d-pl__name Площадь м2
-                                    .s3d-pl__buttons
-                                        a(href="#").s3d-pl__link Подробнее
-                                        button(type="button").s3d-pl__add-favourites.js-s3d-add__favourites
-                                            svg
-                                                use(xlink:href="#icon-favourites")
-                                .s3d-pl__plane(data-id=5)
-                                    .s3d-pl__type тип 2А
-                                    img(src="assets/s3d/images/KV.png").s3d-pl__image
-                                    table.s3d-pl__table
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 134
-                                            td.s3d-pl__name № квартиры
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 4
-                                            td.s3d-pl__name Этаж
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 2
-                                            td.s3d-pl__name Комнаты
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 34
-                                            td.s3d-pl__name Площадь м2
-                                    .s3d-pl__buttons
-                                        a(href="#").s3d-pl__link Подробнее
-                                        button(type="button").s3d-pl__add-favourites.js-s3d-add__favourites
-                                            svg
-                                                use(xlink:href="#icon-favourites")
-
-
                         .s3d-pl__bottom
                             a(type="tel").s3d-tell.s3d-genplan
                                 .s3d-tell__icon-wrap
@@ -219,7 +153,7 @@ block content
                     .s3d-flat
                         .s3d-flat__left
                             .s3d-flat__mini-info
-                                button(type="button").s3d-flat__back
+                                button(type="button").s3d-flat__back.js-s3d-flat__back
                                     svg(viewBox="0 0 9 12" fill="none" xmlns="http://www.w3.org/2000/svg")
                                         path( fill-rule="evenodd" clip-rule="evenodd" d="M9 12L-1.21594e-06 6L9 0L9 5.09367L9 6.90633L9 12Z" fill="white")
 
@@ -360,7 +294,7 @@ block content
                             .s3d-fv__favourites-icon.js-s3d__favourites
                                 svg
                                     use(xlink:href="#icon-favourites")
-                                span.s3d-fv__favourites-amount.js-s3d-favourites-amount 0
+                                span.s3d-fv__favourites-amount.js-s3d__favourites-amount 0
                     .s3d-fv__table
                         table
                             tr
@@ -371,61 +305,17 @@ block content
                                 th Этаж
                                 th Площадь м2
                                 th Удалить
-                            tr(data-id=1).s3d-fv__element.js-s3d-fv__element
-                                td
-                                    img(src="assets/s3d/images/KV.png").s3d-fv__image
-                                td 23
-                                td 2А
-                                td 3
-                                td 5
-                                td 34
-                                td
-                                    button(type="button").s3d-fv__table__remove.js-s3d-fv__remove
-                                        +svg('reset').s3d-fv__table__icon
-                            tr(data-id=2).s3d-fv__element.js-s3d-fv__element
-                                td
-                                    img(src="assets/s3d/images/KV.png").s3d-fv__image
-                                td 23
-                                td 2А
-                                td 3
-                                td 5
-                                td 34
-                                td
-                                    button(type="button").s3d-fv__table__remove.js-s3d-fv__remove
-                                        +svg('reset').s3d-fv__table__icon
-                            tr(data-id=3).s3d-fv__element.js-s3d-fv__element
-                                td
-                                    img(src="assets/s3d/images/KV.png").s3d-fv__image
-                                td 23
-                                td 2А
-                                td 3
-                                td 5
-                                td 34
-                                td
-                                    button(type="button").s3d-fv__table__remove.js-s3d-fv__remove
-                                        +svg('reset').s3d-fv__table__icon
-                            tr(data-id=4).s3d-fv__element.js-s3d-fv__element
-                                td
-                                    img(src="assets/s3d/images/KV.png").s3d-fv__image
-                                td 23
-                                td 2А
-                                td 3
-                                td 5
-                                td 34
-                                td
-                                    button(type="button").s3d-fv__table__remove.js-s3d-fv__remove
-                                        +svg('reset').s3d-fv__table__icon
-                            tr(data-id=5).s3d-fv__element.js-s3d-fv__element
-                                td
-                                    img(src="assets/s3d/images/KV.png").s3d-fv__image
-                                td 23
-                                td 2А
-                                td 3
-                                td 5
-                                td 34
-                                td
-                                    button(type="button").s3d-fv__table__remove.js-s3d-fv__remove
-                                        +svg('reset').s3d-fv__table__icon
+                            //tr(data-id=1).s3d-fv__element.js-s3d-fv__element
+                            //    td
+                            //        img(src="assets/s3d/images/KV.png").s3d-fv__image
+                            //    td 23
+                            //    td 2А
+                            //    td 3
+                            //    td 5
+                            //    td 34
+                            //    td
+                            //        button(type="button").s3d-fv__table__remove.js-s3d-fv__remove
+                            //            +svg('reset').s3d-fv__table__icon
                     .s3d-fv__bottom
                         a(type="tel").s3d-tell.s3d-genplan
                             .s3d-tell__icon-wrap
@@ -441,6 +331,81 @@ block content
                     .translate-layer--4
                     .translate-layer--5
 
+
+
+
+                .s3d-filter-wrap.js-s3d-filter
+                    .s3d-filter
+                        .s3d-filter__title Подбор по параметрам
+                        .s3d-filter__floor.js-s3d-filter__floor
+                            .s3d-filter-select__title Поверх
+                            .s3d-filter-select__list.js-filter-range
+                                label з
+                                    input.js-s3d-filter__floor__min--input(type="number")
+                                input.js-s3d-filter__floor--input(data-type="floor" data-min="1" data-max="15" data-from="1" data-to="15")
+                                label по
+                                    input.js-s3d-filter__floor__max--input(type="number")
+                        .s3d-filter__area.js-s3d-filter__area
+                            .s3d-filter-select__title Площа м
+                                sup 2
+                            .s3d-filter-select__list.js-filter-range
+                                label з
+                                    input.js-s3d-filter__area__min--input( type="number")
+                                input.js-s3d-filter__area--input(data-type="area" data-min="5" data-max="555" data-from="5" data-to="555")
+                                label по
+                                    input.js-s3d-filter__area__max--input(type="number")
+                        .s3d-filter__rooms.js-s3d-filter__rooms.js-s3d-filter__select
+                            .s3d-filter-select__title Кімнат
+                            .s3d-filter-select__list
+                                .s3d-filter-select__input--wrap
+                                    input.js-s3d-filter__rooms--input( type="checkbox" data-type="rooms" data-rooms="1" id="rooms-1")
+                                    label.s3d-filter__rooms--label( for="rooms-1") 1
+                                .s3d-filter-select__input--wrap
+                                    input.js-s3d-filter__rooms--input( type="checkbox" data-type="rooms" data-rooms="2" id="rooms-2")
+                                    label.s3d-filter__rooms--label( for="rooms-2") 2
+                                .s3d-filter-select__input--wrap
+                                    input.js-s3d-filter__rooms--input( type="checkbox" data-type="rooms" data-rooms="3" id="rooms-3")
+                                    label.s3d-filter__rooms--label(for="rooms-3") 3
+                                .s3d-filter-select__input--wrap
+                                    input.js-s3d-filter__rooms--input( type="checkbox" data-type="rooms" data-rooms="4" id="rooms-4")
+                                    label.s3d-filter__rooms--label( for="rooms-4") 4
+                        .s3d-filter__close.js-s3d-filter__close
+                            span
+                            span
+                        button.js-s3d-filter__button--reset.s3d-filter__button--reset( type="button")
+                            .s3d-filter__button--reset-icon
+                                svg( role="presentation")
+                                    use(xlink:href="#icon-reset")
+                            | Очистить фильтр
+                        .s3d__favourites.js-s3d__favourites
+                            svg( role="presentation")
+                                use( xlink:href="#icon-favourites")
+                            span.s3d__favourites-amount.js-s3d__favourites-amount 0
+                    .s3d-filter__table.js-s3d-filter__table
+                        table
+                            thead
+                                tr
+                                    th Тип
+                                    th Комнат
+                                    th Этаж
+                                    th Площадь м2
+                                    th В избранное
+                            tbody
+                                tr
+                                    td 2A
+                                    td 1
+                                    td 4
+                                    td 23 m2
+                                    td
+                                        label
+                                            input( type="checkbox")
+                                            svg( role="presentation")
+                                                use( xlink:href="#icon-favourites")
+                    .s3d-filter__amount-flat
+                        | Знайдено
+                        span.s3d-filter__amount-flat__num.js-s3d__amount-flat__num 25
+                        | из
+                        span.s3d-filter__amount-flat__num.js-s3d__amount-flat__num-all 456
 
                 //.js-s3d-point__help.s3d-point__help
                 //    .s3d-point__help-left

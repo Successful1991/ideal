@@ -26,6 +26,7 @@ class App {
 			},
 		}
 		this.configProject = {}
+		this.flatListObj = {}
 		// this.changeCurrentFloor = this.changeCurrentFloor.bind(this);
 		this.scrollToBlock = this.scrollToBlock.bind(this)
 		// this.animateBlock = this.animateBlock.bind(this);
@@ -69,7 +70,7 @@ class App {
 		this.history = new History({ scrollToBlock: this.scrollToBlock, animateBlock: this.animateBlock })
 		this.history.init()
 
-		this.getFlatList('static/package.json', this.filterInit)
+		this.getFlatList('static/flats.json', this.filterInit)
 		// this.getFlatList('static/apPars.php', this.filterInit)
 		// this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
 
@@ -78,6 +79,7 @@ class App {
 		config.idCopmlex = 'complex'
 		config.type = 'complex'
 		config.click = this.selectSlider.bind(this)
+		config.getFlatObj = this.getFlatObj.bind(this)
 		config.loader = this.loader
 		config.ActiveHouse = this.ActiveHouse
 		config.compass = this.compass
@@ -85,15 +87,6 @@ class App {
 		this.complex = new Slider(config)
 		this.complex.init()
 		$('.js-s3d__wrapper__complex').css('z-index', '100')
-
-		$('.js-s3d__slideModule').on('click', '.js-s3d__favourites', function () {
-			console.log(this)
-			$('.js-s3d__fv').addClass('s3d__active')
-		})
-
-		$('.js-s3d__fv').on('click', '.js-s3d__fv__close', () => {
-			$('.js-s3d__fv').removeClass('s3d__active')
-		})
 
 		// $('.s3d-select__head').on('click', e => {
 		// 	const self = this
@@ -216,6 +209,12 @@ class App {
 		})
 	}
 
+	getFlatObj(id) {
+		console.log(id)
+		console.log(this.flatListObj)
+		return this.flatListObj[id]
+	}
+
 	getMinMaxParam(data) {
 		const names = this.filter.getNameFilterFlat()
 		data.forEach(el => {
@@ -234,10 +233,31 @@ class App {
 
 	filterInit(data) {
 		// this.filter = new Filter(this.config, data)
-		this.filter = new Filter(this.config, data)
-		this.getMinMaxParam(data)
+		const list = {}
+		const flats = data.data.filter(el => {
+			if (el['type_object'] === '1') {
+				list[el.id] = el
+				return el
+			}
+			return false
+		})
+		this.flatListObj = list
+		this.flatList = flats
+		this.filter = new Filter(this.config, this.flatList, this.flatListObj)
+		this.getMinMaxParam(this.flatList)
 		this.filter.init(this.configProject)
 
+		const favourites = new Favourite({
+			wrap: '.js-s3d__fv tbody',
+			data: this.flatListObj,
+			list: this.flatList,
+		})
+
+		const plannings = new Plannings({
+			wrap: '.js-s3d__pl__list',
+			data: this.flatListObj,
+			list: this.flatList,
+		})
 		// $('.s3d-pl__filter').append($('.s3d-filter'))
 	}
 
@@ -253,6 +273,7 @@ class App {
 	// }
 
 	selectSlider(e, type) {
+		console.log(273, e, type)
 		const houseNum = e.currentTarget.dataset.build || e.currentTarget.value
 		this.loader.show()
 		switch (type) {
@@ -276,7 +297,7 @@ class App {
 	selectSliderType(e, type, Fn) {
 		let config
 		this.history.update(type)
-		console.log(type)
+
 		if (type === 'house') {
 			config = this.config.house.config[this.activeHouse]
 			// config = this.config.house.config[houseNum];
@@ -366,7 +387,7 @@ class App {
 	}
 
 	changeCurrentFloor(floor) {
-		this.complex.updateActiveFloor(floor)
+		this.complex.updateActiveFlat(floor)
 	}
 
 	animateBlock(id, clas) {

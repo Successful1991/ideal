@@ -12,17 +12,15 @@
     .st4 {font-size: 14px;}
   }
 
-  &-active-vertical {
-
-    .js-s3d__svgWrap {
-      width: 100%;
-      height: auto;
-    }
-  }
+  //&-active-vertical {
+  //
+  //  .js-s3d__svgWrap {
+  //    width: 100%;
+  //    height: auto;
+  //  }
+  //}
 
   &__svgWrap {
-    opacity: 0;
-
     z-index: 51;
     position: absolute;
     top: 0;
@@ -56,7 +54,7 @@
     }
 
     .polygon,
-    .floor-svg-polygon {
+    .s3d-svg__house {
       opacity: 0;
 
       &:hover {
@@ -82,7 +80,7 @@
 }
 
 .polygon,
-.floor-svg-polygon {
+.s3d-svg__house {
   opacity: 0;
 
   &:hover {

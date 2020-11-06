@@ -89,7 +89,6 @@ class Helper {
 
 	// вычислить позицию контента,
 	checkPosContent(pos, size, sizeWrap, centerScreen, scale, padding) {
-		console.log((pos < centerScreen) + (centerScreen / 2) && pos > centerScreen - (centerScreen / 2))
 		if ((pos < centerScreen) + (centerScreen / 2) && pos > centerScreen - (centerScreen / 2)) return pos
 		if (pos >= centerScreen) {
 			return pos - (size / 2) - padding - (sizeWrap / 2)

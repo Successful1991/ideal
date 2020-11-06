@@ -1,18 +1,12 @@
 .s3d {
 
   &-filter {
-    //z-index: 189;
-    //position: absolute;
-    //top: 0;
-    //left: 0;
     display: flex;
     width: 100%;
-    //height: 100%;
     align-items: flex-start;
     justify-content: flex-start;
     align-content: flex-start;
     flex-wrap: wrap;
-    //flex-direction: column;
     background: #F2F2F2;
     padding: 20px 40px 10px;
     grid-area: filter;
@@ -28,11 +22,10 @@
       height: 100%;
       background: #FFFFFF;
       transform: translateX(-100%);
-      transition: transform .6s ease-in, opacity .1s linear .7s,visibility .1s linear .7s;
+      transition: transform .6s ease-in, opacity .1s linear .6s,visibility .1s linear .6s;
       opacity: 0;
       visibility: hidden;
       &.active {
-        //display: flex;
         opacity: 1;
         transform: translateX(0);
         transition: transform .4s ease-out;
@@ -61,8 +54,6 @@
     &__house,
     &__rooms {
       margin-bottom: 10px;
-      //grid-column: 1;
-      //grid-row: 2;
 
       input {
         display: none;
@@ -70,20 +61,11 @@
         &:checked+ label {
           color: #ffffff;
           background: #1C4954;
-          //&:after {
-          //  border: 1px solid #ff1e3c;
-          //  background: #ff1e3c;
-          //}
         }
 
         &:disabled+ label {
           color: #d3d7df;
           cursor: no-drop;
-
-          //&:after {
-          //  border: #d3d7df 1px solid;
-          //  background: transparent;
-          //}
         }
       }
 
@@ -99,18 +81,6 @@
         margin: 0 15px 0 0;
         border-radius: 50%;
         background: transparent;
-
-        //&:after {
-        //  z-index: -1;
-        //  position: absolute;
-        //  top: 50%;
-        //  left: 50%;
-        //  width: 75%;
-        //  height: 75%;
-        //  background: $wc;
-        //  content: "";
-        //  transform: translate(-50%, -50%)rotate(45deg);
-        //}
 
         &:hover:after {
           background: #1C4954;
@@ -198,20 +168,42 @@
 
     &__table{
       height: 100%;
-      padding: 20px 40px;
+      padding: 0 40px 20px;
+      overflow: auto;
       background: #FFFFFF;
       table{
+        width: 100%
+      }
+
+      tbody{
         width: 100%;
       }
       tr{
         width: 100%;
         height: 38px;
         background: #FFFFFF;
+        cursor: pointer;
         &:nth-child(even){
           background: #F2F2F2;
         }
+        &:hover{
+          background: #1C4954;
+          *{
+            color: #FFFFFF;
+          }
+          //input:checked + svg{
+          //  fill: #EB8271;
+          //}
+          svg{
+            stroke: #ffffff;
+          }
+        }
       }
       th{
+        position: sticky;
+        top: 0;
+        padding: 20px 0 5px;
+        background: #FFFFFF;
         font-family: Gilroy;
         font-weight: 500;
         font-size: 10px;
@@ -238,73 +230,26 @@
       input{
         display: none;
       }
-      input:checked svg{
-        fill: #1C4954;
+      input:checked + svg{
+        fill: #EB8271;
         stroke: transparent;
       }
-      label{
+      &__label{
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
+        svg{
+          pointer-events: none;
+        }
       }
     }
-    //&__plan {
-    //  display: none;
-    //  justify-content: space-around;
-    //  align-items: center;
-    //  flex: .5 0 auto;
-    //  grid-column: 2;
-    //  grid-row: 1;
-    //  margin: 0 auto;
-    //  max-width: 320px;
-    //
-    //  &-switch {
-    //    z-index: 0;
-    //    position: relative;
-    //    display: inline-block;
-    //    width: 40px;
-    //    height: 14px;
-    //    border: none;
-    //    border-radius: 12px;
-    //    background: #bfbfbf;
-    //    cursor: pointer;
-    //    margin: 0;
-    //    padding: 0;
-    //    pointer-events: painted;
-    //    transform-origin: center;
-    //    transition-duration: 300ms;
-    //
-    //    &:after {
-    //      z-index: 1;
-    //      position: absolute;
-    //      top: -5px;
-    //      left: -1px;
-    //      width: 22px;
-    //      height: 22px;
-    //      border-radius: 18px;
-    //      background: #ff1e3c;
-    //      content: "";
-    //      transition-duration: 300ms;
-    //    }
-    //
-    //    &-input {
-    //      display: none;
-    //
-    //      &:checked {
-    //
-    //        + .s3d-filter__plan-switch:after {
-    //          left: 22px;
-    //        }
-    //      }
-    //    }
-    //  }
-    //}
 
     &__close {
       position: absolute;
       top: 20%;
-      right: 0px;
+      right: 0;
       width: 52px;
       height: 52px;
       background: #1C4954;
@@ -400,7 +345,6 @@
       transition: color .4s ease-in-out;
       cursor: pointer;
       &-icon {
-        //content: '';
         display: flex;
         align-items: center;
         justify-content: center;
@@ -410,7 +354,6 @@
         border-radius: 50%;
         background: #FFFFFF;
         transition: fill .4s ease-in-out;
-        //background: url("../images/icon/close.svg") no-repeat center;
         svg{
           width: 60%;
           height: 60%;
@@ -429,19 +372,6 @@
     }
 
   }
-
-  //&-active-vertical {
-  //
-  //  .s3d-select {
-  //    width: 33.33%;
-  //  }
-  //
-  //  .s3d-filter {
-  //    overflow: auto;
-  //    padding: 20px 30px 40px;
-  //  }
-  //}
-
 }
 
 .plannings-filter{
@@ -467,7 +397,9 @@
       &__close{
         display: none;
       }
-
+      &__title{
+        margin-bottom: 30px;
+      }
       &-select{
         &__list{
           display: flex;
@@ -497,43 +429,11 @@
 
 }
 
-//.filter-small {
-//  top: auto;
-//  bottom: 0;
-//  width: 100%;
-//  height: 50%;
-//
-//  .s3d-filter {
-//
-//    &__house {
-//      width: 25%;
-//      margin: 0 auto 20px 0;
-//    }
-//
-//    &__rooms {
-//      width: 60%;
-//      margin: 0 0 20px auto;
-//    }
-//
-//    &__buttons {
-//      width: 100%;
-//      grid-column: 1 /span 2;
-//      margin: 0 auto 20px;
-//    }
-//  }
-//
-//}
-
 @media screen and ( max-width : 1640px ) {
 
   .s3d {
 
     &-filter {
-
-      //&-select__title {
-      //  font-size: 12px;
-      //}
-
       &__button--reset {
         font-size: 12px;
         line-height: 1em;
@@ -543,16 +443,6 @@
         font-size: 12px;
         line-height: 1em;
       }
-
-      //&__house,
-      //&__rooms {
-      //  margin-bottom: 15px;
-      //
-      //  &--label {
-      //    width: 40px;
-      //    height: 40px;
-      //  }
-      //}
 
       &__area,
       &__living-space,
@@ -618,30 +508,6 @@
 
     }
   }
-
-  //.s3d-active-vertical {
-  //
-  //  .s3d-filter {
-  //
-  //    &__rooms {
-  //      width: 25%;
-  //    }
-  //
-  //    &__house {
-  //      width: auto;
-  //
-  //      .s3d-filter-select__list {
-  //        justify-content: flex-start;
-  //      }
-  //
-  //    }
-  //  }
-  //
-  //  .s3d-select {
-  //    align-items: center;
-  //    width: 33.33%;
-  //  }
-  //}
 }
 
 @media screen and ( max-width : 767px ) {
@@ -684,7 +550,6 @@
       &__title {
         font-size: 14px;
         grid-column: 1;
-        //margin: 0;
       }
 
       &__house--label,
@@ -700,7 +565,6 @@
       &__floor {
         width: 100%;
         padding: 0 10px;
-        //margin-bottom: 10px;
       }
 
       &__plan {
@@ -724,14 +588,4 @@
       }
     }
   }
-
-  //.s3d-active-vertical {
-  //
-  //  .s3d-filter {
-  //
-  //    &__rooms {
-  //      width: 60%;
-  //    }
-  //  }
-  //}
 }

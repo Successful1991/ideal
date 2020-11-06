@@ -17,7 +17,7 @@ class Slider {
 		this.flagMouse = false
 		this.currentSlide = data.activeSlide
 		this.nextSlide = data.activeSlide
-		this.openHouses = [2, 8]
+		this.openHouses = [1]
 
 		this.eventsName = {
 			start: 'mousedown',
@@ -52,7 +52,8 @@ class Slider {
 		this.ActiveHouse = data.ActiveHouse
 		this.resize = this.resize.bind(this)
 		this.init = this.init.bind(this)
-		// this.click = data.click;
+		this.click = data.click
+		this.getFlatObj = data.getFlatObj
 		this.setActiveSvg = this.setActiveSvg.bind(this)
 		// this.mouseEventMove = this.mouseEventMove.bind(this);
 		this.compass = data.compass
@@ -60,7 +61,7 @@ class Slider {
 		this.right = this.right.bind(this)
 		this.changeNext = this.changeNext.bind(this)
 		this.changePrev = this.changePrev.bind(this)
-		this.updateActiveFloor = this.updateActiveFloor.bind(this)
+		this.updateActiveFlat = this.updateActiveFlat.bind(this)
 		this.loader = data.loader
 	}
 
@@ -77,7 +78,7 @@ class Slider {
 			}
 		} else {
 			this.wrapper.on(`${this.eventsName.end} ${this.eventsName.leave}`, e => {
-				if (e.target.classList.contains('s3d__button')) return
+				if (e.target.classList.contains('s3d__button') || e.target.classList.contains('s3d-infoBox__link')) return
 				this.activeAnimate(false)
 				this.amount = 0
 				if (this.flagMouse) {
@@ -89,7 +90,7 @@ class Slider {
 			})
 
 			this.wrapper.on(this.eventsName.start, e => {
-				if (e.target.classList.contains('s3d__button') || !this.rotate) return
+				if (e.target.classList.contains('s3d__button') || !this.rotate || e.target.classList.contains('s3d-infoBox__link')) return
 				// this.hiddenInfo(e)
 				this.rotateStart.call(this, e)
 				this.activeAnimate(true)
@@ -102,7 +103,6 @@ class Slider {
 						this.hiddenInfo(e)
 						this.infoBoxHidden = true
 					}
-					// console.log(e.target);
 					this.activeSvg = $(e.target).closest('svg')
 					// this.activeSvg[0].style.opacity = 0
 					this.activeSvg.css({ opacity: '0' })
@@ -110,7 +110,8 @@ class Slider {
 
 					this.checkMouseMovement.call(this, e)
 				} else if (e.target.tagName === 'polygon' && !this.infoBoxActive) {
-					this.updateInfo(e)
+					// this.getFlatObj(e.target.dataset.id)
+					this.updateInfo(this.getFlatObj(+e.target.dataset.id))
 				} else if (!this.infoBoxActive) {
 					this.hiddenInfo(e)
 				}
@@ -120,6 +121,7 @@ class Slider {
 
 		this.wrapper.on('click', 'polygon', e => {
 			e.preventDefault()
+			console.log(124)
 			this.infoBoxActive = true
 			// this.ActiveHouse.set(+e.target.dataset.build)
 			// if (this.openHouses.includes(+e.target.dataset.build)) {
@@ -160,6 +162,11 @@ class Slider {
 		this.createArrow()
 		this.infoBox.on('click', '.js-s3d-infoBox__close', () => {
 			this.hiddenInfo()
+		})
+		this.infoBox.on('click', '.s3d-infoBox__link', event => {
+			event.preventDefault()
+			console.log('event', event)
+			this.click(event, 'floor')
 		})
 		$('.js-s3d__wrap').scrollLeft($('.js-s3d__wrap').width() / 4)
 
@@ -269,6 +276,7 @@ class Slider {
 	}
 
 	rewindToPoint() {
+		console.log(275)
 		this.cancelAnimateSlide()
 		if (!this.controllPoint.includes(this.activeElem)) {
 			this.controllPoint.forEach(el => {
@@ -365,7 +373,7 @@ class Slider {
                 </div>
                 <div class="s3d-infoBox__image">
                   <div class="s3d-infoBox__close js-s3d-infoBox__close"></div>
-                  <div class="s3d-infoBox__type js-s3d-infoBox__type">тип 2А</div><img src="assets/s3d/images/KV.png">
+                  <div class="s3d-infoBox__type js-s3d-infoBox__type">тип 2А</div><img src="assets/s3d/images/KV.png" class="js-s3d-infoBox__image">
                 </div>
                 <div class="s3d-infoBox__table">
                   <table>
@@ -387,7 +395,7 @@ class Slider {
                     </tr>
                   </table>
                 </div>
-                <div class="s3d-infoBox__buttons"><a class="s3d-infoBox__link" href="#">Подробнее</a>
+                <div class="s3d-infoBox__buttons"><button type="button" class="s3d-infoBox__link">Подробнее</button>
                   <button class="s3d-infoBox__add-favourites js-s3d-add__favourites" type="button">
                     <svg>
                       <use xlink:href="#icon-favourites"></use>
@@ -421,11 +429,17 @@ class Slider {
 		} else if (!this.infoBox.hasClass('s3d-infoBox-hover')) {
 			this.infoBox.addClass('s3d-infoBox-hover')
 		}
-		console.log(e.target)
-		if (this.openHouses.includes(+e.target.dataset.build)) {
-			this.infoBox.find('.js-s3d-infoBox__house')[0].innerHTML = `house:  ${e.target.dataset.build || ''}`
-			this.infoBox.find('.js-s3d-infoBox__floor')[0].innerHTML = `floor:  ${e.target.dataset.floor || ''}`
-			this.infoBox.find('.js-s3d-infoBox__floor')[0].style.display = ''
+		console.log('e', e)
+		// console.log('e.target', this)
+		// console.log('this.infoBox', this.infoBox)
+		if (this.openHouses.includes(+e.build)) {
+			this.infoBox.data('id', e.id)
+			this.infoBox.find('.js-s3d-infoBox__table-number')[0].innerHTML = `${e.build || ''}`
+			this.infoBox.find('.js-s3d-infoBox__table-floor')[0].innerHTML = `${e.floor || ''}`
+			this.infoBox.find('.js-s3d-infoBox__table-room')[0].innerHTML = `${e.rooms || ''}`
+			this.infoBox.find('.js-s3d-infoBox__table-area')[0].innerHTML = `${e['all_room'] || ''}`
+			// this.infoBox.find('.js-s3d-infoBox__image')[0].src = `${e['img_big'] || ''}`
+			// this.infoBox.find('.js-s3d-infoBox__floor')[0].style.display = ''
 		} else {
 			this.infoBox.find('.js-s3d-infoBox__house')[0].innerHTML = 'Будинок не у продажу'
 			this.infoBox.find('.js-s3d-infoBox__floor')[0].style.display = 'none'
@@ -466,7 +480,7 @@ class Slider {
 		// }
 	}
 
-	updateActiveFloor(floor) {
+	updateActiveFlat(floor) {
 		this.activeFloor = floor
 		const nextFloorSvg = $(`.s3d__svg__active [data-build=${this.ActiveHouse.get()}][data-floor=${this.activeFloor}]`)[0]
 		this.updateInfoFloorList(nextFloorSvg)
@@ -475,7 +489,6 @@ class Slider {
 	}
 
 	hiddenInfo() {
-		console.log(this.infoBox)
 		this.infoBoxActive = false
 		this.infoBox.removeClass('s3d-infoBox-active')
 		this.infoBox.removeClass('s3d-infoBox-hover')
@@ -545,7 +558,6 @@ class Slider {
 	}
 
 	left() {
-		console.log(this.rotate)
 		if (this.rotate) {
 			this.rotate = false
 			let amount = 0

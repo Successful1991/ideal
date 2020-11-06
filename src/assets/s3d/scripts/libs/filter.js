@@ -1,34 +1,38 @@
 class Filter {
-	constructor(config, data) {
+	constructor(config, data, dataObj) {
 		this.wrapper = config.wrap || ''
 		this.filterName = { range: ['area', 'floor'], checkbox: ['rooms'] }
 		this.filter = {}
 		this.nameFilterFlat = {
 			area: 'all_room',
-			living: 'life_room',
-			house: 'build_name',
+			// living: 'life_room',
+			// house: 'build_name',
 			floor: 'floor',
 			rooms: 'rooms',
-			price: 'price',
-			priceM2: 'price_m2',
+			// price: 'price',
+			// priceM2: 'price_m2',
 		}
 		// name key js and name key in flat
 		// this.filterSelect = {}
 		this.flatList = data
+		this.flatListObj = dataObj
 		this.currentAmountFlat = data.length
 	}
 
 	init(config) {
-		this.filterHtml = createFilter('.js-s3d__slideModule')
+		// this.filterHtml = createFilter('.js-s3d__slideModule')
 
-		$(this.filterHtml.reset).on('click', () => this.resetFilter())
-		$(this.filterHtml.house).on('click', 'input', () => this.showSvgSelect())
-		$(this.filterHtml.room).on('click', 'input', () => this.showSvgSelect())
-		$(this.filterHtml.close).on('click', () => this.hidden())
+		// $(this.filterHtml.reset).on('click', () => this.resetFilter())
+		// $(this.filterHtml.house).on('click', 'input', () => this.showSvgSelect())
+		// $(this.filterHtml.room).on('click', 'input', () => this.showSvgSelect())
+		// $(this.filterHtml.close).on('click', () => this.hidden())
+		//
 
-		// $('.js-s3d-filter__button--reset').on('click', () => this.resetFilter())
+		this.createListFlat(this.flatList, '.js-s3d-filter__table tbody')
+		$('.js-s3d-filter__button--reset').on('click', () => this.resetFilter())
+		$('.js-s3d-filter__close').on('click', () => this.hidden())
 		// $('.js-s3d-filter__button--apply').on('click', () => this.showSvgSelect());
-		// $('.js-s3d-filter__select').on('click', 'input', () => this.showSvgSelect())
+		$('.js-s3d-filter__select').on('click', 'input', () => this.showSvgSelect())
 		// $('.js-s3d-filter__button--apply').on('click', () => $('.js-s3d-filter').removeClass('active'))
 		// $('.js-s3d-filter__close').on('click', () => {
 		// 	$('.js-s3d-filter').removeClass('active')
@@ -57,16 +61,27 @@ class Filter {
 			}
 		})
 
+		$('.js-s3d__amount-flat__num-all').html(this.flatList.length)
 		this.setAmountSelectFlat(this.flatList.length)
 	}
 
 	getNameFilterFlat() { return this.nameFilterFlat }
 
-	showSvgSelect() {
-		// фильтр svg , ищет по дата атрибуту, нужно подстраивать атрибут и класс обертки
+	// запускает фильтр квартир
+	filterFlatStart() {
 		const data = this.applyFilter(this.flatList)
-		this.setAmountSelectFlat(this.currentAmountFlat)
+		console.log('filterFlatStart()  data', data)
+		this.showSvgSelect(data)
+	}
+
+	// подсвечивает квартиры на svg облёта
+	showSvgSelect(data) {
+		console.log('showSvgSelect', data)
+		// фильтр svg , ищет по дата атрибуту, нужно подстраивать атрибут и класс обертки
 		for (const key in data) {
+			if ($('.js-s3d__svg-container__complex').length > 0) {
+				$(`.js-s3d__wrapper__complex polygon[data-id=${this.flatListObj[key].id}]`).css({ opacity: 0.5 })
+			}
 			if (+data[key].length > 0) {
 				// $('#js-s3d__wrapper__complex polygon[data-build="'+key+'"]').css({'opacity':0.5});
 				data[key].forEach(
@@ -78,6 +93,7 @@ class Filter {
 		}
 	}
 
+	// скрывает - показывает квартиры на svg облёта
 	showAvailableFlat() {
 		$('.js-s3d-controller__showFilter--input').click()
 		if ($('.js-s3d-controller__showFilter--input').prop('checked')) {
@@ -89,6 +105,7 @@ class Filter {
 		}
 	}
 
+	// возвращает data-attribute input-а
 	getAttrInput(name) {
 		return $(`.js-s3d-filter__${name}--input`).length > 0 ? $(`.js-s3d-filter__${name}--input`).data() : false
 	}
@@ -101,6 +118,7 @@ class Filter {
 		return arr
 	}
 
+	// создает range slider (ползунки), подписывает на события
 	createRange(config) {
 		if (config.type !== undefined) {
 			const self = this
@@ -121,7 +139,7 @@ class Filter {
 				onChange: updateInputs,
 				onFinish(e) {
 					updateInputs(e)
-					self.showSvgSelect()
+					self.filterFlatStart()
 				},
 				onUpdate: updateInputs,
 			})
@@ -147,19 +165,22 @@ class Filter {
 
 				instance.update(key === 'from' ? { from: val } : { to: val })
 				$(this).prop('value', val)
-				self.showSvgSelect()
+				self.filterFlatStart()
 			}
 		}
 	}
 
+	// показать фильтр
 	show() {
 		$('.js-s3d-filter').addClass('active')
 	}
 
+	// спрятать фильтр
 	hidden() {
 		$('.js-s3d-filter').removeClass('active')
 	}
 
+	// добавить range в список созданых фильтров
 	setRange(config) {
 		if (config.type !== undefined) {
 			this.filter[config.type] = {}
@@ -168,6 +189,7 @@ class Filter {
 		}
 	}
 
+	// добавить checkbox в список созданых фильтров
 	setCheckbox(config) {
 		if (config.type !== undefined) {
 			if (!this.filter[config.type] || !this.filter[config.type].elem) {
@@ -180,6 +202,7 @@ class Filter {
 		}
 	}
 
+	// сбросить значения фильтра
 	resetFilter() {
 		$('#js-s3d__wrapper polygon').css({ opacity: '' })
 
@@ -191,16 +214,19 @@ class Filter {
 				// this.filter[key].elem.each((i, el) => { el.checked ? el.checked = false : '' })
 			}
 		}
-		this.showSvgSelect()
+		this.filterFlatStart()
 	}
 
+	// запустить фильтрацию
 	applyFilter(data) {
 		this.clearFilterParam()
 		this.checkFilter()
 		this.getFilterParam()
+		console.log('applyFilter')
 		return this.filterFlat(data, this.filter, this.filterName, this.nameFilterFlat)
 	}
 
+	// обновить выбраные данные фильтра
 	checkFilter() {
 		this.filterName.range.forEach(name => {
 			const classes = this.getAttrInput(name)
@@ -209,15 +235,23 @@ class Filter {
 		this.filterName.checkbox.forEach(name => this.setCheckbox(this.getAttrSelect(name)))
 	}
 
+	// установить кол-во наденных квартир
 	setAmountSelectFlat(amount) {
-		$('.js-s3d-controller__openFilter-num').html(amount)
-		$('.js-s3d-filter__amount-flat__num').html(amount)
+		// $('.js-s3d-controller__openFilter-num').html(amount)
+		$('.js-s3d__amount-flat__num').html(amount)
 	}
 
+	// поиск квартир по параметрам фильтра
 	filterFlat(data, filter, filterName, nameFilterFlat) {
+		// прерывает фильт если не выбран дом или комнаты
+		// if (filter.house.value.length === 0 || filter.rooms.value.length === 0) {
+		// 	return {}
+		// }
+		console.log(data)
 		this.currentAmountFlat = 0
-		const select = {}
-		data.filter(flat => {
+		const select = data.filter(flat => {
+			flat.listHtmlLink.style.display = 'none'
+			flat.cardHtmlLink.style.display = 'none'
 			for (const param in filter) {
 				if (+flat.sale !== 1) return true
 				if (
@@ -226,81 +260,37 @@ class Filter {
 					&& !filter[param].value.some(key => +flat[nameFilterFlat[param]] === +key)
 				) {
 					return false
-				} if (filterName.range.includes(param)) {
+				} else if (filterName.range.includes(param)) {
 					if (+flat[nameFilterFlat[param]] < +filter[param].min
 						|| +flat[nameFilterFlat[param]] > +filter[param].max) {
 						return false
 					}
 				}
 			}
-
-			if (filter.house.value.length === 0 || filter.rooms.value.length === 0) {
-				return {}
-			}
-
 			if (flat[nameFilterFlat.house] !== undefined
-				&& !select[flat[nameFilterFlat.house]]
+				&& !flat[nameFilterFlat.house]
 			) {
-				select[flat[nameFilterFlat.house].match(/^(\d+)/)[1]] = []
+				// eslint-disable-next-line no-param-reassign
+				flat[nameFilterFlat.house].match(/^(\d+)/)[1] = []
 			}
 
 			if (flat[nameFilterFlat.floor] !== undefined
-				&& select[flat[nameFilterFlat.house]]
-				&& !select[flat[nameFilterFlat.house]].includes(flat[nameFilterFlat.floor])
+				&& flat[nameFilterFlat.house]
+				&& !flat[nameFilterFlat.house].includes(flat[nameFilterFlat.floor])
 				&& flat[nameFilterFlat.floor] > 0
 			) {
-				select[flat[nameFilterFlat.house]].push(flat[nameFilterFlat.floor])
+				flat[nameFilterFlat.house].push(flat[nameFilterFlat.floor])
 			}
 			this.currentAmountFlat += 1
+			flat.listHtmlLink.style.display = ''
+			flat.cardHtmlLink.style.display = ''
 			return flat
 		})
+		this.setAmountSelectFlat(this.currentAmountFlat)
 		return select
 	}
 
-	/*
-	filterFlat(data) {
-		this.currentAmountFlat = 0
-		data.filter(flat => {
-			for (const param in this.filter) {
-				if (+flat.sale !== 1) return true
-				if (
-					this.filterName.checkbox.includes(param)
-                    && this.filter[param].value.length > 0
-                    && !this.filter[param].value.some(key => +flat[this.nameFilterFlat[param]] === +key)
-				) {
-					return false
-				} if (this.filterName.range.includes(param)) {
-					if (+flat[this.nameFilterFlat[param]] < +this.filter[param].min
-                        || +flat[this.nameFilterFlat[param]] > +this.filter[param].max) {
-						return false
-					}
-				}
-			}
-
-			if (this.filter.house.value.length === 0 || this.filter.rooms.value.length === 0) {
-				return {}
-			}
-
-			if (flat[this.nameFilterFlat.house] !== undefined
-                && !this.filterSelect[flat[this.nameFilterFlat.house]]
-			) {
-				this.filterSelect[flat[this.nameFilterFlat.house].match(/^(\d+)/)[1]] = []
-			}
-
-			if (flat[this.nameFilterFlat.floor] !== undefined
-                && this.filterSelect[flat[this.nameFilterFlat.house]]
-                && !this.filterSelect[flat[this.nameFilterFlat.house]].includes(flat[this.nameFilterFlat.floor])
-                && flat[this.nameFilterFlat.floor] > 0
-			) {
-				this.filterSelect[flat[this.nameFilterFlat.house]].push(flat[this.nameFilterFlat.floor])
-			}
-			this.currentAmountFlat += 1
-			return flat
-		})
-		return this.filterSelect
-	}
-	 */
-
+	// добавить возможные варианты и/или границы (min, max) в список созданых фильтров
 	getFilterParam() {
 		for (const key in this.filter) {
 			switch (this.filter[key].type) {
@@ -317,6 +307,7 @@ class Filter {
 		}
 	}
 
+	// сбросить данные о фильтрах и выбранные квартиры
 	clearFilterParam() {
 		// this.filterSelect = {}
 		this.filter = {}
@@ -324,96 +315,29 @@ class Filter {
 		this.setAmountSelectFlat(this.flatList.length)
 	}
 
-	createMarkup() {
-	// return ` <div class="s3d-filter js-s3d-filter">
-	//         <div class="s3d-filter__title">Фільтр
-	//           <div class="s3d-filter__close js-s3d-filter__close"><span></span><span></span></div>
-	//         </div>
-	//         <div class="s3d-filter__house js-s3d-filter__house js-s3d-filter__select">
-	//           <div class="s3d-filter-select__title">Будинок</div>
-	//           <div class="s3d-filter-select__list">
-	//             <div class="s3d-filter-select__input--wrap">
-	//               <input class="js-s3d-filter__house--input" type="checkbox" data-type="house" data-house="9" id="house-1" disabled>
-	//               <label class="s3d-filter__house--label" for="house-1">1</label>
-	//             </div>
-	//             <div class="s3d-filter-select__input--wrap">
-	//               <input class="js-s3d-filter__house--input" type="checkbox" data-type="house" data-house="12" id="house-2">
-	//               <label class="s3d-filter__house--label" for="house-2">2</label>
-	//             </div>
-	//           </div>
-	//         </div>
-	//         <div class="s3d-filter__rooms js-s3d-filter__rooms js-s3d-filter__select">
-	//           <div class="s3d-filter-select__title">Кімнат</div>
-	//           <div class="s3d-filter-select__list">
-	//             <div class="s3d-filter-select__input--wrap">
-	//               <input class="js-s3d-filter__rooms--input" type="checkbox" data-type="rooms" data-rooms="1" id="rooms-1">
-	//               <label class="s3d-filter__rooms--label" for="rooms-1">1</label>
-	//             </div>
-	//             <div class="s3d-filter-select__input--wrap">
-	//               <input class="js-s3d-filter__rooms--input" type="checkbox" data-type="rooms" data-rooms="2" id="rooms-2">
-	//               <label class="s3d-filter__rooms--label" for="rooms-2">2</label>
-	//             </div>
-	//             <div class="s3d-filter-select__input--wrap">
-	//               <input class="js-s3d-filter__rooms--input" type="checkbox" data-type="rooms" data-rooms="3" id="rooms-3">
-	//               <label class="s3d-filter__rooms--label" for="rooms-3">3</label>
-	//             </div>
-	//             <div class="s3d-filter-select__input--wrap">
-	//               <input class="js-s3d-filter__rooms--input" type="checkbox" data-type="rooms" data-rooms="4" id="rooms-4">
-	//               <label class="s3d-filter__rooms--label" for="rooms-4">4</label>
-	//             </div>
-	//           </div>
-	//         </div>
-	//         <div class="s3d-filter__floor js-s3d-filter__floor">
-	//           <div class="s3d-filter-select__title">Поверх</div>
-	//           <div class="s3d-filter-select__list js-filter-range">
-	//             <input class="js-s3d-filter__floor--input" data-type="floor" data-min="1" data-max="22">
-	//           </div>
-	//           <div class="s3d-filter-select__list js-filter-input">
-	//             <label>з
-	//               <input class="js-s3d-filter__floor__min--input" type="number">
-	//             </label>
-	//             <label>по
-	//               <input class="js-s3d-filter__floor__max--input" type="number">
-	//             </label>
-	//           </div>
-	//         </div>
-	//         <div class="s3d-filter__area js-s3d-filter__area">
-	//           <div class="s3d-filter-select__title">Загальна площа м2</div>
-	//           <div class="s3d-filter-select__list js-s3d-filter-range">
-	//             <input class="js-s3d-filter__area--input" data-type="area" data-min="0" data-max="12000" data-from="0" data-to="12000">
-	//           </div>
-	//           <div class="s3d-filter-select__list js-filter-input">
-	//             <label>з
-	//               <input class="js-s3d-filter__area__min--input" type="number">
-	//             </label>
-	//             <label>по
-	//               <input class="js-s3d-filter__area__max--input" type="number">
-	//             </label>
-	//           </div>
-	//         </div>
-	//         <div class="s3d-filter__living-space js-s3d-filter__living-space">
-	//           <div class="s3d-filter-select__title">Житлова площа м2</div>
-	//           <div class="s3d-filter-select__list js-filter-range">
-	//             <input class="js-s3d-filter__living--input" data-type="living" data-min="0" data-max="12000">
-	//           </div>
-	//           <div class="s3d-filter-select__list js-filter-input">
-	//             <label>з
-	//               <input class="js-s3d-filter__living__min--input" type="number">
-	//             </label>
-	//             <label>по
-	//               <input class="js-s3d-filter__living__max--input" type="number">
-	//             </label>
-	//           </div>
-	//         </div>
-	//         <div class="s3d-filter__buttons js-s3d-filter__buttons">
-	//           <div class="s3d-filter__amount-flat">Знайдено<span class="s3d-filter__amount-flat__num js-s3d-filter__amount-flat__num">25</span></div>
-	//           <button class="js-s3d-filter__button--reset s3d-filter__button--reset" type="button">Очистити
-	//             <svg class="s3d-filter__button--reset-icon" role="presentation">
-	//               <use xlink:href="#icon-close"></use>
-	//             </svg>
-	//           </button>
-	//           <button class="js-s3d-filter__button--apply s3d-filter__button--apply" type="button">показати на генплані</button>
-	//         </div>
-	//       </div>`
+	// создаёт html список квартир
+	createListFlat(list, wrap) {
+		const result = []
+		list.forEach(el => {
+			const tr = document.createElement('tr')
+			tr.dataset.id = el.id
+			tr.innerHTML = `
+					<td>${el.type}</td>
+					<td>${el.rooms}</td>
+					<td>${el.floor}</td>
+					<td>${el.all_room} m<sub>2</sub></td>
+					<td>
+						<label class="s3d-filter__table__label js-s3d-add__favourites">
+							<input type="checkbox">
+							<svg role="presentation"><use xlink:href="#icon-favourites"></use></svg>
+						</label>
+					</td>
+			`
+			el['listHtmlLink'] = tr
+			// $(wrap).append(tr)
+			result.push(tr)
+		})
+		$(wrap).append(...result)
+		// return result
 	}
 }
