@@ -7,17 +7,14 @@ class History {
 	}
 
 	init() {
-		console.log('history 10')
 		this.pageLoad()
 		this.history.push('complex')
 		window.onpopstate = () => {
-			console.log(this, 14)
 			this.onPopstate()
 		}
 	}
 
 	pageLoad() {
-		console.log('history 20')
 		if (window.history.state === null) {
 			window.history.replaceState(
 				{
@@ -37,7 +34,6 @@ class History {
 	}
 
 	onPopstate() {
-		console.log('history')
 		window.history.pushState(
 			{
 				isBackPage: false,
@@ -48,7 +44,6 @@ class History {
 		if (this.history.length > 0) {
 			this.history.pop()
 			this.animateBlock('translate', 'down')
-			console.log('ststse')
 			this.click(700)(this.history[this.history.length - 1])
 		}
 	}

@@ -11,7 +11,8 @@ class Favourite {
 		})
 
 		$('.js-s3d__slideModule').on('change', '.js-s3d-add__favourites', event => {
-			this.addStorage($(event.target).closest('tr').data('id'))
+			this.addStorage($(event.target).data('id'))
+			// this.addStorage($(event.target).closest('tr').data('id'))
 		})
 
 		$('.js-s3d__fv').on('click', '.js-s3d__fv__close', () => {

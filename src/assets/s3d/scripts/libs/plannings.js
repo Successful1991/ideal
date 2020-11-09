@@ -17,7 +17,6 @@ class Plannings {
 			el['cardHtmlLink'] = nodeElem
 			result.push(nodeElem)
 		})
-		console.log(result)
 		$(wrap).append(result)
 	}
 
@@ -46,7 +45,7 @@ class Plannings {
           </tr>
         </tbody></table>
         <div class="s3d-pl__buttons"><button type="button" class="s3d-pl__link">Подробнее</button>
-          <label class="s3d-pl__add-favourites js-s3d-add__favourites">
+          <label data-id="${el.id}" class="s3d-pl__add-favourites js-s3d-add__favourites">
           	<input type="checkbox">
             <svg>
               <use xlink:href="#icon-favourites"></use>

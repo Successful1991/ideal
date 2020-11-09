@@ -16,7 +16,7 @@ class App {
 				$('.fs-preloader-bg').css({ filter: 'blur(10px)' })
 			},
 			hide: block => {
-				// if(block ) this.scrollToBlock(0)(block);
+				if (block) this.scrollToBlock(0)(block)
 
 				setTimeout(() => {
 					$('.fs-preloader').removeClass('preloader-active')
@@ -27,6 +27,15 @@ class App {
 		}
 		this.configProject = {}
 		this.flatListObj = {}
+		this.activeFlat = {
+			value: null,
+			get change() {
+				return this.value
+			},
+			set change(val) {
+				this.value = val
+			},
+		}
 		// this.changeCurrentFloor = this.changeCurrentFloor.bind(this);
 		this.scrollToBlock = this.scrollToBlock.bind(this)
 		// this.animateBlock = this.animateBlock.bind(this);
@@ -80,6 +89,7 @@ class App {
 		config.type = 'complex'
 		config.click = this.selectSlider.bind(this)
 		config.getFlatObj = this.getFlatObj.bind(this)
+		config.activeFlat = this.activeFlat
 		config.loader = this.loader
 		config.ActiveHouse = this.ActiveHouse
 		config.compass = this.compass
@@ -210,8 +220,8 @@ class App {
 	}
 
 	getFlatObj(id) {
-		console.log(id)
-		console.log(this.flatListObj)
+	// 	console.log(id)
+	// 	console.log(this.flatListObj)
 		return this.flatListObj[id]
 	}
 
@@ -273,20 +283,21 @@ class App {
 	// }
 
 	selectSlider(e, type) {
-		console.log(273, e, type)
-		const houseNum = e.currentTarget.dataset.build || e.currentTarget.value
+		console.log('selectSlider(e, type)', e, type)
+		// const houseNum = e.currentTarget.dataset.build || e.currentTarget.value
 		this.loader.show()
 		switch (type) {
 		case 'complex':
-			// this.selectSliderType(e, 'house', Slider);
-			this.selectSliderType(e, 'floor', Layout)
+			// this.selectSliderType(e, 'house', Slider)
+			// this.selectSliderType(e, 'floor', Layout)
+			this.selectSliderType(e, type, Layout)
 			break
 			// case 'house':
 			//     this.selectSliderType(e, 'floor', Layout);
 			//     break;
-		case 'floor':
+		case 'apart':
 			$('.fs-preloader').addClass('s3d-preloader__full')
-			this.selectSliderType(e, 'apart', Apartments)
+			this.selectSliderType(e, type, Apartments)
 			break
 		default:
 			break
@@ -297,9 +308,9 @@ class App {
 	selectSliderType(e, type, Fn) {
 		let config
 		this.history.update(type)
-
-		if (type === 'house') {
-			config = this.config.house.config[this.activeHouse]
+		console.log('selectSliderType(e, type, Fn)', type)
+		if (type === 'complex') {
+			// config = this.config.house.config[this.activeHouse]
 			// config = this.config.house.config[houseNum];
 			// config.activeHouse = houseNum;
 			$('.js-s3d-select__number-house').html(this.activeHouse)
@@ -307,8 +318,8 @@ class App {
 			config = this.config[type]
 			// config.activeHouse = houseNum;
 			// if( e.currentTarget.dataset.house || e.target.dataset.build) config.house = e.currentTarget.dataset.house || e.currentTarget.dataset.build;
-			if (e.currentTarget.dataset.section) config.section = e.currentTarget.dataset.section
-			if (e.currentTarget.dataset.floor) config.floor = e.currentTarget.dataset.floor
+			// if (e.currentTarget.dataset.section) config.section = e.currentTarget.dataset.section
+			// if (e.currentTarget.dataset.floor) config.floor = e.currentTarget.dataset.floor
 			// if(e.currentTarget.dataset.id) config.flat = e.currentTarget.dataset.id;
 			if (e.currentTarget.dataset.flat_id) config.flat = e.currentTarget.dataset.flat_id
 		}
@@ -318,13 +329,17 @@ class App {
 		config.loader = this.loader
 		config.configProject = this.configProject
 		config.changeCurrentFloor = this.changeCurrentFloor
-		config._ActiveHouse = this._ActiveHouse
+		config.ActiveHouse = this.ActiveHouse
+		config.activeFlat = this.activeFlat
 		config.compass = this.compass
 
 		if ($(`#js-s3d__${type}`).length > 0) {
+			console.log('if')
+			console.log('type', this[type])
 			this[type].update(config)
 			// this.activeSectionList.push(config.idCopmlex);
 		} else {
+			console.log('else')
 			config.click = this.selectSlider.bind(this)
 			config.scrollToBlock = this.scrollToBlock.bind(this)
 			this.createWrap(config, type !== 'house' ? 'div' : 'canvas')
@@ -332,7 +347,9 @@ class App {
 			this[type].init(config)
 
 			this.activeSectionList.push(config.idCopmlex)
-			$(`.js-s3d-select__${config.type}`).prop('disabled', false)
+
+			// делает кнопку переключателя неактивной
+			// $(`.js-s3d-select__${config.type}`).prop('disabled', false)
 		}
 	}
 
@@ -388,6 +405,10 @@ class App {
 
 	changeCurrentFloor(floor) {
 		this.complex.updateActiveFlat(floor)
+	}
+
+	changeCurrentFlat(flat) {
+		this.complex.updateActiveFlat(flat)
 	}
 
 	animateBlock(id, clas) {

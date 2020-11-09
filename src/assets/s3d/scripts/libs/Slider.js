@@ -56,6 +56,7 @@ class Slider {
 		this.getFlatObj = data.getFlatObj
 		this.setActiveSvg = this.setActiveSvg.bind(this)
 		// this.mouseEventMove = this.mouseEventMove.bind(this);
+		this.activeFlat = data.activeFlat
 		this.compass = data.compass
 		this.left = this.left.bind(this)
 		this.right = this.right.bind(this)
@@ -121,7 +122,6 @@ class Slider {
 
 		this.wrapper.on('click', 'polygon', e => {
 			e.preventDefault()
-			console.log(124)
 			this.infoBoxActive = true
 			// this.ActiveHouse.set(+e.target.dataset.build)
 			// if (this.openHouses.includes(+e.target.dataset.build)) {
@@ -144,6 +144,7 @@ class Slider {
 			if (!this.infoBox.hasClass('s3d-infoBox-active')) {
 				this.infoBox.addClass('s3d-infoBox-active')
 				this.infoBox.removeClass('s3d-infoBox-hover')
+				this.infoBox.find('.s3d-infoBox__link')[0].dataset.id = e.target.dataset.id
 			}
 			// this.updateInfo(e)
 
@@ -165,8 +166,8 @@ class Slider {
 		})
 		this.infoBox.on('click', '.s3d-infoBox__link', event => {
 			event.preventDefault()
-			console.log('event', event)
-			this.click(event, 'floor')
+			// this.click(event, this.type)
+			this.click(event, 'apart')
 		})
 		$('.js-s3d__wrap').scrollLeft($('.js-s3d__wrap').width() / 4)
 
@@ -429,11 +430,10 @@ class Slider {
 		} else if (!this.infoBox.hasClass('s3d-infoBox-hover')) {
 			this.infoBox.addClass('s3d-infoBox-hover')
 		}
-		console.log('e', e)
 		// console.log('e.target', this)
 		// console.log('this.infoBox', this.infoBox)
 		if (this.openHouses.includes(+e.build)) {
-			this.infoBox.data('id', e.id)
+			// this.infoBox.data('id', e.id)
 			this.infoBox.find('.js-s3d-infoBox__table-number')[0].innerHTML = `${e.build || ''}`
 			this.infoBox.find('.js-s3d-infoBox__table-floor')[0].innerHTML = `${e.floor || ''}`
 			this.infoBox.find('.js-s3d-infoBox__table-room')[0].innerHTML = `${e.rooms || ''}`
@@ -464,6 +464,21 @@ class Slider {
 		}
 	}
 
+	updateInfoFlatList(e) {
+		const data = (e.target || e).dataset
+		const list = $(`.js-s3d__svgWrap .floor-svg-polygon[data-build=${data.build}][ data-floor=${data.floor}]`)
+
+		list.each((i, el) => {
+			this.updateInfoFlat(el, data)
+		})
+
+		if (this.openHouses.includes(+data.build)) {
+			$(`[data-build=${data.build}] .floor-text`).html(data.floor)
+		} else {
+			$(`[data-build=${data.build}] .floor-text`).html('будинок не у продажу')
+		}
+	}
+
 	updateInfoFloor(e, data) {
 		// положение курсора внутри элемента
 		const parent = $(e).closest('svg')
@@ -480,12 +495,36 @@ class Slider {
 		// }
 	}
 
-	updateActiveFlat(floor) {
+	updateInfoFlat(e, data) {
+		// положение курсора внутри элемента
+		const parent = $(e).closest('svg')
+		const widthSvgPhoto = parent.attr('viewBox').split(' ')[2]
+		const bbox = e.getBBox()
+		const height = (widthSvgPhoto / 13) * 0.2
+		const y = (bbox.y + (bbox.height / 2))
+		$(parent).find(`.flat-info-svg[data-build=${data.build}]`).addClass('active-flat-info').attr('y', y - (height / 2))
+
+		// if(this.openHouses.includes(+data.build)){
+		//     $('[data-build='+ data.build +'] .floor-text').html(data.floor);
+		// } else {
+		//     $('[data-build='+ data.build +'] .floor-text').html('будинок не у продажу');
+		// }
+	}
+
+	updateActiveFloor(floor) {
 		this.activeFloor = floor
 		const nextFloorSvg = $(`.s3d__svg__active [data-build=${this.ActiveHouse.get()}][data-floor=${this.activeFloor}]`)[0]
 		this.updateInfoFloorList(nextFloorSvg)
 		$('.js-s3d__svgWrap .active-floor').removeClass('active-floor')
 		$(`.js-s3d__svgWrap [data-build=${this.ActiveHouse.get()}][data-floor=${this.activeFloor}]`).addClass('active-floor')
+	}
+
+	updateActiveFlat(flat) {
+		this.activeFlat = flat
+		const nextFlatSvg = $(`.s3d__svg__active [data-build=${this.ActiveHouse.get()}][data-floor=${this.activeFlat}]`)[0]
+		this.updateInfoFlatList(nextFlatSvg)
+		$('.js-s3d__svgWrap .active-flat').removeClass('active-floor')
+		$(`.js-s3d__svgWrap [data-build=${this.ActiveHouse.get()}][data-floor=${this.activeFlat}]`).addClass('active-floor')
 	}
 
 	hiddenInfo() {

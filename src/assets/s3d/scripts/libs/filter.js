@@ -327,7 +327,7 @@ class Filter {
 					<td>${el.floor}</td>
 					<td>${el.all_room} m<sub>2</sub></td>
 					<td>
-						<label class="s3d-filter__table__label js-s3d-add__favourites">
+						<label data-id="${el.id}" class="s3d-filter__table__label js-s3d-add__favourites">
 							<input type="checkbox">
 							<svg role="presentation"><use xlink:href="#icon-favourites"></use></svg>
 						</label>
