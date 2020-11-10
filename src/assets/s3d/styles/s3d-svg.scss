@@ -35,7 +35,8 @@
       display: block;
       //display: none;
       width: 100%;
-      fill: $--bg;
+      height: 100%;
+      fill: #EB8271;
       margin: 0 auto;
       opacity: 0;
       visibility: hidden;
@@ -56,15 +57,21 @@
     .polygon,
     .s3d-svg__house {
       opacity: 0;
-
+      cursor: pointer;
       &:hover {
-        fill: $wc !important;
-        opacity: .6 !important;
+        fill: $wc;
+        opacity: .5;
+      }
+      &.active-selected {
+        fill: #255763;
+        opacity: .7;
+      }
+      &.active-flat {
+        fill: #EB8271;
+        opacity: .7 ;
       }
 
-      &.active-floor {
-        opacity: .8 !important;
-      }
+
     }
   }
 

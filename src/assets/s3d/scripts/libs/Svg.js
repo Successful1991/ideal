@@ -41,6 +41,7 @@ class Svg {
 
 	createSvg(data, name) {
 		const svgContainer = createMarkup('div', `.js-s3d__wrapper__${this.idCopmlex}`, { class: `s3d__svg-container s3d__svg-container${name === 'complex' ? '__complex' : name} js-s3d__svg-container${name === 'complex' ? '__complex' : name}` })
+
 		for (const key in data) {
 			const svgWrap = document.createElement('div')
 			if (+key === +this.activeSlide) {
@@ -48,6 +49,7 @@ class Svg {
 			} else {
 				svgWrap.classList = `s3d__svgWrap js-s3d__svgWrap ${this.type}__${key}`
 			}
+			svgWrap.dataset.id = key
 			$(svgContainer).append(svgWrap)
 			$.ajax(data[+key].path).done(svg => {
 				$(svgWrap).append(svg.documentElement)

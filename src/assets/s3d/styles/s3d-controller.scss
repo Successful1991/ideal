@@ -141,7 +141,8 @@
         align-items: center;
         flex: 0 0 auto;
 
-        background: #1C4954;
+        background: rgba(0,0,0,0.22);
+        //background: #1C4954;
 
       }
 
@@ -168,8 +169,11 @@
 
 
       &:hover {
-        background: #ff1e3c;
-        border-color: #ff1e3c;
+        background: #EB8271;
+        border-color: #EB8271;
+        //.s3d-controller__openFilter__icon{
+        //  background: #EB8271;
+        //}
         svg{
 
         }

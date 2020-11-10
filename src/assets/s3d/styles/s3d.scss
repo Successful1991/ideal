@@ -3,6 +3,9 @@
 // #s3d__wrapper__complex, #s3d__wrapper__floor, #s3d__wrapper__apart - обертка для canvas и Блока с svg. не фиксируется по ширине экрана
 *{
   box-sizing: border-box;
+  &:focus{
+    outline: 0.5px solid #aaaaaa;
+  }
 }
 
 .disabled{

@@ -35,9 +35,6 @@ class Favourite {
 	}
 
 	showSelectFlat(id) {
-		console.log(id)
-		console.log('this.listObj', this.listObj)
-		console.log('this.listObj[id]',this.listObj[id])
 		$(this.listObj[id].listHtmlLink).find('input').prop('checked', true)
 		$(this.listObj[id].cardHtmlLink).find('input').prop('checked', true)
 	}
@@ -50,7 +47,6 @@ class Favourite {
 		} else {
 			favourites.push(id)
 		}
-		console.log(this.listObj[id])
 		sessionStorage.setItem('favourites', JSON.stringify(favourites))
 		this.updateAmount(favourites.length)
 		this.showSelectFlat(id)

@@ -6,7 +6,7 @@ class Apartments {
 		this.wrapperId = data.idCopmlex
 		this.wrapper = $(`.js-s3d__wrapper__ ${this.wrapperId}`)
 		this.click = data.click
-		this.scrollToBlock = data.scrollToBlock
+		this.scrollBlock = data.scrollBlock
 		this.activeFlat = data.activeFlat
 	}
 
@@ -28,7 +28,10 @@ class Apartments {
 			}
 		})
 
-		$('.js-s3d-flat__back').on('click', () => this.click('complex'))
+		$('.js-s3d-flat__back').on('click', e => {
+			// this.loader.show()
+			this.scrollBlock(e, 'complex')
+		})
 	}
 
 	update(config) {
@@ -104,9 +107,9 @@ class Apartments {
 			// $('.js-s3d-popup__mini-plan').removeClass('active')
 		})
 
-		$('.js-s3d__show-3d').on('click', () => {
-			console.log(this.activeFlat.value)
-			this.click(this.activeFlat.value, 'complex')
+		$('.js-s3d__show-3d').on('click', event => {
+			console.log(this.activeFlat)
+			this.click(event, 'complex', this.activeFlat.value)
 		})
 
 		// меняет непонятные символы в ссылке
