@@ -154,9 +154,9 @@ class App {
 	}
 
 	scrollBlock(e, active) {
-		console.log(active)
+		console.log('scrolltoblock')
+		this.filter.hidden()
 		const ind = this.activeSectionList.findIndex(el => { if (el === active) return true })
-		console.log(this.animateFlag, this.activeSectionList)
 		if (this.animateFlag && this.activeSectionList.length >= 2) {
 			this.complex.hiddenInfo()
 			this.animateFlag = false
@@ -179,7 +179,6 @@ class App {
 					this.scrollToBlock(700)(this.activeSectionList[0])
 				}
 			} else {
-				console.log('else')
 				this.animateBlock('translate', 'down')
 				this.scrollToBlock(700)(active)
 			}
@@ -282,15 +281,15 @@ class App {
 	// 	createMarkup(tag, wrap2, { id: `js-s3d__${conf.idCopmlex}` })
 	// }
 
-	selectSlider(e, type) {
-		console.log('selectSlider(e, type)', e, type)
+	selectSlider(e, type, numSlide) {
+		// console.log('selectSlider(e, type)', e, type, numSlide)
 		// const houseNum = e.currentTarget.dataset.build || e.currentTarget.value
 		this.loader.show()
 		switch (type) {
 		case 'complex':
 			// this.selectSliderType(e, 'house', Slider)
 			// this.selectSliderType(e, 'floor', Layout)
-			this.selectSliderType(e, type, Layout)
+			this.selectSliderType(e, type, Layout, numSlide)
 			break
 			// case 'house':
 			//     this.selectSliderType(e, 'floor', Layout);
@@ -305,11 +304,12 @@ class App {
 		this.resize()
 	}
 
-	selectSliderType(e, type, Fn) {
+	selectSliderType(e, type, Fn, idApart) {
 		let config
 		this.history.update(type)
-		console.log('selectSliderType(e, type, Fn)', type)
+		// console.log('selectSliderType(e, type, Fn)', type)
 		if (type === 'complex') {
+			config = this.config[type]
 			// config = this.config.house.config[this.activeHouse]
 			// config = this.config.house.config[houseNum];
 			// config.activeHouse = houseNum;
@@ -332,16 +332,16 @@ class App {
 		config.ActiveHouse = this.ActiveHouse
 		config.activeFlat = this.activeFlat
 		config.compass = this.compass
-
 		if ($(`#js-s3d__${type}`).length > 0) {
-			console.log('if')
-			console.log('type', this[type])
 			this[type].update(config)
+			if (idApart) {
+				this[type].toSlideNum(idApart)
+			}
 			// this.activeSectionList.push(config.idCopmlex);
 		} else {
 			console.log('else')
 			config.click = this.selectSlider.bind(this)
-			config.scrollToBlock = this.scrollToBlock.bind(this)
+			config.scrollBlock = this.scrollBlock.bind(this)
 			this.createWrap(config, type !== 'house' ? 'div' : 'canvas')
 			this[type] = new Fn(config)
 			this[type].init(config)
@@ -354,13 +354,14 @@ class App {
 	}
 
 	scrollToBlock(time = 0) {
+		this.filter.hidden()
 		return block => {
 			$(`.js-s3d-select__${this.activeSection}`).removeClass('active')
 			$(`.js-s3d-select__${block}`).addClass('active')
-			setTimeout(() => {
-				$('.js-s3d-filter').removeClass('plannings-filter')
-			}, 500)
-			this.filter.hidden()
+			// this.filter.hidden()
+			// setTimeout(() => {
+			// $('.js-s3d-filter').removeClass('plannings-filter')
+			// }, 500)
 			if (block !== 'apart') {
 				$('.fs-preloader').removeClass('s3d-preloader__full')
 			}
@@ -379,13 +380,16 @@ class App {
 					this.compass.setFloor()
 					break
 				case 'plannings':
+					// $('.js-s3d-filter').addClass('plannings-filter')
+					$('.js-s3d-filter').removeClass('plannings-filter')
 					this.filter.show()
-					$('.js-s3d-filter').addClass('plannings-filter')
 					this.complex.hiddenInfo()
 					this.complex.hiddenInfoFloor()
 					this.compass.save(this.compass.current)
 					break
 				default:
+					$('.js-s3d-filter').addClass('plannings-filter')
+					// $('.js-s3d-filter').removeClass('plannings-filter')
 					this.complex.showInfoFloor()
 					this.compass.set(this.compass.lastDeg)
 				}

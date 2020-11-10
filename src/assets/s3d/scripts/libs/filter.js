@@ -76,17 +76,19 @@ class Filter {
 
 	// подсвечивает квартиры на svg облёта
 	showSvgSelect(data) {
-		console.log('showSvgSelect', data)
+
 		// фильтр svg , ищет по дата атрибуту, нужно подстраивать атрибут и класс обертки
 		for (const key in data) {
-			if ($('.js-s3d__svg-container__complex').length > 0) {
-				$(`.js-s3d__wrapper__complex polygon[data-id=${this.flatListObj[key].id}]`).css({ opacity: 0.5 })
-			}
+			// if ($('.js-s3d__svg-container__complex').length > 0) {
+			// 	console.log('showSvgSelect', data, this.flatListObj[key])
+			// 	console.log('showSvgSelect', key, this.flatListObj)
+			// 	$(`.js-s3d__wrapper__complex polygon[data-id=${this.flatListObj[key].id}]`).css({ opacity: 0.5 })
+			// }
 			if (+data[key].length > 0) {
 				// $('#js-s3d__wrapper__complex polygon[data-build="'+key+'"]').css({'opacity':0.5});
 				data[key].forEach(
-					floor => {
-						if ($('.js-s3d__svg-container__complex').length > 0) { $(`.js-s3d__wrapper__complex polygon[data-build="${key}"][ data-floor="${floor}"]`).css({ opacity: 0.5 }) }
+					flat => {
+						if ($('.js-s3d__svg-container__complex').length > 0) { $(`.js-s3d__wrapper__complex polygon[ data-id="${flat}"]`).css({ opacity: 0.5 }) }
 					},
 				)
 			}

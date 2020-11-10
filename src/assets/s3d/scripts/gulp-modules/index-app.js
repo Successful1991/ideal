@@ -13,7 +13,7 @@ function init() {
 				min: 0,
 				max: 179,
 			},
-			controllPoint: [11, 52, 109, 144],
+			controlPoint: [11, 52, 109, 144],
 			activeSlide: 11,
 			mouseSpeed: 1,
 			// mouseSpeed: 300,
