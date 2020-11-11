@@ -23,6 +23,9 @@
       "error",
       "never"
     ],
+    "no-restricted-globals": [
+      "off", "isNaN"
+    ],
     "eqeqeq": "warn",
     "no-else-return": "warn",
     "dot-notation": ["off"],

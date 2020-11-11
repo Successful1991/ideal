@@ -91,8 +91,8 @@
         border-radius: 50%;
         background: transparent;
 
-        &:hover:after {
-          background: #1C4954;
+        &:hover {
+          background: #2c7384;
         }
       }
     }
@@ -211,6 +211,9 @@
             stroke: #ffffff;
           }
         }
+        &.active-flat{
+          background: #EB8271;
+        }
       }
       th{
         position: sticky;
@@ -253,7 +256,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        svg{
+        *{
           pointer-events: none;
         }
       }

@@ -47,6 +47,18 @@ class Filter {
 			}
 		})
 
+		$('.js-s3d-filter__table').on('click', event => {
+
+			// console.log(51, event.originalEvent.path.toArray())
+			if ($(event.originalEvent.target).hasClass('js-s3d-add__favourites') || event.originalEvent.target.nodeName === 'INPUT') return
+			console.log(51, event)
+			console.log(52, event.originalEvent)
+			console.log(53, $(event.originalEvent.target).hasClass('js-s3d-add__favourites'))
+
+			// console.log($(event.target).hasClass('js-s3d-add__favourites'))
+		// 	// console.log('$(.js-s3d-filter).on(click', event, this)
+		})
+
 		this.filterName.checkbox.forEach(name => {
 			$('.js-s3d-filter [data-type=name]').each((i, el) => el.data(name, i + 1))
 		})
@@ -76,23 +88,26 @@ class Filter {
 
 	// подсвечивает квартиры на svg облёта
 	showSvgSelect(data) {
-
+		console.log('showSvgSelect(data) data', data)
+		$('.js-s3d__wrapper__complex polygon').css({ opacity: 0 })
+		data.forEach(flat => $(`.js-s3d__wrapper__complex polygon[data-id=${flat.id}]`).css({ opacity: 0.5 }))
 		// фильтр svg , ищет по дата атрибуту, нужно подстраивать атрибут и класс обертки
-		for (const key in data) {
-			// if ($('.js-s3d__svg-container__complex').length > 0) {
-			// 	console.log('showSvgSelect', data, this.flatListObj[key])
-			// 	console.log('showSvgSelect', key, this.flatListObj)
-			// 	$(`.js-s3d__wrapper__complex polygon[data-id=${this.flatListObj[key].id}]`).css({ opacity: 0.5 })
-			// }
-			if (+data[key].length > 0) {
-				// $('#js-s3d__wrapper__complex polygon[data-build="'+key+'"]').css({'opacity':0.5});
-				data[key].forEach(
-					flat => {
-						if ($('.js-s3d__svg-container__complex').length > 0) { $(`.js-s3d__wrapper__complex polygon[ data-id="${flat}"]`).css({ opacity: 0.5 }) }
-					},
-				)
-			}
-		}
+		// for (const key in data) {
+		// 	// if ($('.js-s3d__svg-container__complex').length > 0) {
+		// 	// 	console.log('showSvgSelect', data, this.flatListObj[key])
+		// 	// 	console.log('showSvgSelect', key, this.flatListObj)
+		// 	// 	$(`.js-s3d__wrapper__complex polygon[data-id=${this.flatListObj[key].id}]`).css({ opacity: 0.5 })
+		// 	// }
+		// 	if (+data[key].length > 0) {
+		// 		// $('#js-s3d__wrapper__complex polygon[data-build="'+key+'"]').css({'opacity':0.5});
+		// 		console.log('showSvgSelect(data) data[key]', data[key])
+		// 		data[key].forEach(
+		// 			flat => {
+		// 				if ($('.js-s3d__svg-container__complex').length > 0) { $(`.js-s3d__wrapper__complex polygon[data-id="${flat}"]`).css({ opacity: 0.5 }) }
+		// 			},
+		// 		)
+		// 	}
+		// }
 	}
 
 	// скрывает - показывает квартиры на svg облёта

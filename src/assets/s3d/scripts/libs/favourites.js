@@ -11,7 +11,12 @@ class Favourite {
 		})
 
 		$('.js-s3d__slideModule').on('change', '.js-s3d-add__favourites', event => {
-			this.addStorage($(event.target).data('id'))
+			// console.log('$(\'.js-s3d__slideModule\')', event)
+			// console.log($(event.currentTarget))
+			// console.log($(event.currentTarget).data('id'))
+			// console.log('--------------')
+			if ($(event.currentTarget).data('id') === undefined || $(event.currentTarget).data('id') === null || isNaN($(event.currentTarget).data('id'))) return
+			this.addStorage($(event.currentTarget).data('id'))
 			// this.addStorage($(event.target).closest('tr').data('id'))
 		})
 
@@ -22,6 +27,7 @@ class Favourite {
 	}
 
 	init() {
+		// sessionStorage.clear()
 		this.createMarkup()
 		this.showSelectFlats()
 	}
@@ -35,13 +41,15 @@ class Favourite {
 	}
 
 	showSelectFlat(id) {
+		console.log('id', id)
+		console.log('this.listObj[id]', this.listObj[id])
 		$(this.listObj[id].listHtmlLink).find('input').prop('checked', true)
 		$(this.listObj[id].cardHtmlLink).find('input').prop('checked', true)
 	}
 
 	addStorage(id) {
 		let favourites = this.getFavourites()
-		if (favourites && favourites.includes(id)) return
+		if ((favourites && favourites.includes(id)) || !id || isNaN(id)) return
 		if (favourites === null) {
 			favourites = [id]
 		} else {
@@ -86,7 +94,7 @@ class Favourite {
 	createElemHtml(el) {
 		return `
 			<tr class="s3d-fv__element js-s3d-fv__element" data-id="1">
-        <td><img class="s3d-fv__image" src="assets/s3d/images/KV.png"></td>
+        <td><img class="s3d-fv__image" src="wp-content/themes/idealist/assets/s3d/images/KV.png"></td>
         <td>23</td>
         <td>2А</td>
         <td>3</td>

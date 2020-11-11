@@ -151,6 +151,8 @@ class Slider {
 			// this.activeFloor = +e.target.dataset.floor;
 			$('.js-s3d__svgWrap .active-flat').removeClass('active-flat')
 			$(e.target).addClass('active-flat')
+			console.log(e.target)
+			$(`.js-s3d-filter__table [data-id=${e.target.dataset.id}]`).addClass('active-flat')
 			this.activeSvg = $(e.target).closest('svg')
 
 			$(this.activeSvg).css({ opacity: '' })
@@ -498,7 +500,10 @@ class Slider {
 		const nextFlatSvg = $(`.s3d__svg__active [data-id=${this.activeFlat.value}]`)[0]
 		// this.updateInfoFlatList(nextFlatSvg)
 		$('.js-s3d__svgWrap .active-flat').removeClass('active-flat')
+		$('.js-s3d-filter__table .active-flat').removeClass('active-flat')
 		$(`.js-s3d__svgWrap [data-id=${this.activeFlat.value}]`).addClass('active-flat')
+		$(`.js-s3d-filter__table [data-id=${this.activeFlat.value}]`).addClass('active-flat')
+		console.log($(`.js-s3d-filter__table [data-id=${this.activeFlat.value}]`))
 	}
 
 	hiddenInfo() {

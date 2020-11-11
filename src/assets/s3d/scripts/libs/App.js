@@ -79,7 +79,7 @@ class App {
 		this.history = new History({ scrollToBlock: this.scrollToBlock, animateBlock: this.animateBlock })
 		this.history.init()
 
-		this.getFlatList('static/flats.json', this.filterInit)
+		this.getFlatList('/wp-content/themes/idealist/static/flats.json', this.filterInit)
 		// this.getFlatList('static/apPars.php', this.filterInit)
 		// this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
 
