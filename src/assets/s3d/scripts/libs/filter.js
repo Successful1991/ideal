@@ -1,5 +1,5 @@
 class Filter {
-	constructor(config, data, dataObj) {
+	constructor(config, data, dataObj, selectFlat) {
 		this.wrapper = config.wrap || ''
 		this.filterName = { range: ['area', 'floor'], checkbox: ['rooms'] }
 		this.filter = {}
@@ -17,6 +17,7 @@ class Filter {
 		this.flatList = data
 		this.flatListObj = dataObj
 		this.currentAmountFlat = data.length
+		this.selectFlat = selectFlat
 	}
 
 	init(config) {
@@ -47,16 +48,10 @@ class Filter {
 			}
 		})
 
-		$('.js-s3d-filter__table').on('click', event => {
-
+		$('.js-s3d-filter__table').on('click', 'tr', event => {
 			// console.log(51, event.originalEvent.path.toArray())
 			if ($(event.originalEvent.target).hasClass('js-s3d-add__favourites') || event.originalEvent.target.nodeName === 'INPUT') return
-			console.log(51, event)
-			console.log(52, event.originalEvent)
-			console.log(53, $(event.originalEvent.target).hasClass('js-s3d-add__favourites'))
-
-			// console.log($(event.target).hasClass('js-s3d-add__favourites'))
-		// 	// console.log('$(.js-s3d-filter).on(click', event, this)
+			this.selectFlat(event.currentTarget.dataset.id, 'complex')
 		})
 
 		this.filterName.checkbox.forEach(name => {

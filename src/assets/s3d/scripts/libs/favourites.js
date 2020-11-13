@@ -11,12 +11,18 @@ class Favourite {
 		})
 
 		$('.js-s3d__slideModule').on('change', '.js-s3d-add__favourites', event => {
+			const id = $(event.currentTarget).data('id')
 			// console.log('$(\'.js-s3d__slideModule\')', event)
-			// console.log($(event.currentTarget))
+			console.log(event.target)
+			console.log(event.target.checked)
 			// console.log($(event.currentTarget).data('id'))
-			// console.log('--------------')
-			if ($(event.currentTarget).data('id') === undefined || $(event.currentTarget).data('id') === null || isNaN($(event.currentTarget).data('id'))) return
-			this.addStorage($(event.currentTarget).data('id'))
+			console.log('--------------')
+			if (id === undefined || id === null || isNaN(id)) return
+
+			if (event.target.checked) {
+				this.addStorage(id)
+			}
+			this.removeElemStorage(id)
 			// this.addStorage($(event.target).closest('tr').data('id'))
 		})
 
@@ -41,8 +47,8 @@ class Favourite {
 	}
 
 	showSelectFlat(id) {
-		console.log('id', id)
-		console.log('this.listObj[id]', this.listObj[id])
+		// console.log('id', id)
+		// console.log('this.listObj[id]', this.listObj[id])
 		$(this.listObj[id].listHtmlLink).find('input').prop('checked', true)
 		$(this.listObj[id].cardHtmlLink).find('input').prop('checked', true)
 	}
@@ -55,17 +61,20 @@ class Favourite {
 		} else {
 			favourites.push(id)
 		}
+		console.log('addStorage(id) ', favourites, id)
 		sessionStorage.setItem('favourites', JSON.stringify(favourites))
 		this.updateAmount(favourites.length)
 		this.showSelectFlat(id)
+		console.log('addStorage', sessionStorage)
 	}
 
 	removeElemStorage(id) {
 		const favourites = this.getFavourites()
 		const index = favourites.indexOf(id)
 		if (index === -1 || !favourites) return
-		sessionStorage.setItem('favourites', JSON.parse(favourites.splice(index, 1)))
+		sessionStorage.setItem('favourites', JSON.stringify(favourites.splice(index, 1)))
 		this.updateAmount(favourites.length)
+		console.log('removeElemStorage', sessionStorage)
 	}
 
 	clearStorage() {
@@ -75,6 +84,8 @@ class Favourite {
 
 	getFavourites() {
 		const storage = JSON.parse(sessionStorage.getItem('favourites'))
+		console.log('storage', storage)
+		console.log('getFavourites', sessionStorage)
 		return storage ? storage : []
 	}
 

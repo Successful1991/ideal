@@ -132,6 +132,7 @@
     font-size: 14px;
     line-height: 24px;
     margin-right: 35px;
+    cursor: pointer;
     &-icon{
       position: relative;
       width: initial;
@@ -150,6 +151,7 @@
       line-height: 1.5em;
       color: #FFFFFF;
       pointer-events: none;
+      cursor: pointer;
     }
     svg{
       height: 26px;

@@ -38,8 +38,8 @@ class App {
 		}
 		// this.changeCurrentFloor = this.changeCurrentFloor.bind(this);
 		this.scrollToBlock = this.scrollToBlock.bind(this)
+		this.showSvgIn3D = this.showSvgIn3D.bind(this)
 		// this.animateBlock = this.animateBlock.bind(this);
-		// eslint-disable-next-line no-underscore-dangle
 		this.ActiveHouse = {
 			get: () => this.activeHouse,
 			set: num => {
@@ -250,7 +250,7 @@ class App {
 		})
 		this.flatListObj = list
 		this.flatList = flats
-		this.filter = new Filter(this.config, this.flatList, this.flatListObj)
+		this.filter = new Filter(this.config, this.flatList, this.flatListObj, this.showSvgIn3D)
 		this.getMinMaxParam(this.flatList)
 		this.filter.init(this.configProject)
 
@@ -351,6 +351,14 @@ class App {
 		}
 	}
 
+	showSvgIn3D(id, type) {
+		if (type !== this.activeSection) {
+			this.history.update(type)
+			this.scrollBlock(type)
+		}
+		this[type].toSlideNum(id)
+	}
+
 	scrollToBlock(time = 0) {
 		this.filter.hidden()
 		return block => {
@@ -366,6 +374,7 @@ class App {
 			setTimeout(() => {
 				switch (block) {
 				case 'apart':
+					console.log('scrollToBlock', this.complex)
 					this.complex.hiddenInfo()
 					this.complex.hiddenInfoFloor()
 					this.compass.save(this.compass.current)
@@ -414,7 +423,6 @@ class App {
 	}
 
 	animateBlock(id, clas) {
-		console.log('animate block')
 		const layers = document.querySelectorAll(`.${id}-layer`)
 		layers[0].classList.remove('translate-layer__down', 'translate-layer__up', 'active')
 		layers[0].classList.add(`translate-layer__${clas}`)

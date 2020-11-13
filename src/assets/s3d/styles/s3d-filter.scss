@@ -190,6 +190,17 @@
 
       tbody{
         width: 100%;
+        tr{
+          &:hover{
+            background: #1C4954;
+            *{
+              color: #FFFFFF;
+            }
+            svg{
+              stroke: #ffffff;
+            }
+          }
+        }
       }
       tr{
         width: 100%;
@@ -198,18 +209,6 @@
         cursor: pointer;
         &:nth-child(even){
           background: #F2F2F2;
-        }
-        &:hover{
-          background: #1C4954;
-          *{
-            color: #FFFFFF;
-          }
-          //input:checked + svg{
-          //  fill: #EB8271;
-          //}
-          svg{
-            stroke: #ffffff;
-          }
         }
         &.active-flat{
           background: #EB8271;

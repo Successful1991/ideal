@@ -39,6 +39,7 @@ class Svg {
 		}
 	}
 
+	// получает
 	createSvg(data, name) {
 		const svgContainer = createMarkup('div', `.js-s3d__wrapper__${this.idCopmlex}`, { class: `s3d__svg-container s3d__svg-container${name === 'complex' ? '__complex' : name} js-s3d__svg-container${name === 'complex' ? '__complex' : name}` })
 
@@ -56,7 +57,7 @@ class Svg {
 				this.showAvailableFlat()
 			})
 		}
-
+		// при клике на инфруструктуру получает данные с сервера и вставляет в попап
 		$('.js-s3d__svg-container').on('click', '.js-s3d-svg__point-group', function () {
 			$.ajax({
 				url: '/wp-admin/admin-ajax.php',
@@ -74,6 +75,7 @@ class Svg {
 				$('.js-s3d-point__help').addClass('point-active')
 			})
 		})
+		// закрывает попап инфрструктуры
 		$('.js-s3d-point__help').on('click', '.js-s3d-point__help-close', () => {
 			$('.js-s3d-point__help').removeClass('point-active')
 		})

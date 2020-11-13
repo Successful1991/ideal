@@ -81,9 +81,10 @@ class Apartments {
 		this.setPlaneInPage(this.addHtmlAll(config))
 		// $.ajax({
 		// 	type: 'POST',
-		// 	url: './static/apPars.php',
+		// 	url: '/inc/functions.php',
+		// 	// url: './static/apPars.php',
 		// 	// url: '/wp-admin/admin-ajax.php',
-		// 	data: `action=getFlatById&id=${config.flat}`,
+		// 	data: `action=createFlat&id=${config.flat}`,
 		// 	success: response => (this.setPlaneInPage(response)),
 		// })
 	}
@@ -108,7 +109,6 @@ class Apartments {
 		})
 
 		$('.js-s3d__show-3d').on('click', event => {
-			console.log(this.activeFlat)
 			this.click(event, 'complex', this.activeFlat.value)
 		})
 
@@ -159,30 +159,30 @@ class Apartments {
                   <div class="s3d-flat__table__subtitle">Площадь 56 м2</div>
                   <div class="s3d-flat__table__title">Квартира 2А</div>
                   <ul class="s3d-flat__list">
-                    <div class="s3d-flat__el">
+                    <li class="s3d-flat__el">
                       <div class="s3d-flat__el__name">Спальня:</div>
                       <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
+                    </li>
+                    <li class="s3d-flat__el">
                       <div class="s3d-flat__el__name">Спальня:</div>
                       <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
+                    </li>
+                    <li class="s3d-flat__el">
                       <div class="s3d-flat__el__name">Спальня:</div>
                       <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
+                    </li>
+                    <li class="s3d-flat__el">
                       <div class="s3d-flat__el__name">Спальня:</div>
                       <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
+                    </li>
+                    <li class="s3d-flat__el">
                       <div class="s3d-flat__el__name">Спальня:</div>
                       <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
+                    </li>
+                    <li class="s3d-flat__el">
                       <div class="s3d-flat__el__name">Спальня:</div>
                       <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
+                    </li>
                     <div class="s3d-flat__el">
                       <div class="s3d-flat__el__name">Спальня:</div>
                       <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
@@ -261,8 +261,6 @@ class Apartments {
                 </div>
                 <div class="s3d-flat__floor">
                   <svg  viewBox="0 0 2767 2378" width="165mm" height="155mm">
-<!--                  https://comfortlife.devbase.pro/img/projects/8/1/Іdealіst-P6-1604316973-6000x85-.jpg?id=2767-->
-<!--    <image xlink:href="https://comfortlife.devbase.pro/img/projects/8/1/Іdealіst-P6-1604316973-6000x85-.jpg" x="0" y="0" height="100%" width="100%"></image>-->
     <image xlink:href="https://comfortlife.devbase.pro/img/projects/8/1/Іdealіst-P6-1604316973-6000x85-.jpg" x="0" y="0" height="100%" width="100%"></image>
     <polygon data-id="30" style ="fill:#417bbfcc; opacity:0.8 !important;"  points="1006,1072,1016,2162,250,2060,168,2032,102,1978,74,1902,72,644,76,578,108,492,184,432,268,416,546,380,548,1064"></polygon>
     <polygon data-id="31" style ="fill:#417bbfcc; opacity:0.8 !important;"  points="1382,1100,1394,226,538,372,544,1056,542,1098"></polygon>
