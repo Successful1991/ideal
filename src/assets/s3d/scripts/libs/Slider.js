@@ -65,10 +65,10 @@ class Slider {
 		this.changePrev = this.changePrev.bind(this)
 		this.updateActiveFlat = this.updateActiveFlat.bind(this)
 		this.loader = data.loader
+		this.loadImage = this.loadImage.bind(this)
 	}
 
 	init() {
-		console.log(DeviceMotionEvent)
 		if (isDevice('ios')) {
 			this.mouseSpeed = 0.5
 		}
@@ -133,7 +133,6 @@ class Slider {
 			this.setStateInfoActive(e)
 			$('.js-s3d__svgWrap .active-flat').removeClass('active-flat')
 			$(e.target).addClass('active-flat')
-			console.log(e.target)
 			$(`.js-s3d-filter__table [data-id=${e.target.dataset.id}]`).addClass('active-flat')
 			this.activeSvg = $(e.target).closest('svg')
 
@@ -149,7 +148,6 @@ class Slider {
 		})
 		this.infoBox.on('click', '.s3d-infoBox__link', event => {
 			event.preventDefault()
-			console.log(this.activeFlat)
 			this.activeFlat.value = event.target.dataset.id
 			// this.click(event, this.type)
 			this.click(event, 'apart', event.target.dataset.id)
@@ -210,31 +208,57 @@ class Slider {
 
 	// обновить картинки в канвасе
 	updateImage() {
-		const self = this
 		this.ctx.canvas.width = this.width
 		this.ctx.canvas.height = this.height
-		let index = 1
-		for (let i = 0; i <= self.numberSlide.max; i++) {
-			const img = new Image()
-			img.src = `${self.imageUrl + i}.jpg`
-			img.onload = function load() {
-				index++
-				self.images[i] = this
-				if (i === self.activeElem) {
-					// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
-					// $('.s3d-filter__compass svg').css('transform','rotate('+ deg +'deg)');
-					self.compass.save(self.activeElem)
-					self.ctx.drawImage(this, 0, 0, self.width, self.height)
-				}
-				if (index === self.numberSlide.max) {
-					self.resizeCanvas()
-					setTimeout(() => {
-						self.loader.hide(self.type, this.wrapper)
-					}, 100)
-				}
-			}
-		}
+		this.loadImage(0)
+		// for (let i = 0; i <= self.numberSlide.max; i++) {
+		// 	const img = new Image()
+		// 	img.src = `${self.imageUrl + i}.jpg`
+		// 	img.onload = function load() {
+		// 		index++
+		// 		self.images[i] = this
+		// 		if (i === self.activeElem) {
+		// 			// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
+		// 			// $('.s3d-filter__compass svg').css('transform','rotate('+ deg +'deg)');
+		// 			self.compass.save(self.activeElem)
+		// 			self.ctx.drawImage(this, 0, 0, self.width, self.height)
+		// 		}
+		// 		if (index === self.numberSlide.max) {
+		// 			self.resizeCanvas()
+		// 			setTimeout(() => {
+		// 				self.loader.hide(self.type, this.wrapper)
+		// 			}, 100)
+		// 		}
+		// 	}
+		// }
 		this.setActiveSvg(this.ActiveHouse.get())
+	}
+
+	loadImage(i) {
+		const self = this
+		const img = new Image()
+		const index = i
+		img.src = `${this.imageUrl + index}.jpg`
+		img.onload = function load() {
+			// index++
+			self.images[index] = this
+			if (index === self.activeElem) {
+				// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
+				// $('.s3d-filter__compass svg').css('transform','rotate('+ deg +'deg)');
+				self.compass.save(self.activeElem)
+				self.ctx.drawImage(this, 0, 0, self.width, self.height)
+			}
+			// console.log(index)
+			if (index === self.numberSlide.max) {
+				self.resizeCanvas()
+				setTimeout(() => {
+					console.log('ready')
+					self.loader.hide(self.type, this.wrapper)
+				}, 100)
+				return index
+			}
+			return self.loadImage(i + 1)
+		}
 	}
 
 	resizeCanvas() {
@@ -260,8 +284,8 @@ class Slider {
 		this.x = e.pageX || e.targetTouches[0].pageX
 		this.pret = e.pageX || e.targetTouches[0].pageX
 		this.flagMouse = true
-		this.activeSvg = $(e.target).closest('svg')
-		$(this.activeSvg).css({ opacity: '0' })
+		// this.activeSvg = $(e.target).closest('svg')
+		// $(this.activeSvg).css({ opacity: '0' })
 	}
 
 	resize() {
@@ -282,17 +306,15 @@ class Slider {
 	createArrow() {
 		const arrowLeft = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-left js-s3d__button-left unselectable' })
 		arrowLeft.dataset.type = 'prev'
-		$(arrowLeft).append('<svg width="7" height="9" viewBox="0 0 7 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 9L-1.96701e-07 4.5L7 0L7 3.82025L7 5.17975L7 9Z" fill="#EB8271"/></svg>')
+		$(arrowLeft).append('<svg width="7" height="9" viewBox="0 0 7 9" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 9L-1.96701e-07 4.5L7 0L7 3.82025L7 5.17975L7 9Z"/></svg>')
 		$('.js-s3d__button-left').on('click', event => this.checkDirectionRotate(event.target))
-		// $('.js-s3d__button-left').on('click', this.left)
 
 		const arrowRight = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-right js-s3d__button-right unselectable' })
 		arrowRight.dataset.type = 'next'
-		$(arrowRight).append(`<svg width="7" height="9" viewBox="0 0 7 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M1.18021e-06 -2.38419e-06L7 4.5L0 9L5.00966e-07 5.17974L6.79242e-07 3.82025L1.18021e-06 -2.38419e-06Z" fill="#EB8271"/>
+		$(arrowRight).append(`<svg width="7" height="9" viewBox="0 0 7 9" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.18021e-06 -2.38419e-06L7 4.5L0 9L5.00966e-07 5.17974L6.79242e-07 3.82025L1.18021e-06 -2.38419e-06Z" />
 </svg>`)
 		$('.js-s3d__button-right').on('click', event => this.checkDirectionRotate(event.target))
-		// $('.js-s3d__button-right').on('click', this.right)
 	}
 
 	// меняет активную svg в зависимости от кадра
@@ -550,7 +572,6 @@ class Slider {
 		return setInterval(() => {
 			fn()
 			if (this.activeElem === this.nextSlide) {
-				console.log('repeatChangeSlide(fn) ', this.activeSvg)
 				this.cancelAnimateSlide()
 				this.updateSvgActive(this.type, 'nextSlide')
 				this.activeSvg.css({ opacity: '' })
@@ -650,7 +671,6 @@ class Slider {
 
 	rewindToPoint(controlPoint) {
 		this.cancelAnimateSlide()
-		console.log('rewindToPoint(controlPoint)', controlPoint, this.activeElem)
 		controlPoint.forEach(el => {
 			if (el < this.activeElem && el > this.result.min) {
 				this.result.min = el

@@ -6,7 +6,6 @@ class Favourite {
 
 		$('.js-s3d__slideModule').on('click', '.js-s3d__favourites', () => {
 			this.createMarkup()
-			// this.addElemHtml()
 			$('.js-s3d__fv').addClass('s3d__active')
 		})
 
@@ -18,7 +17,6 @@ class Favourite {
 			} else {
 				this.removeElemStorage(id)
 			}
-			// this.addStorage($(event.target).closest('tr').data('id'))
 		})
 
 		$('.js-s3d__fv').on('click', '.js-s3d__fv__close', () => {
@@ -29,17 +27,8 @@ class Favourite {
 			const id = $(e.target).closest('.js-s3d-fv__element').data('id')
 			if (this.removeElemStorage(id)) {
 				$(e.target).closest('.js-s3d-fv__element').remove()
-				// console.log($(`.js-s3d-filter tr[data-id = ${id}]`).find('.js-s3d-add__favourites'))
-				// this.checkedFlat(id, false)
-				// $(`.js-s3d-filter [data-id = ${id}]`).find('.js-s3d-add__favourites input').prop('checked', false)
-				// $(`.js-s3d__pl__list [data-id = ${id}]`).find('.js-s3d-add__favourites input').prop('checked', false)
-				// $(`.js-s3d-filter tr[data-id = ${id}]`).find('.js-s3d-add__favourites').prop('checked', false)
 			}
 		})
-		//
-		// $('.js-s3d__fv').on('click', e => {
-		// 	console.log('$(.js-s3d__fv)', e)
-		// })
 		this.init()
 	}
 
@@ -58,31 +47,19 @@ class Favourite {
 	}
 
 	checkedFlat(id, value) {
-		console.log('checkedFlat', value)
 		let check = $(this.listObj[id].listHtmlLink).find('input').prop('checked')
-		// console.log('checkedFlat(id)  id', id)
-		// console.log('this.listObj[id]', this.listObj[id])
-		// console.log('this.listObj[id].listHtmlLink', this.listObj[id].listHtmlLink)
-		// console.log('this.listObj[id].cardHtmlLink', this.listObj[id].cardHtmlLink)
-		// console.log('this.listObj[id].listHtmlLink', this.listObj[id].listHtmlLink.querySelector('input'))
 		if (value !== 'undefined') { check = value }
-		console.log('checkedFlat', check)
 		this.listObj[id].listHtmlLink.querySelector('input').checked = check
 		this.listObj[id].cardHtmlLink.querySelector('input').checked = check
-		// this.listObj[id].listHtmlLink.querySelector('input')
-		// $(this.listObj[id].listHtmlLink).find('input').prop('checked', true)
-		// $(this.listObj[id].cardHtmlLink).find('input').prop('checked', true)
 	}
 
 	addStorage(id) {
 		let favourites = this.getFavourites()
-		// if ((favourites && favourites.includes(id)) || !id || isNaN(id)) return
 		if (checkValue(favourites)) {
 			favourites = [id]
 		} else {
 			favourites.push(id)
 		}
-
 		if (favourites.length > 0) {
 			$('.js-s3d-favorite__wrap').removeClass('s3d-hidden')
 		}
@@ -153,6 +130,6 @@ class Favourite {
 	}
 
 	updateAmount(value) {
-		$('.js-s3d__favourites-amount').html(value)
+		$('.js-s3d-favourites-amount').html(value)
 	}
 }

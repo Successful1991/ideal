@@ -16,8 +16,9 @@
     fill: #EB8271;
     padding: 8px;
     transform: translateY(-100%);
-    transition: all .3s ease-in;
+    transition: background-color .3s ease-in;
     outline-color: #EB8271;
+    cursor: pointer;
 
     * {
       pointer-events: none;
@@ -25,10 +26,12 @@
 
     svg {
       display: flex;
-      fill: $wc;
+      fill: #EB8271;
       flex: 1 1 100%;
+      transition: fill .3s ease-in;
     }
     &:focus{
+      z-index: 5;
       outline-style: outset;
       outline-color: rgba(235,130,113,0.3);
     }

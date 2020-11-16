@@ -3,7 +3,7 @@ function loader(callback) {
 	let i = 0 // start
 	const timesToTest = 5
 	const tThreshold = 70 // ms
-	const testImage = '/wp-content/themes/idealist/assets/s3d/images/idealist/complex/24.jpg' // small image in your server
+	const testImage = '/wp-content/themes/idealist/assets/s3d/images/idealist/complex/11.jpg' // small image in your server
 	const dummyImage = new Image()
 	let isConnectedFast = false
 

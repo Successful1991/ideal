@@ -90,9 +90,10 @@
         margin: 0 15px 0 0;
         border-radius: 50%;
         background: transparent;
-
+        transition: background-color .3s ease-in, color .3s ease-in;
         &:hover {
-          background: #2c7384;
+          background: #34889c;
+          color: #ffffff;
         }
       }
     }
@@ -250,7 +251,7 @@
         fill: #EB8271;
         stroke: transparent;
       }
-      .flat-active{
+      .active-flat{
         input:checked + svg{
           fill: #1C4954;
           stroke: transparent;
@@ -376,20 +377,24 @@
         margin-right: 15px;
         border-radius: 50%;
         background: #FFFFFF;
-        transition: fill .4s ease-in-out;
+        transition: background-color .4s ease-in-out;
         svg{
           width: 60%;
           height: 60%;
-
           fill: #3b4456;
+          transition: fill .4s ease-in-out;
         }
       }
 
       &:hover {
         color: #3b4456;
-
-        .s3d-filter__button--reset-icon svg{
-          fill: #ff1e3c;
+        
+        .s3d-filter__button--reset-icon {
+          background: #1C4954;
+          svg{
+            fill: #FFFFFF;
+            //fill: #ff1e3c;
+          }
         }
       }
     }

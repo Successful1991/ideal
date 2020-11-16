@@ -49,7 +49,6 @@ class Filter {
 		})
 
 		$('.js-s3d-filter__table').on('click', 'tr', event => {
-			// console.log(51, event.originalEvent.path.toArray())
 			if ($(event.originalEvent.target).hasClass('js-s3d-add__favourites') || event.originalEvent.target.nodeName === 'INPUT') return
 			this.selectFlat(event.currentTarget.dataset.id, 'complex')
 		})
@@ -76,14 +75,11 @@ class Filter {
 
 	// запускает фильтр квартир
 	filterFlatStart() {
-		const data = this.applyFilter(this.flatList)
-		console.log('filterFlatStart()  data', data)
-		this.showSvgSelect(data)
+		this.showSvgSelect(this.applyFilter(this.flatList))
 	}
 
 	// подсвечивает квартиры на svg облёта
 	showSvgSelect(data) {
-		console.log('showSvgSelect(data) data', data)
 		$('.js-s3d__wrapper__complex polygon').css({ opacity: 0 })
 		data.forEach(flat => $(`.js-s3d__wrapper__complex polygon[data-id=${flat.id}]`).css({ opacity: 0.5 }))
 		// фильтр svg , ищет по дата атрибуту, нужно подстраивать атрибут и класс обертки
@@ -216,7 +212,7 @@ class Filter {
 
 	// сбросить значения фильтра
 	resetFilter() {
-		$('#js-s3d__wrapper polygon').css({ opacity: '' })
+		$('.js-s3d__svgWrap polygon').css({ opacity: '' })
 
 		for (const key in this.filter) {
 			if (this.filter[key].type === 'range') {
@@ -226,7 +222,7 @@ class Filter {
 				// this.filter[key].elem.each((i, el) => { el.checked ? el.checked = false : '' })
 			}
 		}
-		this.filterFlatStart()
+		// this.filterFlatStart()
 	}
 
 	// запустить фильтрацию

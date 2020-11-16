@@ -30,9 +30,13 @@ function init() {
 	new Promise(resolve => {
 		loader(resolve)
 	}).then(value => {
-		if (isDevice('mobile') || !value) {
-			$('.js-s3d__slideModule').addClass('s3d-mobile')
+		if (!value) {
+			// $('.js-s3d__slideModule').addClass('s3d-mobile')
 			config.complex.imageUrl += 'mobile/'
+		}
+		if (isDevice('mobile')) {
+			$('.js-s3d__slideModule').addClass('s3d-mobile')
+			// config.complex.imageUrl += 'mobile/'
 		}
 
 		app = new App(config)
