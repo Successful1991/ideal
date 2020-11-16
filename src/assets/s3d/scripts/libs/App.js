@@ -253,18 +253,18 @@ class App {
 		this.filter = new Filter(this.config, this.flatList, this.flatListObj, this.showSvgIn3D)
 		this.getMinMaxParam(this.flatList)
 		this.filter.init(this.configProject)
-
+		// plannings должен быть выше favourites.  plannings создает элементы записывает ссылку в обьект, favourites обращается по этой ссылке к элементу.
+		const plannings = new Plannings({
+			wrap: '.js-s3d__pl__list',
+			data: this.flatListObj,
+			list: this.flatList,
+		})
 		const favourites = new Favourite({
 			wrap: '.js-s3d__fv tbody',
 			data: this.flatListObj,
 			list: this.flatList,
 		})
 
-		const plannings = new Plannings({
-			wrap: '.js-s3d__pl__list',
-			data: this.flatListObj,
-			list: this.flatList,
-		})
 		// $('.s3d-pl__filter').append($('.s3d-filter'))
 	}
 

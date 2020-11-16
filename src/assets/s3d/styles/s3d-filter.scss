@@ -214,6 +214,7 @@
           background: #EB8271;
         }
       }
+
       th{
         position: sticky;
         top: 0;
@@ -248,6 +249,12 @@
       input:checked + svg{
         fill: #EB8271;
         stroke: transparent;
+      }
+      .flat-active{
+        input:checked + svg{
+          fill: #1C4954;
+          stroke: transparent;
+        }
       }
       &__label{
         height: 100%;

@@ -68,6 +68,7 @@ class Slider {
 	}
 
 	init() {
+		console.log(DeviceMotionEvent)
 		if (isDevice('ios')) {
 			this.mouseSpeed = 0.5
 		}
@@ -78,6 +79,7 @@ class Slider {
 				leave: 'touchcancel',
 				move: 'touchmove',
 			}
+			// this.gyroscopeStart()
 		} else {
 			this.wrapper.on(`${this.eventsName.end} ${this.eventsName.leave}`, e => {
 				if (e.target.classList.contains('s3d__button') || e.target.classList.contains('s3d-infoBox__link')) return
@@ -158,6 +160,34 @@ class Slider {
 		//   class:'s3d__helper js-s3d__helper',
 		//   content: '<img src="/wp-content/themes/idealist/assets/s3d/images/icon/help-arrow.svg" class="s3d-arrow"/><img src="/wp-content/themes/idealist/assets/s3d/images/icon/help-logo.svg" class="s3d__helper-logo"/> <div class="s3d__helper__text">Оберіть </br>будинок</div>'
 		// });
+	}
+
+	gyroscopeStart() {
+		if (
+			DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function'
+		) {
+			DeviceMotionEvent.requestPermission()
+		}
+		// let isRunning = false
+		// if (isRunning) {
+		// 	// window.removeEventListener('devicemotion', handleMotion)
+		// 	window.removeEventListener('deviceorientation', this.gyroscope)
+		// 	isRunning = false
+		// } else {
+		// window.addEventListener('devicemotion', handleMotion)
+		window.addEventListener('deviceorientation', event => {
+			alert('event')
+			this.gyroscope(event)
+		})
+		// isRunning = true
+		// }
+	}
+
+	gyroscope(event) {
+		alert('gyroscope')
+		$('.gyroscope').html(`X-axis', ${event.alpha}
+								Y-axis', ${event.beta}
+								Z-axis', ${event.gamma}`)
 	}
 
 	setConfig(data) {
@@ -372,23 +402,20 @@ class Slider {
 
 	// подставляет данные в инфобокс
 	updateInfo(e) {
+		// передвигаем блок за мышкой
 	// const pos = $('.s3d__wrap').offset()
-	// положение курсора внутри элемента
 	// const Xinner = e.pageX - pos.left
 	// const Yinner = e.pageY - pos.top
 	// this.infoBox.css({ opacity: '1' })
 	// this.infoBox.css({ top: Yinner - 40 })
 	// this.infoBox.css({ left: Xinner })
-		console.log('updateInfo(e)', e)
+
 		if (this.infoBox.hasClass('s3d-infoBox-active')) {
 			return
 		} else if (!this.infoBox.hasClass('s3d-infoBox-hover')) {
 			this.infoBox.addClass('s3d-infoBox-hover')
 		}
-		// console.log('e.target', this)
-		// console.log('this.infoBox', this.infoBox)
 		if (this.openHouses.includes(+e.build)) {
-			// this.infoBox.data('id', e.id)
 			this.infoBox.find('.js-s3d-infoBox__table-number')[0].innerHTML = `${e.build || ''}`
 			this.infoBox.find('.js-s3d-infoBox__table-floor')[0].innerHTML = `${e.floor || ''}`
 			this.infoBox.find('.js-s3d-infoBox__table-room')[0].innerHTML = `${e.rooms || ''}`
@@ -399,9 +426,6 @@ class Slider {
 			this.infoBox.find('.js-s3d-infoBox__house')[0].innerHTML = 'Будинок не у продажу'
 			this.infoBox.find('.js-s3d-infoBox__floor')[0].style.display = 'none'
 		}
-		// this.infoBox.find('.js-s3d-infoBox__house span')[0].innerHTML = e.target.dataset.build || '';
-		// this.infoBox.find('.js-s3d-infoBox__section span')[0].innerHTML = e.target.dataset.section || '';
-		// this.infoBox.find('.js-s3d-infoBox__floor span')[0].innerHTML = e.target.dataset.floor || '';
 	}
 
 	updateInfoFloorList(e) {
@@ -521,6 +545,8 @@ class Slider {
 
 	// запускает callback (прокрутку слайда) пока активный слайд не совпадёт со следующим (выявленным заранее)
 	repeatChangeSlide(fn) {
+		this.rotate = false
+		$('.s3d__svg-container').css({ opacity: 0 })
 		return setInterval(() => {
 			fn()
 			if (this.activeElem === this.nextSlide) {
@@ -528,80 +554,39 @@ class Slider {
 				this.cancelAnimateSlide()
 				this.updateSvgActive(this.type, 'nextSlide')
 				this.activeSvg.css({ opacity: '' })
+				$('.s3d__svg-container').css({ opacity: 1 })
 				this.rotate = true
 			}
 		}, 30)
 	}
 
 	checkDirectionRotate(data) {
-		// console.log(data, this.rotate)
 		if (!this.rotate) return
-		this.rotate = false
+		// this.rotate = false
 		let direction = 'prev'
-		// console.log('checkDirectionRotate(data)', data.dataset.type)
 		if ((data && data.dataset && data.dataset.type === 'next')) {
 			direction = 'next'
 		} else if (!data && ((this.result.max - this.result.min) / 2) + this.result.min <= this.activeElem) {
 			direction = 'next'
-
 		}
-		// if (((this.result.max - this.result.min) / 2) + this.result.min <= this.activeElem) {
-		// 	direction = 'next'
-		// }
-		// console.log('checkDirectionRotate(data) ', direction)
 		this.checkResult(direction)
 	}
 
 	checkResult(type) {
-		// console.log('checkResult(type', type)
-		// const index = this.controlPoint.indexOf(this.activeElem)
-		// if (index === -1) {
 		this.rewindToPoint(this.controlPoint)
-		// console.log('-----==------', ((this.result.max - this.result.min) / 2) + this.result.min, ((this.result.max - this.result.min) / 2) + this.result.min <= this.activeElem)
 		if (type === 'next' || (type === undefined && ((this.result.max - this.result.min) / 2) + this.result.min <= this.activeElem)) {
 			this.nextSlide = this.controlPoint[0]
 			if (this.result.max <= this.numberSlide.max) {
-				console.log('checkResult(type)   this.result.max', this.result.max)
 				this.nextSlide = this.result.max
 			}
 			this.repeat = this.repeatChangeSlide(this.changeNext.bind(this))
 		} else {
 			this.nextSlide = this.controlPoint[this.controlPoint.length - 1]
 			if (this.result.min > this.numberSlide.min) {
-				console.log('checkResult(type)   this.result.min', this.result.min)
 				this.nextSlide = this.result.min
 			}
 			this.repeat = this.repeatChangeSlide(this.changePrev.bind(this))
 		}
-		// } else {
-		// 	if (type === 'next') {
-		// 		this.nextSlide = this.controlPoint[0]
-		// 		if (index < (this.controlPoint.length - 1)) {
-		// 			this.nextSlide = this.controlPoint[index + 1]
-		// 		}
-		// 		// this.nextSlide = this.controlPoint[0]
-		// 		// if (this.result.max <= this.numberSlide.max) {
-		// 		// 	this.nextSlide = this.result.max
-		// 		// }
-		// 		// console.log(558, this.currentSlide, this.nextSlide)
-		// 		this.repeat = this.repeatChangeSlide(this.changeNext.bind(this))
-		// 	} else {
-		// 		if (index === 0) {
-		// 			this.nextSlide = this.controlPoint[this.controlPoint.length - 1]
-		// 		} else {
-		// 			this.nextSlide = this.controlPoint[index - 1]
-		// 		}
-		// 		// if (this.result.min > this.numberSlide.min) {
-		// 		// 	this.nextSlide = this.result.min
-		// 		// } else {
-		// 		// 	this.nextSlide = this.controlPoint[this.controlPoint.length - 1]
-		// 		// }
-		// 		// console.log(566, this.currentSlide, this.nextSlide)
-		// 		this.repeat = this.repeatChangeSlide(this.changePrev.bind(this))
-		// 	}
-		// }
-		// console.log('checkResult   index', index)
-		console.log('checkResult   index', this.result)
 	}
 	// вычисляет ближайшую точку остановки и запускает прокрутку в нужную сторону
 	// checkResult() {
@@ -685,8 +670,6 @@ class Slider {
 			return true
 		}
 		return false
-		// this.result.min = this.activeElem - 1
-		// this.result.max = this.activeElem + 1
 	}
 
 	// right() {

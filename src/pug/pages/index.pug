@@ -47,7 +47,7 @@ block content
                                 span.s3d-pl__amount-flat__num.js-s3d__amount-flat__num 25
                                 | из
                                 span.s3d-pl__amount-flat__num.js-s3d__amount-flat__num-all 456
-                            .s3d-pl__favourites
+                            .s3d-pl__favourites.js-s3d-favorite__wrap.s3d-hidden
                                 | Избранное
                                 .s3d-pl__favourites-icon.js-s3d__favourites
                                     svg
@@ -55,48 +55,6 @@ block content
                                     span.s3d-pl__favourites-amount.js-s3d__favourites-amount 0
 
                             .s3d-pl__list.js-s3d__pl__list
-                                .s3d-pl__plane(data-id=1)
-                                    .s3d-pl__type тип 2А
-                                    img(src="assets/s3d/images/KV.png").s3d-pl__image
-                                    table.s3d-pl__table
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 134
-                                            td.s3d-pl__name № квартиры
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 4
-                                            td.s3d-pl__name Этаж
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 2
-                                            td.s3d-pl__name Комнаты
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 34
-                                            td.s3d-pl__name Площадь м2
-                                    .s3d-pl__buttons
-                                        a(href="#").s3d-pl__link Подробнее
-                                        button(type="button").s3d-pl__add-favourites.js-s3d-add__favourites
-                                            svg
-                                                use(xlink:href="#icon-favourites")
-                                .s3d-pl__plane(data-id=2)
-                                    .s3d-pl__type тип 2А
-                                    img(src="assets/s3d/images/KV.png").s3d-pl__image
-                                    table.s3d-pl__table
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 134
-                                            td.s3d-pl__name № квартиры
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 4
-                                            td.s3d-pl__name Этаж
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 2
-                                            td.s3d-pl__name Комнаты
-                                        tr.s3d-pl__row
-                                            td.s3d-pl__value 34
-                                            td.s3d-pl__name Площадь м2
-                                    .s3d-pl__buttons
-                                        a(href="#").s3d-pl__link Подробнее
-                                        button(type="button").s3d-pl__add-favourites.js-s3d-add__favourites
-                                            svg
-                                                use(xlink:href="#icon-favourites")
                         .s3d-pl__bottom
                             a(type="tel").s3d-tell.s3d-genplan
                                 .s3d-tell__icon-wrap
@@ -114,7 +72,7 @@ block content
 
                 .s3d-fv.js-s3d__fv
                     .s3d-fv__close.js-s3d__fv__close
-                    .s3d-fv__top
+                    .s3d-fv__top.js-s3d-favorite__wrap.s3d-hidden
                         .s3d-fv__title Избранное
                         .s3d-fv__favourites
                             | Избранное
@@ -158,8 +116,7 @@ block content
                     .translate-layer--4
                     .translate-layer--5
 
-
-
+                //.gyroscope dsfds
                 .s3d-filter-wrap.js-s3d-filter.plannings-filter
                     .s3d-filter
                         .s3d-filter__title Подбор по параметрам
@@ -203,7 +160,7 @@ block content
                                 svg( role="presentation")
                                     use(xlink:href="#icon-reset")
                             | Очистить фильтр
-                        .s3d__favourites.js-s3d__favourites
+                        .s3d__favourites.js-s3d__favourites.js-s3d-favorite__wrap.s3d-hidden
                             svg( role="presentation")
                                 use( xlink:href="#icon-favourites")
                             span.s3d__favourites-amount.js-s3d__favourites-amount 0

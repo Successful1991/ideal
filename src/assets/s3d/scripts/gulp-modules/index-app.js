@@ -43,3 +43,5 @@ function init() {
 		})
 	})
 }
+
+window.checkValue = val => !val || val === null || val === undefined || (typeof val === 'number' && isNaN(val))

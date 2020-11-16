@@ -366,6 +366,11 @@
     pointer-events: painted;
     z-index: 155;
   }
+
+  &-hidden{
+    pointer-events: none;
+    visibility: hidden;
+  }
 }
 
 #js-s3d{
@@ -774,3 +779,18 @@ body{
   }
 
 }
+
+
+//.gyroscope{
+//  position: fixed;
+//  top: 50%;
+//  left: 50%;
+//  display: block;
+//  width: 30vw;
+//  height: 40vh;
+//  background: #c1b1e9;
+//  font-size: 10px;
+//  color: #0b0b0b;
+//  transform: translate(-50%, -50%);
+//  z-index: 5665;
+//}
