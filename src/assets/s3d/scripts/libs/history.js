@@ -49,7 +49,6 @@ class History {
 	}
 
 	update(name) {
-		console.log('history 55')
 		this.history.push(name)
 	}
 }

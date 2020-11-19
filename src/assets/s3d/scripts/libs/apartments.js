@@ -28,9 +28,11 @@ class Apartments {
 			}
 		})
 
-		$('.js-s3d-flat__back').on('click', e => {
+		$('#js-s3d__apart').on('click', '.js-s3d-flat__back', e => {
 			// this.loader.show()
-			this.scrollBlock(e, 'complex')
+			console.log('back', e, this.activeFlat.value)
+			this.click(e, 'complex', this.activeFlat.value)
+			// this.scrollBlock(e, 'complex', this.activeFlat.value)
 		})
 	}
 
@@ -78,35 +80,43 @@ class Apartments {
 	getPlane(config) {
 		console.log('нужно раскоментировать')
 		console.log(config, 'config')
-		// this.setPlaneInPage(this.addHtmlAll(config))
-		$.ajax({
-			type: 'POST',
-			// url: '/inc/functions.php',
-			// url: './static/apPars.php',
-			url: '/wp-admin/admin-ajax.php',
-			data: `action=createFlat&id=${config.activeFlat.value}`,
-			success: response => (this.setPlaneInPage(response)),
-		})
+		this.setPlaneInPage(this.addHtmlAll(config))
+		// $.ajax({
+		// 	type: 'POST',
+		// 	// url: '/inc/functions.php',
+		// 	// url: './static/apPars.php',
+		// 	url: '/wp-admin/admin-ajax.php',
+		// 	data: `action=createFlat&id=${config.activeFlat.value}`,
+		// 	success: response => (this.setPlaneInPage(response)),
+		// })
 	}
 
 	// вставляем разметку в DOM вешаем эвенты
 	setPlaneInPage(response) {
 		$(`#js-s3d__${this.idCopmlex}`).html(JSON.parse(response))
 		this.loader.hide(this.type)
-		$('.flat-group2 ').on('click', 'polygon', this.openPopup)
-		$('.js-s3d__wrapper__apart .form-js').on('click', () => $('.common-form-popup-js').addClass('active'))
+		// $('.flat-group2 ').on('click', 'polygon', this.openPopup)
+		// $('.js-s3d__wrapper__apart .form-js').on('click', () => $('.common-form-popup-js').addClass('active'))
 		$('.js-flat-button-return').on('click', e => {
 			e.preventDefault()
-			$('.js-s3d-select__floor').click()
+			console.log(this.click)
+			this.click(e, 'complex', this.activeFlat.value)
+			// $('.js-s3d-select__floor').click()
 		})
 
-		$('.js-s3d-popup__mini-plan svg').on('click', 'polygon', e => {
-			this.activeSvg = $(e.target).closest('svg')
-			$(this.activeSvg).css({ fill: '' })
-			$('.s3d-floor__helper').css({ opacity: 0, top: '-10000px' })
-			this.click(e, 'floor')
-			// $('.js-s3d-popup__mini-plan').removeClass('active')
+		$('.s3d-flat__floor').on('click', 'a', event => {
+			event.preventDefault()
+			console.log(event)
+			this.getNewFlat(event.currentTarget.dataset.id)
 		})
+
+		// $('.js-s3d-popup__mini-plan svg').on('click', 'polygon', e => {
+		// 	this.activeSvg = $(e.target).closest('svg')
+		// 	$(this.activeSvg).css({ fill: '' })
+		// 	$('.s3d-floor__helper').css({ opacity: 0, top: '-10000px' })
+		// 	this.click(e, 'floor')
+		// 	// $('.js-s3d-popup__mini-plan').removeClass('active')
+		// })
 
 		$('.js-s3d__show-3d').on('click', event => {
 			this.click(event, 'complex', this.activeFlat.value)
@@ -123,19 +133,32 @@ class Apartments {
 		$('.js-s3d-popup__mini-plan__close').on('click', () => $('.js-s3d-popup__mini-plan').removeClass('active'))
 	}
 
-	updateFlat(flat) {
+	getNewFlat(id) {
+		$.ajax({
+			type: 'POST',
+			// url: '/inc/functions.php',
+			url: './static/apPars.php',
+			// url: '/wp-admin/admin-ajax.php',
+			data: `action=halfOfFlat&id=${id}`,
+		}).then(response => {
+			this.activeFlat.value = id
+			this.updateFlat(JSON.parse(response), id)
+		})
+	}
+
+	updateFlat(flat, id) {
 		const wrap = $('.js-s3d__wrapper__apart')
-		wrap.find('.js-s3d-flat__image').attr('src', flat.src)
-		wrap.find('.js-s3d-flat__table__subtitle').html(flat.area)
-		wrap.find('.js-s3d-flat__table__title').html(flat.name)
-		// сюда вывести список комнат с площадью
-		wrap.find('.js-s3d-flat__table__subtitle').html()
+		wrap.find('.js-s3d-flat__image').attr('src', flat.img)
+		wrap.find('.js-s3d-flat__left').html(flat['left_block'])
+		wrap.find('.js-s3d__create-pdf').attr('href', flat.pdf)
+		$('.u-svg-plan--active').removeClass('u-svg-plan--active')
+		wrap.find(`.s3d-flat__floor [data-id=${id}]`).addClass('u-svg-plan--active')
 	}
 
 	addHtmlAll(elem) {
 		return JSON.stringify(`
-			<div class="s3d-flat">
-              <div class="s3d-flat__left">
+			<div class="s3d-flat js-s3d-flat">
+              <div class="s3d-flat__left js-s3d-flat__left">
                 <div class="s3d-flat__mini-info">
                   <button class="s3d-flat__back js-s3d-flat__back" type="button">
                     <svg viewBox="0 0 9 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -269,11 +292,12 @@ class Apartments {
 </svg>
                 </div>
                 <div class="s3d-flat__links">
-                <a href="#"><img src="assets/s3d/images/icon/pdf.svg">скачать буклет</a>
-                <button type="button" class="js-s3d__show-3d"><img src="assets/s3d/images/icon/house.svg">посмотреть в 3D</button>
-                <button type="button" class="js-s3d-form--email__open"><img src="assets/s3d/images/icon/letter.svg">отправить на почту</button>
-                <button type="button" class="js-s3d-form--reservation__open"><img src="assets/s3d/images/icon/lock.svg">заявка на бронь</button>
-                <button type="button" class="js-s3d-add__favourites" data-id="${elem.id}"><img src="assets/s3d/images/icon/heart.svg">в избранное</button></div>
+                	<a href="#" class="js-s3d__create-pdf"><img src="assets/s3d/images/icon/pdf.svg">скачать буклет</a>
+                	<button type="button" class="js-s3d__show-3d"><img src="assets/s3d/images/icon/house.svg">посмотреть в 3D</button>
+                	<button type="button" class="js-s3d-form--email__open"><img src="assets/s3d/images/icon/letter.svg">отправить на почту</button>
+                	<button type="button" class="js-s3d-form--reservation__open"><img src="assets/s3d/images/icon/lock.svg">заявка на бронь</button>
+                	<button type="button" class="js-s3d-add__favourites" data-id="${elem.id}"><img src="assets/s3d/images/icon/heart.svg">в избранное</button>
+                </div>
               </div>
             </div>
 		`)

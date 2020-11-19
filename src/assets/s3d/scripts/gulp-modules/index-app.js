@@ -30,7 +30,8 @@ function init() {
 	new Promise(resolve => {
 		loader(resolve)
 	}).then(value => {
-		if (!value) {
+		// console.log('load', value)
+		if (!value.fastSpeed) {
 			// $('.js-s3d__slideModule').addClass('s3d-mobile')
 			config.complex.imageUrl += 'mobile/'
 		}
@@ -38,7 +39,8 @@ function init() {
 			$('.js-s3d__slideModule').addClass('s3d-mobile')
 			// config.complex.imageUrl += 'mobile/'
 		}
-
+		config.complex['browser'] = Object.assign(isBrowser(), value)
+		// console.log(config.complex['browser'])
 		app = new App(config)
 		app.init()
 

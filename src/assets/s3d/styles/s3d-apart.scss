@@ -25,7 +25,8 @@
     }
     &__image{
       display: block;
-      width: 80%;
+      max-width: 80%;
+      max-height: 80vh;
       margin: 0 auto;
     }
     &__mini-info{
@@ -176,6 +177,19 @@
       svg{
         width: 80%;
         height: 90%;
+      }
+      polygon{
+        fill: transparent;
+        stroke: none;
+        opacity: 0.7;
+        transition: all .3s ease-in;
+      }
+      a:hover polygon{
+        fill: #417bbf;
+      }
+
+      polygon.u-svg-plan--active{
+        fill: #EB8271;
       }
     }
 

@@ -3,12 +3,17 @@ function loader(callback) {
 	let i = 0 // start
 	const timesToTest = 5
 	const tThreshold = 70 // ms
-	const testImage = '/wp-content/themes/idealist/assets/s3d/images/idealist/complex/11.jpg' // small image in your server
+	const numImage = 11
+	const testImage = `/wp-content/themes/idealist/assets/s3d/images/idealist/complex/${numImage}.jpg` // small image in your server
 	const dummyImage = new Image()
 	let isConnectedFast = false
 
 	testLatency(avg => {
-		isConnectedFast = (avg <= tThreshold)
+		isConnectedFast = {
+			fastSpeed: (avg <= tThreshold),
+			time: tThreshold,
+			checkImage: numImage,
+		}
 		/** output */
 		callback(isConnectedFast)
 		return avg
@@ -20,6 +25,13 @@ function loader(callback) {
 		if (i < timesToTest - 1) {
 			dummyImage.src = `${testImage}?t=${tStart}`
 			dummyImage.onload = function () {
+				const tEnd = new Date().getTime()
+				const tTimeTook = tEnd - tStart
+				arrTimes[i] = tTimeTook
+				testLatency(cb)
+				i++
+			}
+			dummyImage.onerror = function () {
 				const tEnd = new Date().getTime()
 				const tTimeTook = tEnd - tStart
 				arrTimes[i] = tTimeTook

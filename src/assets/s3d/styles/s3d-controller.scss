@@ -127,11 +127,15 @@
       justify-content: flex-start;
       border: none;
 
-      background: #255763;
+      //background: #255763;
+      background: transparent;
+      //box-shadow: inset -210px 0 0 100px rgba(28, 73, 84, 1);
+      //background: linear-gradient(90deg, rgba(28, 73, 84, 1) 210px, #255763 210px);
+      //background-position-x: 0;
       cursor: pointer;
       pointer-events: painted;
       text-transform: uppercase;
-      transition: all .3s linear;
+      //transition: background-color 1.3s linear;
 
       &__icon{
         display: flex;
@@ -142,9 +146,7 @@
         align-items: center;
         flex: 0 0 auto;
 
-        background: rgba(0,0,0,0.22);
-        //background: #1C4954;
-
+        background: rgba(28, 73, 84, 1);
       }
 
       &__text{
@@ -167,22 +169,41 @@
         height: 20px;
         fill: $wc;
       }
-
+      &:after{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        background: rgba(28, 73, 84, 1);
+        transform: translate(-100%, 0);
+        transition: transform 0.4s ease-out;
+        z-index: -1;
+      }
+      &:before{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        background: #255763;
+        z-index: -2;
+      }
 
       &:hover {
-        background: #EB8271;
-        border-color: #EB8271;
-        //.s3d-controller__openFilter__icon{
-        //  background: #EB8271;
-        //}
-        svg{
-
-        }
+       &:after{
+         transform: translate(0, 0);
+       }
       }
     }
   }
 
 }
+
 
 @media screen and ( max-width : 1640px ) {
 

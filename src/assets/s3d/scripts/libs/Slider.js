@@ -1,6 +1,7 @@
 class Slider {
 	constructor(data) {
 		this.type = data.type
+		this.browser = data.browser
 		this.x = 0
 		this.pret = 0
 		this.card = 0
@@ -17,7 +18,7 @@ class Slider {
 		this.flagMouse = false
 		this.currentSlide = data.activeSlide
 		this.nextSlide = data.activeSlide
-		this.openHouses = [1]
+		// this.openHouses = [1]
 
 		this.eventsName = {
 			start: 'mousedown',
@@ -85,6 +86,7 @@ class Slider {
 				if (e.target.classList.contains('s3d__button') || e.target.classList.contains('s3d-infoBox__link')) return
 				this.activeAnimate(false)
 				this.amount = 0
+				// this.hoverFlatId = null
 				if (this.flagMouse) {
 					this.flagMouse = false
 					this.infoBoxHidden = false
@@ -110,6 +112,7 @@ class Slider {
 					if (!this.infoBoxHidden) {
 						this.hiddenInfo(e)
 						this.infoBoxHidden = true
+						this.hoverFlatId = null
 					}
 					this.activeSvg = $(e.target).closest('svg')
 					// this.activeSvg[0].style.opacity = 0
@@ -211,36 +214,17 @@ class Slider {
 		this.ctx.canvas.width = this.width
 		this.ctx.canvas.height = this.height
 		this.loadImage(0)
-		// for (let i = 0; i <= self.numberSlide.max; i++) {
-		// 	const img = new Image()
-		// 	img.src = `${self.imageUrl + i}.jpg`
-		// 	img.onload = function load() {
-		// 		index++
-		// 		self.images[i] = this
-		// 		if (i === self.activeElem) {
-		// 			// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
-		// 			// $('.s3d-filter__compass svg').css('transform','rotate('+ deg +'deg)');
-		// 			self.compass.save(self.activeElem)
-		// 			self.ctx.drawImage(this, 0, 0, self.width, self.height)
-		// 		}
-		// 		if (index === self.numberSlide.max) {
-		// 			self.resizeCanvas()
-		// 			setTimeout(() => {
-		// 				self.loader.hide(self.type, this.wrapper)
-		// 			}, 100)
-		// 		}
-		// 	}
-		// }
 		this.setActiveSvg(this.ActiveHouse.get())
 	}
 
-	loadImage(i) {
+	loadImage(i, type) {
+		// console.log('loadImage')
 		const self = this
 		const img = new Image()
 		const index = i
 		img.src = `${this.imageUrl + index}.jpg`
+		img.dataset.id = index
 		img.onload = function load() {
-			// index++
 			self.images[index] = this
 			if (index === self.activeElem) {
 				// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
@@ -248,17 +232,68 @@ class Slider {
 				self.compass.save(self.activeElem)
 				self.ctx.drawImage(this, 0, 0, self.width, self.height)
 			}
-			// console.log(index)
 			if (index === self.numberSlide.max) {
 				self.resizeCanvas()
 				setTimeout(() => {
 					console.log('ready')
-					self.loader.hide(self.type, this.wrapper)
+					self.loader.hide(self.type)
 				}, 100)
 				return index
 			}
 			return self.loadImage(i + 1)
 		}
+
+		img.onerror = function (e) {
+			// console.log('error')
+			// self.sendResponsiveError(this, self)
+			if (type === 'error') {
+				self.sendResponsiveError(this, self)
+			} else {
+				self.loadImage(+this.dataset.id, 'error')
+			}
+			// self.repeatLoadImage(this.dataset.id)
+		}
+	}
+
+	// repeatLoadImage(i) {
+	// 	console.log(this)
+	// 	const self = this
+	// 	const img = new Image()
+	// 	const index = i
+	// 	img.src = `${this.imageUrl + index}.jpg`
+	// 	img.onload = function load() {
+	// 		self.images[index] = this
+	// 		if (index === self.activeElem) {
+	// 			self.compass.save(self.activeElem)
+	// 			self.ctx.drawImage(this, 0, 0, self.width, self.height)
+	// 		}
+	// 		if (index === self.numberSlide.max) {
+	// 			self.resizeCanvas()
+	// 			setTimeout(() => {
+	// 				console.log('last img')
+	// 				self.loader.hide(self.type, self.wrapper)
+	// 			}, 100)
+	// 			return index
+	// 		}
+	// 		console.log('ready')
+	// 		return self.loadImage(i + 1)
+	// 	}
+	// 	img.onerror = this.sendResponsiveError
+	// }
+
+	sendResponsiveError(elem, self) {
+		const res = Object.assign(self.browser, {
+			project: 'idealist --wp',
+			url: elem.src || elem.dataset.id || 'пусто',
+			type: type || 'error',
+			text: 'new',
+		})
+		$.ajax('/wp-admin/admin-ajax.php', {
+			method: 'POST',
+			data: {
+				data: res, action: '3dDebuger',
+			},
+		}).then(resolve => console.log(resolve))
 	}
 
 	resizeCanvas() {
@@ -352,65 +387,12 @@ class Slider {
 	// start info functions ---------------
 	// создает блок с инфой
 	createInfo() {
-		const infoBox = createMarkup('div', '.js-s3d-controller', { class: 'js-s3d-infoBox s3d-infoBox' })
-		const infoBoxContent = `
-<!--<ul>-->
-<!--				<div class="s3d-infoBox s3d-infoBox-active">-->
-                <div class="s3d-infoBox__static">
-                  <div class="s3d-infoBox__icon"><img src="assets/s3d/images/icon/house.svg"></div>
-                  <div class="s3d-infoBox__text">выберите квартиру на доме</div>
-                </div>
-                <div class="s3d-infoBox__hover js-s3d-infoBox__hover">
-                  <div class="s3d-infoBox__icon"><img src="assets/s3d/images/icon/house.svg"></div>
-                  <div class="s3d-infoBox__text js-s3d-infoBox__hover__text">квартира №45</div>
-                </div>
-                <div class="s3d-infoBox__image">
-                  <div class="s3d-infoBox__close js-s3d-infoBox__close"></div>
-                  <div class="s3d-infoBox__type js-s3d-infoBox__type">тип 2А</div><img src="assets/s3d/images/KV.png" class="js-s3d-infoBox__image">
-                </div>
-                <div class="s3d-infoBox__table">
-                  <table>
-                    <tr>
-                      <td class="js-s3d-infoBox__table-number">134</td>
-                      <td>№ квартиры</td>
-                    </tr>
-                    <tr>
-                      <td class="js-s3d-infoBox__table-floor">4</td>
-                      <td>Этаж</td>
-                    </tr>
-                    <tr>
-                      <td class="js-s3d-infoBox__table-room">2</td>
-                      <td>Комнаты</td>
-                    </tr>
-                    <tr>
-                      <td class="js-s3d-infoBox__table-area">56</td>
-                      <td>Площадь м2</td>
-                    </tr>
-                  </table>
-                </div>
-                <div class="s3d-infoBox__buttons"><button type="button" class="s3d-infoBox__link">Подробнее</button>
-                  <button class="s3d-infoBox__add-favourites js-s3d-add__favourites" type="button">
-                    <svg>
-                      <use xlink:href="#icon-favourites"></use>
-                    </svg>
-                  </button>
-                </div>
-<!--              </div>-->
-
-
-<!--        <li class="js-s3d-infoBox__house s3d-infoBox__house">house: <span>5</span></li>-->
-<!--        &lt;!&ndash;<li class="js-s3d-infoBox__section">section: <span>7</span>&ndash;&gt;-->
-<!--        &lt;!&ndash;<li class="js-s3d-infoBox__apartments">apartments: <span>10</span></li>&ndash;&gt;-->
-<!--        <li class="js-s3d-infoBox__floor s3d-infoBox__floor">floor: <span>10</span></li>-->
-<!--    </ul>-->
-`
-		$(infoBox).append(infoBoxContent)
-		this.infoBox = $(infoBox)
+		this.infoBox = $('.js-s3d-infoBox')
 	}
 
 	// меняет состояние инфоблока на активный
 	setStateInfoActive(e) {
-		if (typeof +e.target.dataset.id !== 'number' || typeof +e.id !== 'number') {
+		if ((e.target.dataset && typeof +e.target.dataset.id !== 'number') || typeof +e.id !== 'number') {
 			return
 		}
 		if (!this.infoBox.hasClass('s3d-infoBox-active')) {
@@ -437,17 +419,19 @@ class Slider {
 		} else if (!this.infoBox.hasClass('s3d-infoBox-hover')) {
 			this.infoBox.addClass('s3d-infoBox-hover')
 		}
-		if (this.openHouses.includes(+e.build)) {
-			this.infoBox.find('.js-s3d-infoBox__table-number')[0].innerHTML = `${e.build || ''}`
-			this.infoBox.find('.js-s3d-infoBox__table-floor')[0].innerHTML = `${e.floor || ''}`
-			this.infoBox.find('.js-s3d-infoBox__table-room')[0].innerHTML = `${e.rooms || ''}`
-			this.infoBox.find('.js-s3d-infoBox__table-area')[0].innerHTML = `${e['all_room'] || ''}`
-			// this.infoBox.find('.js-s3d-infoBox__image')[0].src = `${e['img_big'] || ''}`
-			// this.infoBox.find('.js-s3d-infoBox__floor')[0].style.display = ''
-		} else {
-			this.infoBox.find('.js-s3d-infoBox__house')[0].innerHTML = 'Будинок не у продажу'
-			this.infoBox.find('.js-s3d-infoBox__floor')[0].style.display = 'none'
-		}
+		// if (this.openHouses.includes(+e.build)) {
+		this.infoBox.find('.js-s3d-infoBox__table-number')[0].innerHTML = `${e.build || ''}`
+		this.infoBox.find('.js-s3d-infoBox__table-floor')[0].innerHTML = `${e.floor || ''}`
+		this.infoBox.find('.js-s3d-infoBox__table-room')[0].innerHTML = `${e.rooms || ''}`
+		this.infoBox.find('.js-s3d-infoBox__type')[0].innerHTML = `${e.type || ''}`
+		this.infoBox.find('.js-s3d-infoBox__table-area')[0].innerHTML = `${e['all_room'] || ''}`
+		this.infoBox.find('.js-s3d-infoBox__image')[0].src = `${e['img_small'] || ''}`
+		this.infoBox.find('.js-s3d-infoBox__hover__text')[0].innerHTML = `${e.number || ''}`
+		// this.infoBox.find('.js-s3d-infoBox__floor')[0].style.display = ''
+		// } else {
+		// 	this.infoBox.find('.js-s3d-infoBox__house')[0].innerHTML = 'Будинок не у продажу'
+		// 	this.infoBox.find('.js-s3d-infoBox__floor')[0].style.display = 'none'
+		// }
 	}
 
 	updateInfoFloorList(e) {
@@ -458,11 +442,11 @@ class Slider {
 			this.updateInfoFloor(el, data)
 		})
 
-		if (this.openHouses.includes(+data.build)) {
-			$(`[data-build=${data.build}] .floor-text`).html(data.floor)
-		} else {
-			$(`[data-build=${data.build}] .floor-text`).html('будинок не у продажу')
-		}
+		// if (this.openHouses.includes(+data.build)) {
+		$(`[data-build=${data.build}] .floor-text`).html(data.floor)
+		// } else {
+		// 	$(`[data-build=${data.build}] .floor-text`).html('будинок не у продажу')
+		// }
 	}
 
 	// updateInfoFlatList(e) {
@@ -560,6 +544,9 @@ class Slider {
 			this.checkDirectionRotate() // test
 			// this.checkResult()
 		}
+		// this.hoverFlatId = +id
+		// this.infoBox.addClass('active')
+		this.infoBoxActive = true
 		this.updateActiveFlat(id)
 		this.updateInfo(this.getFlatObj(+id))
 		this.setStateInfoActive(this.getFlatObj(+id))

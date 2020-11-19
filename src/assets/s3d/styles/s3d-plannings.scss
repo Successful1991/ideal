@@ -40,7 +40,8 @@
   }
   &__plane{
     position: relative;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     flex: 1 1 auto;
     padding: 26px 15px 17px;
     background: #FFFFFF;
@@ -68,7 +69,8 @@
     display: block;
     width: initial;
     max-width: 100%;
-    margin: 0 auto;
+    max-height: 40vh;
+    margin: auto;
   }
   &__row{
     //display: flex;
@@ -117,11 +119,12 @@
     text-transform: uppercase;
     text-decoration: none;
     color: #FFFFFF;
-    transition: background-color .3s ease-out, letter-spacing .3s ease-out;
+    transition: box-shadow .3s ease-out;
     cursor: pointer;
     &:hover{
-      background: #1C4954;
-      letter-spacing: 0.28em;
+      //background: #1C4954;
+      //letter-spacing: 0.28em;
+      box-shadow: 0 4px 15px rgba(36, 22, 19, 0.3);
     }
     &:focus{
       outline: 1px solid #aaaaaa;
@@ -139,7 +142,7 @@
     border: none;
     padding: 0;
     cursor: pointer;
-    transition: background-color .3s ease-out;
+    transition: box-shadow .3s ease-out;
     //svg{
     //  height: 18px;
     //  width: 17px;
@@ -150,7 +153,8 @@
       display: none;
     }
     input:checked + svg{
-      fill: #1C4954;
+      fill: #FFFFFF;
+      //fill: #1C4954;
       stroke: transparent;
     }
 
@@ -164,12 +168,14 @@
       transition: stroke .3s ease-out, fill .3s ease-out;
     }
     &:hover{
-      background: #1C4954;
-      //svg{
-      //  stroke: #FFFFFF;
-      //}
+      //background: #1C4954;
+      box-shadow: 0 4px 15px rgba(122, 65, 56, 0.3);
+      svg{
+        fill: #FFFFFF;
+      }
       & input:checked + svg{
-        fill: #E46C59;
+        fill: #FFFFFF;
+        //fill: #E46C59;
       }
     }
   }

@@ -125,7 +125,7 @@ class Favourite {
             </svg>
           </button>
         </td>
-        tr>
+        <tr>
 		`
 	}
 

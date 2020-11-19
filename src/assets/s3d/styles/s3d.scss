@@ -257,38 +257,6 @@
     text-transform: uppercase;
     transition: all .4s linear;
     cursor: pointer;
-    //span {
-    //  margin: 0 0 0 10px;
-    //}
-    //
-    //svg {
-    //  fill: transparent;
-    //  stroke: $--bg;
-    //}
-    //
-    //svg.icon-cube {
-    //  fill: $--bg;
-    //  stroke: transparent;
-    //}
-    //
-    //&__head {
-    //  display: flex;
-    //  justify-content: center;
-    //  width: 200px;
-    //  height: 50px;
-    //  margin-bottom: 20px;
-    //  align-items: center;
-    //  background: $--bg;
-    //  cursor: pointer;
-    //}
-    //
-    //&__number {
-    //  font-size: 10px;
-    //  font-weight: 600;
-    //  line-height: 1.6em;
-    //  margin-right: 10px;
-    //  text-transform: uppercase;
-    //}
 
     &.active {
       cursor: no-drop;
@@ -308,7 +276,7 @@
     }
 
     &:hover:not( .active ):not( [ disabled ] ) {
-      background:rgba(37, 87, 99, 0.7);
+      background: #EB8271;
       color: rgba(255,255,255,1)
     }
 

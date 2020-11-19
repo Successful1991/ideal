@@ -18,6 +18,8 @@ class Filter {
 		this.flatListObj = dataObj
 		this.currentAmountFlat = data.length
 		this.selectFlat = selectFlat
+		this.hidden = this.hidden.bind(this)
+		this.show = this.show.bind(this)
 	}
 
 	init(config) {

@@ -120,6 +120,7 @@ class App {
 		// });
 
 		$('.js-s3d-controller__elem').on('click', '.s3d-select', e => {
+			console.log('click\', \'.s3d-select')
 			const { type } = e.currentTarget.dataset
 			if (type && type !== this.activeSection) {
 				this.history.update(type)
@@ -154,8 +155,10 @@ class App {
 	}
 
 	scrollBlock(e, active) {
-		console.log('scrolltoblock')
-		this.filter.hidden()
+		if (this.filter) {
+			this.filter.hidden()
+		}
+
 		const ind = this.activeSectionList.findIndex(el => { if (el === active) return true })
 		if (this.animateFlag && this.activeSectionList.length >= 2) {
 			this.complex.hiddenInfo()
@@ -206,7 +209,7 @@ class App {
 		// 	type: 'POST',
 		// 	data: 'action=getFlats',
 		// 	success: response => {
-		// 		// callback(JSON.parse(response))
+		// 		callback(JSON.parse(response))
 		// 	},
 		// })
 		$.ajax({
@@ -241,7 +244,7 @@ class App {
 	filterInit(data) {
 		// this.filter = new Filter(this.config, data)
 		const list = {}
-		const flats = data.data.filter(el => {
+		const flats = data.filter(el => {
 			if (el['type_object'] === '1') {
 				list[el.id] = el
 				return el
@@ -360,7 +363,10 @@ class App {
 	}
 
 	scrollToBlock(time = 0) {
-		this.filter.hidden()
+		console.log(this)
+		if (this.filter) {
+			this.filter.hidden()
+		}
 		return block => {
 			$(`.js-s3d-select__${this.activeSection}`).removeClass('active')
 			$(`.js-s3d-select__${block}`).addClass('active')

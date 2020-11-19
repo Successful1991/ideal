@@ -92,8 +92,8 @@
         background: transparent;
         transition: background-color .3s ease-in, color .3s ease-in;
         &:hover {
-          background: #34889c;
-          color: #ffffff;
+          background: #ffffff;
+          color: rgba(28, 73, 84, 1);
         }
       }
     }
@@ -192,14 +192,20 @@
       tbody{
         width: 100%;
         tr{
-          &:hover{
+          &:hover:not(.active-flat){
             background: #1C4954;
             *{
               color: #FFFFFF;
             }
             svg{
               stroke: #ffffff;
+              fill: #ffffff;
             }
+            input:checked + svg{
+              fill: #EB8271;
+              stroke: transparent;
+            }
+
           }
         }
       }
