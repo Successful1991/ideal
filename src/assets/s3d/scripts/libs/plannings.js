@@ -3,12 +3,21 @@ class Plannings {
 		this.list = conf.list
 		this.listObj = conf.data
 		this.wrap = conf.wrap
-		this.createList(this.list, this.wrap)
+		this.inApart = conf.click
+		this.activeFlat = conf.activeFlat
+		this.init()
 	}
 
-	// init() {
-	//
-	// }
+	init() {
+		this.createList(this.list, this.wrap)
+		$('.js-s3d__pl__list').on('click', '.js-s3d-pl__link', event => {
+			console.log(($(event.currentTarget).closest('.s3d-pl__plane').data('id')))
+			console.log(this.inApart)
+			const id = $(event.currentTarget).closest('.s3d-pl__plane').data('id')
+			this.activeFlat.value = id
+			this.inApart(id, 'apart', id)
+		})
+	}
 
 	createList(data, wrap) {
 		const result = []
@@ -21,7 +30,6 @@ class Plannings {
 	}
 
 	createCard(el) {
-		console.log('createCard(el)', el)
 		const div = document.createElement('div')
 		div.dataset.id = el.id
 		div.classList = 's3d-pl__plane'
@@ -45,7 +53,7 @@ class Plannings {
             <td class="s3d-pl__name">Площадь м2</td>
           </tr>
         </tbody></table>
-        <div class="s3d-pl__buttons"><button type="button" class="s3d-pl__link">Подробнее</button>
+        <div class="s3d-pl__buttons"><button type="button" class="s3d-pl__link js-s3d-pl__link">Подробнее</button>
           <label data-id="${el.id}" class="s3d-pl__add-favourites js-s3d-add__favourites">
           	<input type="checkbox">
             <svg>

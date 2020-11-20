@@ -1,4 +1,7 @@
 .s3d-fv{
+  position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
   height: 100%;
   width: 100%;
@@ -6,6 +9,7 @@
   flex-direction: column;
   background: #E5E5E5;
   opacity: 0;
+  z-index: 2;
   transition: opacity 0.6s cubic-bezier(.38,.43,.38,1);
   &__title{
     font-family: Gilroy;
@@ -165,6 +169,7 @@
   &__mouse{
     display: flex;
     align-items: center;
+    text-decoration: underline;
     margin-right: 40px;
     svg{
       width: 15px;

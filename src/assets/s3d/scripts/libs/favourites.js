@@ -11,6 +11,7 @@ class Favourite {
 
 		$('.js-s3d__slideModule').on('change', '.js-s3d-add__favourites', event => {
 			const id = $(event.currentTarget).data('id')
+			console.log('id', id)
 			if (checkValue(id)) return
 			if (event.target.checked) {
 				this.addStorage(id)
@@ -111,7 +112,7 @@ class Favourite {
 	createElemHtml(el) {
 		return `
 			<tr class="s3d-fv__element js-s3d-fv__element" data-id=${el.id}>
-        <td><img class="s3d-fv__image" src="${el.img_big}"></td>
+        <td><img class="s3d-fv__image" src="${el['img_small']}"></td>
 <!--        <td><img class="s3d-fv__image" src="wp-content/themes/idealist/assets/s3d/images/KV.png"></td>-->
         <td>${el.number}</td>
         <td>${el.type}</td>

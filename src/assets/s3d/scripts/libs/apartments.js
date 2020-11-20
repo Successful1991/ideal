@@ -30,8 +30,8 @@ class Apartments {
 
 		$('#js-s3d__apart').on('click', '.js-s3d-flat__back', e => {
 			// this.loader.show()
-			console.log('back', e, this.activeFlat.value)
-			this.click(e, 'complex', this.activeFlat.value)
+			console.log('back', e, +e.currentTarget.dataset.id, this.activeFlat.value)
+			this.click(+e.currentTarget.dataset.id, 'complex', this.activeFlat.value)
 			// this.scrollBlock(e, 'complex', this.activeFlat.value)
 		})
 	}
@@ -79,28 +79,27 @@ class Apartments {
 	// получаем разметку квартиры с планом этажа
 	getPlane(config) {
 		console.log('нужно раскоментировать')
-		console.log(config, 'config')
-		this.setPlaneInPage(this.addHtmlAll(config))
-		// $.ajax({
-		// 	type: 'POST',
-		// 	// url: '/inc/functions.php',
-		// 	// url: './static/apPars.php',
-		// 	url: '/wp-admin/admin-ajax.php',
-		// 	data: `action=createFlat&id=${config.activeFlat.value}`,
-		// 	success: response => (this.setPlaneInPage(response)),
-		// })
+		// this.setPlaneInPage(this.addHtmlAll(config))
+		$.ajax({
+			type: 'POST',
+			// url: '/inc/functions.php',
+			// url: './static/apPars.php',
+			url: '/wp-admin/admin-ajax.php',
+			data: `action=createFlat&id=${config.activeFlat.value}`,
+			success: response => (this.setPlaneInPage(response)),
+		})
 	}
 
 	// вставляем разметку в DOM вешаем эвенты
 	setPlaneInPage(response) {
+		console.log(response)
 		$(`#js-s3d__${this.idCopmlex}`).html(JSON.parse(response))
 		this.loader.hide(this.type)
 		// $('.flat-group2 ').on('click', 'polygon', this.openPopup)
 		// $('.js-s3d__wrapper__apart .form-js').on('click', () => $('.common-form-popup-js').addClass('active'))
 		$('.js-flat-button-return').on('click', e => {
 			e.preventDefault()
-			console.log(this.click)
-			this.click(e, 'complex', this.activeFlat.value)
+			this.click(e.currentTarget.dataset.id, 'complex', this.activeFlat.value)
 			// $('.js-s3d-select__floor').click()
 		})
 
@@ -119,7 +118,7 @@ class Apartments {
 		// })
 
 		$('.js-s3d__show-3d').on('click', event => {
-			this.click(event, 'complex', this.activeFlat.value)
+			this.click(event.currentTarget.dataset.id, 'complex', this.activeFlat.value)
 		})
 
 		// меняет непонятные символы в ссылке
@@ -137,8 +136,8 @@ class Apartments {
 		$.ajax({
 			type: 'POST',
 			// url: '/inc/functions.php',
-			url: './static/apPars.php',
-			// url: '/wp-admin/admin-ajax.php',
+			// url: './static/apPars.php',
+			url: '/wp-admin/admin-ajax.php',
 			data: `action=halfOfFlat&id=${id}`,
 		}).then(response => {
 			this.activeFlat.value = id
@@ -275,7 +274,7 @@ class Apartments {
               </div>
               <div class="s3d-flat__center"><img class="s3d-flat__image" src="assets/s3d/images/KV.png"></div>
               <div class="s3d-flat__right">
-                <div class="s3d-flat__favourites">Избранное
+                <div class="s3d-flat__favourites js-s3d-favorite__wrap s3d-hidden">Избранное
                   <div class="s3d-flat__favourites-icon js-s3d__favourites">
                     <svg>
                       <use xlink:href="#icon-favourites"></use>

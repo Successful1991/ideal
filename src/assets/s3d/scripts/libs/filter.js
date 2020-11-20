@@ -18,6 +18,8 @@ class Filter {
 		this.flatListObj = dataObj
 		this.currentAmountFlat = data.length
 		this.selectFlat = selectFlat
+		this.addBlur = config.addBlur
+		// this.unActive = config.unActive
 		this.hidden = this.hidden.bind(this)
 		this.show = this.show.bind(this)
 	}
@@ -77,6 +79,8 @@ class Filter {
 
 	// запускает фильтр квартир
 	filterFlatStart() {
+		this.addBlur('.js-s3d-filter__table')
+		this.addBlur('.s3d-pl__right')
 		this.showSvgSelect(this.applyFilter(this.flatList))
 	}
 

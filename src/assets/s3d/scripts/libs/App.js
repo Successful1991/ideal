@@ -16,7 +16,7 @@ class App {
 				$('.fs-preloader-bg').css({ filter: 'blur(10px)' })
 			},
 			hide: block => {
-				if (block) this.scrollToBlock(0)(block)
+				if (block) this.scrollToBlock(700)(block)
 
 				setTimeout(() => {
 					$('.fs-preloader').removeClass('preloader-active')
@@ -39,6 +39,9 @@ class App {
 		// this.changeCurrentFloor = this.changeCurrentFloor.bind(this);
 		this.scrollToBlock = this.scrollToBlock.bind(this)
 		this.showSvgIn3D = this.showSvgIn3D.bind(this)
+		this.selectSlider = this.selectSlider.bind(this)
+		this.unActive = this.unActive.bind(this)
+		this.addBlur = this.addBlur.bind(this)
 		// this.animateBlock = this.animateBlock.bind(this);
 		this.ActiveHouse = {
 			get: () => this.activeHouse,
@@ -77,11 +80,12 @@ class App {
 
 	init() {
 		this.history = new History({ scrollToBlock: this.scrollToBlock, animateBlock: this.animateBlock })
+		// this.history = new History({ scrollToBlock: this.scrollToBlock })
 		this.history.init()
 
-		this.getFlatList('/wp-content/themes/idealist/static/flats.json', this.filterInit)
+		// this.getFlatList('/wp-content/themes/idealist/static/flats.json', this.filterInit)
 		// this.getFlatList('static/apPars.php', this.filterInit)
-		// this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
+		this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
 
 		this.loader.show()
 		const config = this.config.complex
@@ -93,6 +97,9 @@ class App {
 		config.loader = this.loader
 		config.ActiveHouse = this.ActiveHouse
 		config.compass = this.compass
+		config.addBlur = this.addBlur
+		config.unActive = this.unActive
+
 		this.createWrap(config, 'canvas')
 		this.complex = new Slider(config)
 		this.complex.init()
@@ -120,7 +127,6 @@ class App {
 		// });
 
 		$('.js-s3d-controller__elem').on('click', '.s3d-select', e => {
-			console.log('click\', \'.s3d-select')
 			const { type } = e.currentTarget.dataset
 			if (type && type !== this.activeSection) {
 				this.history.update(type)
@@ -204,21 +210,21 @@ class App {
 	}
 
 	getFlatList(url, callback) {
-		// $.ajax({
-		// 	url,
-		// 	type: 'POST',
-		// 	data: 'action=getFlats',
-		// 	success: response => {
-		// 		callback(JSON.parse(response))
-		// 	},
-		// })
 		$.ajax({
 			url,
-			type: 'GET',
+			type: 'POST',
+			data: 'action=getFlats',
 			success: response => {
-				callback(response)
+				callback(JSON.parse(response))
 			},
 		})
+		// $.ajax({
+		// 	url,
+		// 	type: 'GET',
+		// 	success: response => {
+		// 		callback(response)
+		// 	},
+		// })
 	}
 
 	getFlatObj(id) {
@@ -253,6 +259,7 @@ class App {
 		})
 		this.flatListObj = list
 		this.flatList = flats
+		this.config['addBlur'] = this.addBlur
 		this.filter = new Filter(this.config, this.flatList, this.flatListObj, this.showSvgIn3D)
 		this.getMinMaxParam(this.flatList)
 		this.filter.init(this.configProject)
@@ -261,6 +268,8 @@ class App {
 			wrap: '.js-s3d__pl__list',
 			data: this.flatListObj,
 			list: this.flatList,
+			click: this.selectSlider,
+			activeFlat: this.activeFlat,
 		})
 		const favourites = new Favourite({
 			wrap: '.js-s3d__fv tbody',
@@ -274,7 +283,7 @@ class App {
 	createWrap(conf, tag) {
 		// const wrap = createMarkup('div', `#${conf.id}`, { class: `s3d__wrap js-s3d__wrapper__${conf.idCopmlex} s3d__wrapper__${conf.idCopmlex}` })
 		// const wrap2 = createMarkup('div',`#${conf.id}`, { id: `js-s3d__wrapper__${conf.idCopmlex}`, style: 'position:relative;' })
-		createMarkup(tag, $(`.js-s3d__wrapper__${conf.idCopmlex}`), { id: `js-s3d__${conf.idCopmlex}` })
+		createMarkup(tag, $(`.js-s3d__wrapper__${conf.idCopmlex}`), { class: `js-s3d__${conf.idCopmlex}`, id: `js-s3d__${conf.idCopmlex}` })
 	}
 	// createWrap(conf, tag) {
 	// 	const wrap = createMarkup('div', `#${conf.id}`, { class: `s3d__wrap js-s3d__wrapper__${conf.idCopmlex} s3d__wrapper__${conf.idCopmlex}` })
@@ -282,22 +291,24 @@ class App {
 	// 	createMarkup(tag, wrap2, { id: `js-s3d__${conf.idCopmlex}` })
 	// }
 
-	selectSlider(e, type, numSlide) {
-		// console.log('selectSlider(e, type)', e, type, numSlide)
+	selectSlider(id, type, numSlide) {
+		console.log('selectSlider(id, type,')
+		console.log(id, type)
 		// const houseNum = e.currentTarget.dataset.build || e.currentTarget.value
-		this.loader.show()
+		// this.loader.show()
+		this.animateBlock('translate', 'down')
 		switch (type) {
 		case 'complex':
 			// this.selectSliderType(e, 'house', Slider)
 			// this.selectSliderType(e, 'floor', Layout)
-			this.selectSliderType(e, type, Layout, numSlide)
+			this.selectSliderType(id, type, Layout, numSlide)
 			break
 			// case 'house':
 			//     this.selectSliderType(e, 'floor', Layout);
 			//     break;
 		case 'apart':
-			$('.fs-preloader').addClass('s3d-preloader__full')
-			this.selectSliderType(e, type, Apartments)
+			// $('.fs-preloader').addClass('s3d-preloader__full')
+			this.selectSliderType(id, type, Apartments)
 			break
 		default:
 			break
@@ -305,7 +316,7 @@ class App {
 		this.resize()
 	}
 
-	selectSliderType(e, type, Fn, idApart) {
+	selectSliderType(id, type, Fn, idApart) {
 		let config
 		this.history.update(type)
 		// console.log('selectSliderType(e, type, Fn)', type)
@@ -322,7 +333,7 @@ class App {
 			// if (e.currentTarget.dataset.section) config.section = e.currentTarget.dataset.section
 			// if (e.currentTarget.dataset.floor) config.floor = e.currentTarget.dataset.floor
 			// if(e.currentTarget.dataset.id) config.flat = e.currentTarget.dataset.id;
-			if (e.currentTarget.dataset.flat_id) config.flat = e.currentTarget.dataset.flat_id
+			if (id) config.flat = id
 		}
 
 		config.idCopmlex = type
@@ -333,7 +344,11 @@ class App {
 		config.ActiveHouse = this.ActiveHouse
 		config.activeFlat = this.activeFlat
 		config.compass = this.compass
+		config.addBlur = this.addBlur
+		config.unActive = this.unActive
+
 		if ($(`#js-s3d__${type}`).length > 0) {
+			console.log('if ($(`#js-s3d__${type}`).length > 0) {', type, idApart)
 			this[type].update(config)
 			if (idApart) {
 				this[type].toSlideNum(idApart)
@@ -341,7 +356,7 @@ class App {
 			// this.activeSectionList.push(config.idCopmlex);
 		} else {
 			console.log('else')
-			config.click = this.selectSlider.bind(this)
+			config.click = this.selectSlider
 			config.scrollBlock = this.scrollBlock.bind(this)
 			this.createWrap(config, type !== 'house' ? 'div' : 'canvas')
 			this[type] = new Fn(config)
@@ -380,7 +395,6 @@ class App {
 			setTimeout(() => {
 				switch (block) {
 				case 'apart':
-					console.log('scrollToBlock', this.complex)
 					this.complex.hiddenInfo()
 					this.complex.hiddenInfoFloor()
 					this.compass.save(this.compass.current)
@@ -434,6 +448,17 @@ class App {
 		layers[0].classList.add(`translate-layer__${clas}`)
 		setTimeout(() => layers[0].classList.add('active'), 100)
 		setTimeout(() => this.animateFlag = true, 1000)
+	}
+
+	unActive() {
+		$('.js-s3d__slideModule').removeClass('s3d-unActive')
+	}
+
+	addBlur(wrap, time) {
+		$(wrap).addClass('s3d-blur')
+		setTimeout(() => {
+			$(wrap).removeClass('s3d-blur')
+		}, time || 700)
 	}
 
 	// helpsInfo(){

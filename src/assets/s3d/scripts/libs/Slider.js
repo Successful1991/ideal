@@ -48,24 +48,20 @@ class Slider {
 		this.activeFloor = null
 		this.rotate = true
 		this.animates = () => {}
-
-		// this.updateInfo = this.updateInfo.bind(this);
-		// this.hiddenInfo = this.hiddenInfo.bind(this);
 		this.ActiveHouse = data.ActiveHouse
 		this.resize = this.resize.bind(this)
 		this.init = this.init.bind(this)
 		this.click = data.click
 		this.getFlatObj = data.getFlatObj
 		this.setActiveSvg = this.setActiveSvg.bind(this)
-		// this.mouseEventMove = this.mouseEventMove.bind(this);
 		this.activeFlat = data.activeFlat
 		this.compass = data.compass
-		// this.left = this.left.bind(this)
-		// this.right = this.right.bind(this)
 		this.changeNext = this.changeNext.bind(this)
 		this.changePrev = this.changePrev.bind(this)
 		this.updateActiveFlat = this.updateActiveFlat.bind(this)
 		this.loader = data.loader
+		this.addBlur = data.addBlur
+		this.unActive = data.unActive
 		this.loadImage = this.loadImage.bind(this)
 	}
 
@@ -86,7 +82,6 @@ class Slider {
 				if (e.target.classList.contains('s3d__button') || e.target.classList.contains('s3d-infoBox__link')) return
 				this.activeAnimate(false)
 				this.amount = 0
-				// this.hoverFlatId = null
 				if (this.flagMouse) {
 					this.flagMouse = false
 					this.infoBoxHidden = false
@@ -124,18 +119,21 @@ class Slider {
 					this.hoverFlatId = +e.target.dataset.id
 					this.updateInfo(this.getFlatObj(+e.target.dataset.id))
 				} else if (!this.infoBoxActive) {
+					this.hoverFlatId = null
 					this.hiddenInfo(e)
 				}
 			})
 		}
-		this.updateImage()
+		// this.updateImage()
+		this.firstLoadImage()
 
 		this.wrapper.on('click', 'polygon', e => {
 			e.preventDefault()
 			this.infoBoxActive = true
-			this.setStateInfoActive(e)
+			this.setStateInfoActive(this.getFlatObj(e.target.dataset.id))
 			$('.js-s3d__svgWrap .active-flat').removeClass('active-flat')
 			$(e.target).addClass('active-flat')
+			$('.js-s3d-filter__table .active-flat').removeClass('active-flat')
 			$(`.js-s3d-filter__table [data-id=${e.target.dataset.id}]`).addClass('active-flat')
 			this.activeSvg = $(e.target).closest('svg')
 
@@ -151,9 +149,10 @@ class Slider {
 		})
 		this.infoBox.on('click', '.s3d-infoBox__link', event => {
 			event.preventDefault()
+			// this.loader.show()
 			this.activeFlat.value = event.target.dataset.id
 			// this.click(event, this.type)
-			this.click(event, 'apart', event.target.dataset.id)
+			this.click(event.currentTarget.dataset.id, 'apart', event.currentTarget.dataset.id)
 		})
 		$('.js-s3d__wrap').scrollLeft($('.js-s3d__wrap').width() / 4)
 
@@ -211,14 +210,38 @@ class Slider {
 
 	// обновить картинки в канвасе
 	updateImage() {
+		console.log('updateImage()')
 		this.ctx.canvas.width = this.width
 		this.ctx.canvas.height = this.height
-		this.loadImage(0)
+		this.loadImage(0, 'complex')
 		this.setActiveSvg(this.ActiveHouse.get())
 	}
 
+	firstLoadImage() {
+		$('.js-s3d__slideModule').addClass('s3d-unActive')
+		this.ctx.canvas.width = this.width
+		this.ctx.canvas.height = this.height
+		const self = this
+		const img = new Image()
+		const index = this.activeElem
+		img.src = `${this.imageUrl + index}.jpg`
+		img.dataset.id = index
+		img.onload = function load() {
+			console.log('first load', index)
+			self.images[index] = this
+			// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
+			// $('.s3d-filter__compass svg').css('transform','rotate('+ deg +'deg)');
+			self.compass.save(index)
+			self.ctx.drawImage(this, 0, 0, self.width, self.height)
+			self.loader.hide(self.type)
+			self.rotate = false
+			self.resizeCanvas()
+			self.loadImage(0)
+		}
+	}
+
 	loadImage(i, type) {
-		// console.log('loadImage')
+		console.log('loadImage')
 		const self = this
 		const img = new Image()
 		const index = i
@@ -226,18 +249,21 @@ class Slider {
 		img.dataset.id = index
 		img.onload = function load() {
 			self.images[index] = this
-			if (index === self.activeElem) {
-				// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
-				// $('.s3d-filter__compass svg').css('transform','rotate('+ deg +'deg)');
-				self.compass.save(self.activeElem)
-				self.ctx.drawImage(this, 0, 0, self.width, self.height)
-			}
+			// if (index === self.activeElem) {
+			// 	// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
+			// 	// $('.s3d-filter__compass svg').css('transform','rotate('+ deg +'deg)');
+			// 	self.compass.save(self.activeElem)
+			// 	self.ctx.drawImage(this, 0, 0, self.width, self.height)
+			// }
 			if (index === self.numberSlide.max) {
 				self.resizeCanvas()
+				self.ctx.drawImage(self.images[self.activeElem], 0, 0, self.width, self.height)
 				setTimeout(() => {
-					console.log('ready')
+					console.log('ready', self)
+					self.unActive()
 					self.loader.hide(self.type)
 				}, 100)
+				self.rotate = true
 				return index
 			}
 			return self.loadImage(i + 1)
@@ -254,32 +280,6 @@ class Slider {
 			// self.repeatLoadImage(this.dataset.id)
 		}
 	}
-
-	// repeatLoadImage(i) {
-	// 	console.log(this)
-	// 	const self = this
-	// 	const img = new Image()
-	// 	const index = i
-	// 	img.src = `${this.imageUrl + index}.jpg`
-	// 	img.onload = function load() {
-	// 		self.images[index] = this
-	// 		if (index === self.activeElem) {
-	// 			self.compass.save(self.activeElem)
-	// 			self.ctx.drawImage(this, 0, 0, self.width, self.height)
-	// 		}
-	// 		if (index === self.numberSlide.max) {
-	// 			self.resizeCanvas()
-	// 			setTimeout(() => {
-	// 				console.log('last img')
-	// 				self.loader.hide(self.type, self.wrapper)
-	// 			}, 100)
-	// 			return index
-	// 		}
-	// 		console.log('ready')
-	// 		return self.loadImage(i + 1)
-	// 	}
-	// 	img.onerror = this.sendResponsiveError
-	// }
 
 	sendResponsiveError(elem, self) {
 		const res = Object.assign(self.browser, {
@@ -391,21 +391,27 @@ class Slider {
 	}
 
 	// меняет состояние инфоблока на активный
-	setStateInfoActive(e) {
-		if ((e.target.dataset && typeof +e.target.dataset.id !== 'number') || typeof +e.id !== 'number') {
-			return
-		}
+	setStateInfoActive(elem) {
+		console.log('setStateInfoActiv', elem)
+		// if ((e.target && e.target.dataset && typeof +e.target.dataset.id !== 'number') || typeof +e.id !== 'number') {
+		// 	return
+		// }
+		this.addBlur('.js-s3d-infoBox', 500)
 		if (!this.infoBox.hasClass('s3d-infoBox-active')) {
 			this.infoBox.addClass('s3d-infoBox-active')
 		}
 		if (this.infoBox.hasClass('s3d-infoBox-hover')) {
 			this.infoBox.removeClass('s3d-infoBox-hover')
 		}
-		this.infoBox.find('.s3d-infoBox__link')[0].dataset.id = e.target.dataset.id
+		setTimeout(() => {
+			this.infoBox.find('.s3d-infoBox__link')[0].dataset.id = elem.id
+			this.infoBox.find('.s3d-infoBox__add-favourites')[0].dataset.id = elem.id
+			this.updateInfo(elem, true)
+		}, 300)
 	}
 
 	// подставляет данные в инфобокс
-	updateInfo(e) {
+	updateInfo(e, ignore) {
 		// передвигаем блок за мышкой
 	// const pos = $('.s3d__wrap').offset()
 	// const Xinner = e.pageX - pos.left
@@ -414,13 +420,14 @@ class Slider {
 	// this.infoBox.css({ top: Yinner - 40 })
 	// this.infoBox.css({ left: Xinner })
 
-		if (this.infoBox.hasClass('s3d-infoBox-active')) {
+		if (this.infoBox.hasClass('s3d-infoBox-active') && !ignore) {
 			return
 		} else if (!this.infoBox.hasClass('s3d-infoBox-hover')) {
 			this.infoBox.addClass('s3d-infoBox-hover')
 		}
+		console.log(e, 'sdfgsdfdsfg')
 		// if (this.openHouses.includes(+e.build)) {
-		this.infoBox.find('.js-s3d-infoBox__table-number')[0].innerHTML = `${e.build || ''}`
+		this.infoBox.find('.js-s3d-infoBox__table-number')[0].innerHTML = `${e.number || ''}`
 		this.infoBox.find('.js-s3d-infoBox__table-floor')[0].innerHTML = `${e.floor || ''}`
 		this.infoBox.find('.js-s3d-infoBox__table-room')[0].innerHTML = `${e.rooms || ''}`
 		this.infoBox.find('.js-s3d-infoBox__type')[0].innerHTML = `${e.type || ''}`
@@ -569,9 +576,11 @@ class Slider {
 	}
 
 	checkDirectionRotate(data) {
+		console.log('checkDirectionRotate', data, this.rotate)
 		if (!this.rotate) return
 		// this.rotate = false
 		let direction = 'prev'
+		console.log('checkDirectionRotate', data)
 		if ((data && data.dataset && data.dataset.type === 'next')) {
 			direction = 'next'
 		} else if (!data && ((this.result.max - this.result.min) / 2) + this.result.min <= this.activeElem) {
@@ -678,93 +687,6 @@ class Slider {
 		}
 		return false
 	}
-
-	// right() {
-	// 	if (this.rotate) {
-	// 		this.rotate = false
-	// 		let amount = 0
-	// 		this.controlPoint.forEach((el, i) => {
-	// 			if (this.activeElem === el) {
-	// 				if (i === 0) {
-	// 					amount = (this.numberSlide.max - this.controlPoint[this.controlPoint.length - 1]) + (this.controlPoint[0] - this.numberSlide.min)
-	// 				} else {
-	// 					amount = this.controlPoint[i] - this.controlPoint[i - 1] - 1
-	// 				}
-	// 			}
-	// 		})
-	// 		this.changeSlide(amount, this.changePrev)
-	// 	}
-	// }
-
-	// right() {
-	// 	if (this.rotate) {
-	// 		console.log(this.result)
-	// 		this.activeSvg = $('.s3d__svg__active').closest('svg')
-	// 		this.rotate = false
-	// 		const index = this.controlPoint.indexOf(this.activeElem)
-	// 		if (index === -1) {
-	// 			return
-	// 		} else if (index === (this.controlPoint.length - 1)) {
-	// 			this.nextSlide = this.controlPoint[0]
-	// 		} else {
-	// 			this.nextSlide = this.controlPoint[index + 1]
-	// 		}
-	// 		console.log(this.nextSlide)
-	// 		this.repeat = this.repeatChangeSlide(this.changeNext.bind(this))
-	// 	}
-	// }
-	//
-	// left() {
-	// 	if (this.rotate) {
-	// 		this.activeSvg = $('.s3d__svg__active').closest('svg')
-	// 		this.rotate = false
-	// 		const index = this.controlPoint.indexOf(this.activeElem)
-	// 		// let amount = 0
-	// 		if (index === -1) {
-	// 			return
-	// 		} else if (index === 0) {
-	// 			this.nextSlide = this.controlPoint[this.controlPoint.length - 1]
-	// 		} else {
-	// 			this.nextSlide = this.controlPoint[index - 1]
-	// 		}
-	// 		this.repeat = this.repeatChangeSlide(this.changePrev.bind(this))
-	// 	}
-	// }
-	// left() {
-	// 	if (this.rotate) {
-	// 		this.rotate = false
-	// 		let amount = 0
-	// 		this.controlPoint.forEach((el, i) => {
-	// 			if (this.activeElem === el) {
-	// 				if (i === this.controlPoint.length - 1) {
-	// 					amount = (this.numberSlide.max - this.controlPoint[i]) + (this.controlPoint[0] - this.numberSlide.min)
-	// 				} else {
-	// 					amount = this.controlPoint[i + 1] - this.controlPoint[i] - 1
-	// 				}
-	// 			}
-	// 		})
-	// 		this.changeSlide(amount, this.changeNext)
-	// 	}
-	// }
-
-	// changeSlide(amount, fn) {
-	// 	let index = 0
-	// 	$('.s3d__svg-container').css({ opacity: 0 })
-	// 	const timeout = setInterval(() => {
-	// 		fn()
-	// 		if (index >= amount) {
-	// 			clearInterval(timeout)
-	// 			this.updateSvgActive(this.type, 'activeElem')
-	// 			$(this.activeSvg).css({ opacity: '' })
-	// 			// $(this.activeSvg).css({'fill':''});
-	// 			$('.s3d__svg-container').css({ opacity: 1 })
-	// 			this.rotate = true
-	// 			return
-	// 		}
-	//
-	// 		index++
-	// 	}, 30)
-	// }
 
 	activeAnimate(flag) {
 		if (flag) {

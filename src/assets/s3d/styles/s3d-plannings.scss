@@ -188,9 +188,16 @@
     padding-right: 48px;
   }
   &__bottom{
+    position: relative;
     grid-area: bottom;
-    display: flex;
     justify-content: space-between;
+    .s3d-controller__elem {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
   }
   &__amount-flat{
     display: flex;
@@ -248,7 +255,10 @@
       cursor: pointer;
     }
   }
-  .s3d-tell__text{
-    color: #221F20;
+  .s3d-tell{
+    margin: 0 0 0 30px;
+    &__text{
+      color: #221F20;
+    }
   }
 }
