@@ -2,7 +2,7 @@ function loader(callback) {
 	const arrTimes = []
 	let i = 0 // start
 	const timesToTest = 5
-	const tThreshold = 70 // ms
+	const tThreshold = 100 // ms
 	const numImage = 11
 	const testImage = `/wp-content/themes/idealist/assets/s3d/images/idealist/complex/${numImage}.jpg` // small image in your server
 	const dummyImage = new Image()

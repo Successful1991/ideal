@@ -156,6 +156,7 @@ class Slider {
 		})
 		$('.js-s3d__wrap').scrollLeft($('.js-s3d__wrap').width() / 4)
 
+		$('.js-s3d-blink').on('click', () => this.flatBlink())
 		// createMarkup('div' , '#js-s3d__wrapper', {
 		//   class:'s3d__helper js-s3d__helper',
 		//   content: '<img src="/wp-content/themes/idealist/assets/s3d/images/icon/help-arrow.svg" class="s3d-arrow"/><img src="/wp-content/themes/idealist/assets/s3d/images/icon/help-logo.svg" class="s3d__helper-logo"/> <div class="s3d__helper__text">Оберіть </br>будинок</div>'
@@ -258,11 +259,10 @@ class Slider {
 			if (index === self.numberSlide.max) {
 				self.resizeCanvas()
 				self.ctx.drawImage(self.images[self.activeElem], 0, 0, self.width, self.height)
-				setTimeout(() => {
-					console.log('ready', self)
-					self.unActive()
-					self.loader.hide(self.type)
-				}, 100)
+				// setTimeout(() => {
+				self.unActive()
+				self.loader.hide(self.type)
+				// }, 10)
 				self.rotate = true
 				return index
 			}
@@ -425,7 +425,6 @@ class Slider {
 		} else if (!this.infoBox.hasClass('s3d-infoBox-hover')) {
 			this.infoBox.addClass('s3d-infoBox-hover')
 		}
-		console.log(e, 'sdfgsdfdsfg')
 		// if (this.openHouses.includes(+e.build)) {
 		this.infoBox.find('.js-s3d-infoBox__table-number')[0].innerHTML = `${e.number || ''}`
 		this.infoBox.find('.js-s3d-infoBox__table-floor')[0].innerHTML = `${e.floor || ''}`
@@ -520,6 +519,15 @@ class Slider {
 		$('.js-s3d-filter__table .active-flat').removeClass('active-flat')
 		$(`.js-s3d__svgWrap [data-id=${this.activeFlat.value}]`).addClass('active-flat')
 		$(`.js-s3d-filter__table [data-id=${this.activeFlat.value}]`).addClass('active-flat')
+	}
+
+	// мигание квартир на генплане
+	flatBlink() {
+		for (let i = 1; i <= 4; i++) {
+			setTimeout(() => {
+				$('.s3d__svg__active polygon').css('opacity', (i % 2) ? 0.5 : 0)
+			}, (i * 200))
+		}
 	}
 
 	// спрятать инфоблок

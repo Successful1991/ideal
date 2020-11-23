@@ -8,6 +8,8 @@ class Apartments {
 		this.click = data.click
 		this.scrollBlock = data.scrollBlock
 		this.activeFlat = data.activeFlat
+		this.getFavourites = data.getFavourites
+		this.addBlur = data.addBlur
 	}
 
 	init(config) {
@@ -15,7 +17,6 @@ class Apartments {
 		// $('.s3d-filter__plan').removeClass('s3d-filter__plan-active')
 		// получаем разметку квартиры с планом этажа
 		this.getPlane(config)
-
 		const self = this
 		$('.js-switch-btn').on('change', function () {
 			const has = $(this).is(':checked')
@@ -30,7 +31,6 @@ class Apartments {
 
 		$('#js-s3d__apart').on('click', '.js-s3d-flat__back', e => {
 			// this.loader.show()
-			console.log('back', e, +e.currentTarget.dataset.id, this.activeFlat.value)
 			this.click(+e.currentTarget.dataset.id, 'complex', this.activeFlat.value)
 			// this.scrollBlock(e, 'complex', this.activeFlat.value)
 		})
@@ -79,20 +79,19 @@ class Apartments {
 	// получаем разметку квартиры с планом этажа
 	getPlane(config) {
 		console.log('нужно раскоментировать')
-		this.setPlaneInPage(this.addHtmlAll(config))
-		// $.ajax({
-		// 	type: 'POST',
-		// 	// url: '/inc/functions.php',
-		// 	// url: './static/apPars.php',
-		// 	url: '/wp-admin/admin-ajax.php',
-		// 	data: `action=createFlat&id=${config.activeFlat.value}`,
-		// 	success: response => (this.setPlaneInPage(response)),
-		// })
+		// this.setPlaneInPage(this.addHtmlAll(config))
+		$.ajax({
+			type: 'POST',
+			// url: '/inc/functions.php',
+			// url: './static/apPars.php',
+			url: '/wp-admin/admin-ajax.php',
+			data: `action=createFlat&id=${config.activeFlat.value}`,
+			success: response => (this.setPlaneInPage(response)),
+		})
 	}
 
 	// вставляем разметку в DOM вешаем эвенты
 	setPlaneInPage(response) {
-		console.log(response)
 		$(`#js-s3d__${this.idCopmlex}`).html(JSON.parse(response))
 		this.loader.hide(this.type)
 		// $('.flat-group2 ').on('click', 'polygon', this.openPopup)
@@ -105,10 +104,15 @@ class Apartments {
 
 		$('.s3d-flat__floor').on('click', 'a', event => {
 			event.preventDefault()
-			console.log(event)
+			this.addBlur('.s3d-flat__floor')
 			this.getNewFlat(event.currentTarget.dataset.id)
 		})
-
+		const favourite = this.getFavourites()
+		if (favourite.includes(+this.activeFlat.value)) {
+			$('.s3d-flat__favourites').removeClass('s3d-hidden')
+			$('.js-s3d-favourites-amount').html(favourite.length)
+			$('.s3d-flat__like input').prop('checked', true)
+		}
 		// $('.js-s3d-popup__mini-plan svg').on('click', 'polygon', e => {
 		// 	this.activeSvg = $(e.target).closest('svg')
 		// 	$(this.activeSvg).css({ fill: '' })
@@ -281,13 +285,27 @@ class Apartments {
                   </div>
                 </div>
                 <div class="s3d-flat__floor">
-                  <svg  viewBox="0 0 2767 2378" width="165mm" height="155mm">
-    <image xlink:href="https://comfortlife.devbase.pro/img/projects/8/1/Іdealіst-P6-1604316973-6000x85-.jpg" x="0" y="0" height="100%" width="100%"></image>
-    <polygon data-id="30" style ="fill:#417bbfcc; opacity:0.8 !important;"  points="1006,1072,1016,2162,250,2060,168,2032,102,1978,74,1902,72,644,76,578,108,492,184,432,268,416,546,380,548,1064"></polygon>
-    <polygon data-id="31" style ="fill:#417bbfcc; opacity:0.8 !important;"  points="1382,1100,1394,226,538,372,544,1056,542,1098"></polygon>
-    <polygon data-id="32" style ="fill:#417bbfcc; opacity:0.8 !important;"  points="1392,220,2242,96,2236,1090,1390,1100"></polygon>
-    <polygon data-id="33" style ="fill:#417bbfcc; opacity:0.8 !important;"  points="2234,96,2512,42,2610,66,2666,108,2702,192,2694,2144,2660,2266,2532,2318,1794,2222,1794,1100,2254,1098,2234,1100"></polygon>
-</svg>
+                <svg viewBox="0 0 2767 2378" width="165mm" height="155mm">
+                <image xlink:href="https://comfortlife.devbase.pro/img/projects/8/1/Іdealіst-P6-1604317030-6000x85-.jpg" x="0" y="0" height="100%" width="100%"></image>
+                  <a xlink:href="/flat/?flat=34" class="appart__hover" data-section="1" data-tot_square="69.76" data-liv_square="0" data-rooms="2" data-number="2А" data-id="34">
+                                     <polygon class=" u-svg-plan--active" points="998,1062,1002,2160,242,2054,132,1998,82,1902,78,654,82,546,128,460,216,430,528,386,538,1096,534,1072" data-id="34" data-section="1" data-tot_square="69.76" data-liv_square="0" data-rooms="2" data-number="2А">
+                                     </polygon> 
+                                </a>
+                                  <a xlink:href="/flat/?flat=35" class="appart__hover" data-section="1" data-tot_square="38.18" data-liv_square="0" data-rooms="1" data-number="1А" data-id="35">
+                                     <polygon class="" points="530,386,1388,238,1384,1100,534,1100" data-id="35" data-section="1" data-tot_square="38.18" data-liv_square="0" data-rooms="1" data-number="1А">
+                                     </polygon> 
+                                </a>
+                                  <a xlink:href="/flat/?flat=36" class="appart__hover" data-section="1" data-tot_square="46.01" data-liv_square="0" data-rooms="1" data-number="1Б" data-id="36">
+                                     <polygon class="" points="1386,236,2242,92,2230,1096,1388,1100" data-id="36" data-section="1" data-tot_square="46.01" data-liv_square="0" data-rooms="1" data-number="1Б">
+                                     </polygon> 
+                                </a>
+                                  <a xlink:href="/flat/?flat=37" class="appart__hover" data-section="1" data-tot_square="88.06" data-liv_square="0" data-rooms="2" data-number="2Б" data-id="37">
+                                     <polygon class="" points="2246,90,2526,48,2632,82,2692,168,2686,2158,2640,2274,2518,2320,2252,2288,1794,2230,1800,1100,2228,1100" data-id="37" data-section="1" data-tot_square="88.06" data-liv_square="0" data-rooms="2" data-number="2Б">
+                                     </polygon> 
+                                </a>
+                                
+               
+            </svg>
                 </div>
                 <div class="s3d-flat__links">
                 	<a href="#" class="js-s3d__create-pdf"><img src="assets/s3d/images/icon/pdf.svg">скачать буклет</a>

@@ -349,7 +349,8 @@
   }
 
   &-unActive{
-    pointer-events: none!important;
+    //pointer-events: none!important;
+    cursor: wait!important;
     *{
       pointer-events: none!important;
     }
@@ -443,13 +444,13 @@
 
   &.translate-layer__down.active{
     top: 100%;
-    transition: top 1.2s cubic-bezier(.6, .05, .4, 1);
+    transition: top 1.4s linear;
     opacity: 1;
   }
 
   &.translate-layer__up.active{
     top: -270vh;
-    transition: top 1.2s cubic-bezier(.6, .05, .4, 1);
+    transition: top 1.4s linear;
     opacity: 1;
   }
 
@@ -503,7 +504,6 @@
   align-items: center;
   visibility: hidden;
   background: rgba(20,1,1,.5);
-
   &.active {
     display: flex;
   }

@@ -13,6 +13,13 @@
   &.active {
     opacity: 1;
     visibility: visible;
+    *{
+      cursor: pointer!important;
+    }
+    .s3d__helper__button{
+      pointer-events: painted!important;
+
+    }
   }
   //&__bg{
   //  position: absolute;

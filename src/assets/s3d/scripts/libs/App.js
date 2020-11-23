@@ -33,7 +33,7 @@ class App {
 				return this.num
 			},
 			set value(val) {
-				this.num = val
+				this.num = +val
 			},
 		}
 		// this.changeCurrentFloor = this.changeCurrentFloor.bind(this);
@@ -83,9 +83,9 @@ class App {
 		// this.history = new History({ scrollToBlock: this.scrollToBlock })
 		this.history.init()
 
-		this.getFlatList('/wp-content/themes/idealist/static/flats.json', this.filterInit)
+		// this.getFlatList('/wp-content/themes/idealist/static/flats.json', this.filterInit)
 		// this.getFlatList('static/apPars.php', this.filterInit)
-		// this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
+		this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
 
 		this.loader.show()
 		const config = this.config.complex
@@ -173,23 +173,23 @@ class App {
 				this.animateBlock('translate', 'up')
 				if (ind > 0) {
 					this.history.update(this.activeSectionList[ind - 1])
-					this.scrollToBlock(500)(this.activeSectionList[ind - 1])
+					this.scrollToBlock(600)(this.activeSectionList[ind - 1])
 				} else if (ind === 0) {
 					this.history.update(this.activeSectionList[this.activeSectionList.length - 1])
-					this.scrollToBlock(500)(this.activeSectionList[this.activeSectionList.length - 1])
+					this.scrollToBlock(600)(this.activeSectionList[this.activeSectionList.length - 1])
 				}
 			} else if (e.originalEvent && e.originalEvent.wheelDelta / 120 < 0) {
 				this.animateBlock('translate', 'down')
 				if (ind < this.activeSectionList.length - 1) {
 					this.history.update(this.activeSectionList[ind + 1])
-					this.scrollToBlock(500)(this.activeSectionList[ind + 1])
+					this.scrollToBlock(600)(this.activeSectionList[ind + 1])
 				} else if (ind === this.activeSectionList.length - 1) {
 					this.history.update(this.activeSectionList[0])
-					this.scrollToBlock(500)(this.activeSectionList[0])
+					this.scrollToBlock(600)(this.activeSectionList[0])
 				}
 			} else {
 				this.animateBlock('translate', 'down')
-				this.scrollToBlock(500)(active)
+				this.scrollToBlock(600)(active)
 			}
 		}
 	}
@@ -210,21 +210,21 @@ class App {
 	}
 
 	getFlatList(url, callback) {
-		// $.ajax({
-		// 	url,
-		// 	type: 'POST',
-		// 	data: 'action=getFlats',
-		// 	success: response => {
-		// 		callback(JSON.parse(response))
-		// 	},
-		// })
 		$.ajax({
 			url,
-			type: 'GET',
+			type: 'POST',
+			data: 'action=getFlats',
 			success: response => {
-				callback(response)
+				callback(JSON.parse(response))
 			},
 		})
+		// $.ajax({
+		// 	url,
+		// 	type: 'GET',
+		// 	success: response => {
+		// 		callback(response)
+		// 	},
+		// })
 	}
 
 	getFlatObj(id) {
@@ -273,7 +273,7 @@ class App {
 			click: this.selectSlider,
 			activeFlat: this.activeFlat,
 		})
-		const favourites = new Favourite({
+		this.favourites = new Favourite({
 			wrap: '.js-s3d__fv tbody',
 			data: this.flatListObj,
 			list: this.flatList,
@@ -356,6 +356,7 @@ class App {
 			console.log('else')
 			config.click = this.selectSlider
 			config.scrollBlock = this.scrollBlock.bind(this)
+			config.getFavourites = this.favourites.getFavourites
 			this.createWrap(config, type !== 'house' ? 'div' : 'canvas')
 			this[type] = new Fn(config)
 			this[type].init(config)
@@ -375,13 +376,11 @@ class App {
 		this[type].toSlideNum(id)
 	}
 
-	scrollToBlock(time = 0) {
-		console.log(this)
+	scrollToBlock(time = 600) {
 		if (this.filter) {
 			this.filter.hidden()
 		}
 		return block => {
-
 			// this.filter.hidden()
 			// setTimeout(() => {
 			// $('.js-s3d-filter').removeClass('plannings-filter')

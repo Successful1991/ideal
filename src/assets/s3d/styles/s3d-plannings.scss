@@ -190,6 +190,7 @@
   &__bottom{
     position: relative;
     grid-area: bottom;
+    display: flex;
     justify-content: space-between;
     .s3d-controller__elem {
       position: absolute;
@@ -214,11 +215,13 @@
     }
   }
   &__mouse{
-
     margin-right: 40px;
     svg{
       width: 15px;
       height: 34px;
+    }
+    svg{
+      animation: mouse 1.2s ease-out infinite;
     }
   }
   &__favourites{
@@ -260,5 +263,16 @@
     &__text{
       color: #221F20;
     }
+  }
+}
+
+@keyframes mouse {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(0, 40%);
   }
 }
