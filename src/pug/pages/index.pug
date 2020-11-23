@@ -70,9 +70,10 @@ block content
                                                 td Площадь м2
                                 .s3d-infoBox__buttons
                                     button( type="button" class="s3d-infoBox__link" data-id="33") Подробнее
-                                    button.s3d-infoBox__add-favourites.js-s3d-add__favourites( type="button")
-                                        svg
-                                            use(xlink:href="#icon-favourites")
+                                    label( data-id='1' class="s3d-infoBox__add-favourites js-s3d-add__favourites")
+                                        input( type="checkbox")
+                                        svg( role="presentation")
+                                            use( xlink:href="#icon-favourites")
 
                 .js-s3d__wrapper__plannings.s3d__wrap.s3d__wrapper__plannings
                     .s3d-pl

@@ -52,6 +52,7 @@ class Favourite {
 		if (value !== 'undefined') { check = value }
 		this.listObj[id].listHtmlLink.querySelector('input').checked = check
 		this.listObj[id].cardHtmlLink.querySelector('input').checked = check
+		this.listObj[id]['favourite'] = check
 	}
 
 	addStorage(id) {
@@ -64,6 +65,7 @@ class Favourite {
 		if (favourites.length > 0) {
 			$('.js-s3d-favorite__wrap').removeClass('s3d-hidden')
 		}
+		// this.listObj[id]['favourite'] = true
 		sessionStorage.setItem('favourites', JSON.stringify(favourites))
 		this.updateAmount(favourites.length)
 		this.checkedFlat(id, true)
@@ -74,6 +76,7 @@ class Favourite {
 		const index = favourites.indexOf(id)
 		if (index === -1 || !favourites) return
 		favourites.splice(index, 1)
+		// this.listObj[id]['favourite'] = false
 		sessionStorage.setItem('favourites', JSON.stringify(favourites))
 		this.updateAmount(favourites.length)
 		this.checkedFlat(id, false)

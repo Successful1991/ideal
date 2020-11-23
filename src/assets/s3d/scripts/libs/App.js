@@ -16,7 +16,7 @@ class App {
 				$('.fs-preloader-bg').css({ filter: 'blur(10px)' })
 			},
 			hide: block => {
-				if (block) this.scrollToBlock(700)(block)
+				if (block) this.scrollToBlock(600)(block)
 
 				setTimeout(() => {
 					$('.fs-preloader').removeClass('preloader-active')
@@ -83,9 +83,9 @@ class App {
 		// this.history = new History({ scrollToBlock: this.scrollToBlock })
 		this.history.init()
 
-		// this.getFlatList('/wp-content/themes/idealist/static/flats.json', this.filterInit)
+		this.getFlatList('/wp-content/themes/idealist/static/flats.json', this.filterInit)
 		// this.getFlatList('static/apPars.php', this.filterInit)
-		this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
+		// this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
 
 		this.loader.show()
 		const config = this.config.complex
@@ -173,23 +173,23 @@ class App {
 				this.animateBlock('translate', 'up')
 				if (ind > 0) {
 					this.history.update(this.activeSectionList[ind - 1])
-					this.scrollToBlock(700)(this.activeSectionList[ind - 1])
+					this.scrollToBlock(500)(this.activeSectionList[ind - 1])
 				} else if (ind === 0) {
 					this.history.update(this.activeSectionList[this.activeSectionList.length - 1])
-					this.scrollToBlock(700)(this.activeSectionList[this.activeSectionList.length - 1])
+					this.scrollToBlock(500)(this.activeSectionList[this.activeSectionList.length - 1])
 				}
 			} else if (e.originalEvent && e.originalEvent.wheelDelta / 120 < 0) {
 				this.animateBlock('translate', 'down')
 				if (ind < this.activeSectionList.length - 1) {
 					this.history.update(this.activeSectionList[ind + 1])
-					this.scrollToBlock(700)(this.activeSectionList[ind + 1])
+					this.scrollToBlock(500)(this.activeSectionList[ind + 1])
 				} else if (ind === this.activeSectionList.length - 1) {
 					this.history.update(this.activeSectionList[0])
-					this.scrollToBlock(700)(this.activeSectionList[0])
+					this.scrollToBlock(500)(this.activeSectionList[0])
 				}
 			} else {
 				this.animateBlock('translate', 'down')
-				this.scrollToBlock(700)(active)
+				this.scrollToBlock(500)(active)
 			}
 		}
 	}
@@ -210,21 +210,21 @@ class App {
 	}
 
 	getFlatList(url, callback) {
-		$.ajax({
-			url,
-			type: 'POST',
-			data: 'action=getFlats',
-			success: response => {
-				callback(JSON.parse(response))
-			},
-		})
 		// $.ajax({
 		// 	url,
-		// 	type: 'GET',
+		// 	type: 'POST',
+		// 	data: 'action=getFlats',
 		// 	success: response => {
-		// 		callback(response)
+		// 		callback(JSON.parse(response))
 		// 	},
 		// })
+		$.ajax({
+			url,
+			type: 'GET',
+			success: response => {
+				callback(response)
+			},
+		})
 	}
 
 	getFlatObj(id) {
@@ -253,6 +253,7 @@ class App {
 		const flats = data.filter(el => {
 			if (el['type_object'] === '1') {
 				list[el.id] = el
+				list[el.id]['favourite'] = false
 				return el
 			}
 			return false
@@ -263,6 +264,7 @@ class App {
 		this.filter = new Filter(this.config, this.flatList, this.flatListObj, this.showSvgIn3D)
 		this.getMinMaxParam(this.flatList)
 		this.filter.init(this.configProject)
+
 		// plannings должен быть выше favourites.  plannings создает элементы записывает ссылку в обьект, favourites обращается по этой ссылке к элементу.
 		const plannings = new Plannings({
 			wrap: '.js-s3d__pl__list',
@@ -276,14 +278,13 @@ class App {
 			data: this.flatListObj,
 			list: this.flatList,
 		})
-
 		// $('.s3d-pl__filter').append($('.s3d-filter'))
 	}
 
 	createWrap(conf, tag) {
 		// const wrap = createMarkup('div', `#${conf.id}`, { class: `s3d__wrap js-s3d__wrapper__${conf.idCopmlex} s3d__wrapper__${conf.idCopmlex}` })
 		// const wrap2 = createMarkup('div',`#${conf.id}`, { id: `js-s3d__wrapper__${conf.idCopmlex}`, style: 'position:relative;' })
-		createMarkup(tag, $(`.js-s3d__wrapper__${conf.idCopmlex}`), { class: `js-s3d__${conf.idCopmlex}`, id: `js-s3d__${conf.idCopmlex}` })
+		createMarkup(tag, $(`.js-s3d__wrapper__${conf.idCopmlex}`), { class: `js-s3d__${conf.idCopmlex} s3d__${conf.idCopmlex}`, id: `js-s3d__${conf.idCopmlex}` })
 	}
 	// createWrap(conf, tag) {
 	// 	const wrap = createMarkup('div', `#${conf.id}`, { class: `s3d__wrap js-s3d__wrapper__${conf.idCopmlex} s3d__wrapper__${conf.idCopmlex}` })
@@ -292,8 +293,6 @@ class App {
 	// }
 
 	selectSlider(id, type, numSlide) {
-		console.log('selectSlider(id, type,')
-		console.log(id, type)
 		// const houseNum = e.currentTarget.dataset.build || e.currentTarget.value
 		// this.loader.show()
 		this.animateBlock('translate', 'down')
@@ -348,7 +347,6 @@ class App {
 		config.unActive = this.unActive
 
 		if ($(`#js-s3d__${type}`).length > 0) {
-			console.log('if ($(`#js-s3d__${type}`).length > 0) {', type, idApart)
 			this[type].update(config)
 			if (idApart) {
 				this[type].toSlideNum(idApart)
@@ -383,16 +381,17 @@ class App {
 			this.filter.hidden()
 		}
 		return block => {
-			$(`.js-s3d-select__${this.activeSection}`).removeClass('active')
-			$(`.js-s3d-select__${block}`).addClass('active')
+
 			// this.filter.hidden()
 			// setTimeout(() => {
 			// $('.js-s3d-filter').removeClass('plannings-filter')
 			// }, 500)
-			if (block !== 'apart') {
-				$('.fs-preloader').removeClass('s3d-preloader__full')
-			}
+			// if (block !== 'apart') {
+			// 	$('.fs-preloader').removeClass('s3d-preloader__full')
+			// }
 			setTimeout(() => {
+				$(`.js-s3d-select__${this.activeSection}`).removeClass('active')
+				$(`.js-s3d-select__${block}`).addClass('active')
 				switch (block) {
 				case 'apart':
 					this.complex.hiddenInfo()

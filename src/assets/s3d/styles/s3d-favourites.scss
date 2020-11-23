@@ -86,6 +86,7 @@
     tr{
     }
     td{
+      width: 10%;
       vertical-align: middle;
       text-align: center;
       padding: 13px 0;
@@ -176,6 +177,9 @@
       height: 34px;
       margin-left: 20px;
     }
+  }
+  &__element{
+
   }
   .s3d-tell__text{
     color: #221F20;
