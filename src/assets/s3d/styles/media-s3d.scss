@@ -1,0 +1,25 @@
+@media screen and (max-width:575px) {
+    .s3d__button {
+        width: 32px;
+        height: 32px;
+    }
+    .s3d__button-left {
+        left: 30px;
+        bottom: 0;
+        top: auto;
+    }
+    .s3d__button-right {
+        right: 30px;
+        bottom: 0;
+        top: auto;
+    }
+    .s3d-tell {
+        display: none;
+    }
+    .s3d-controller__openFilter {
+        background-color: transparent;
+        width: 34px;
+        height: 34px;
+        overflow: hidden;
+    }
+}
