@@ -13,8 +13,8 @@
     display: grid;
     grid-template-columns: auto 3fr 4fr 3fr;
     grid-template-rows: auto auto 1fr auto auto;
-    grid-template-areas:  'back mini img favourite'
-                          'back mini img favourite'
+    grid-template-areas:  'back mini . favourite'
+                          'back mini img plane'
                           'info info img plane'
                           'info info links links'
                           'tel tel links links';
@@ -47,7 +47,7 @@
       display: block;
       max-width: 80%;
       max-height: 80vh;
-      margin: 0 auto;
+      margin: auto;
 
       grid-area: img;
     }

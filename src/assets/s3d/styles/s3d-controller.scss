@@ -5,7 +5,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    display: grid;
+    display: none;
+    //display: grid;
     grid-gap: 30px;
     padding: 0 0 20px;
     width: 100%;
@@ -34,74 +35,6 @@
       }
     }
 
-
-    //&-small {
-    //  height: 50%;
-    //}
-
-    //&__showFilter {
-      //grid-area: filter;
-      //display: flex;
-      //height: 50px;
-      //color: $wc;
-      //border: none;
-      //align-items: center;
-      //
-      //background: none;
-      //cursor: pointer;
-      //font-family: Gilroy;
-      //font-size: 18px;
-      //font-weight: 600;
-      //grid-column: 1 / span 3;
-      //grid-row: 2;
-      //margin: auto auto 0;
-      //padding: 0 20px;
-      //pointer-events: painted;
-      //text-transform: uppercase;
-      //transition: all .3s linear;
-
-      //label {
-      //  display: flex;
-      //  width: 36px;
-      //  height: 20px;
-      //  margin-left: 10px;
-      //  border-radius: 50px;
-      //  align-items: center;
-      //  background: #b1b4bb;
-      //  padding: 2px;
-      //  pointer-events: none;
-      //
-      //  span {
-      //    width: 16px;
-      //    height: 16px;
-      //    border-radius: 50%;
-      //    background: #ffffff;
-      //    order: 1;
-      //    transition: transform .3s ease-in;
-      //  }
-      //}
-      //
-      //span {
-      //  white-space: nowrap;
-      //}
-      //
-      //input {
-      //  display: none;
-      //
-      //  &:checked+ label {
-      //    background: #ff1e3c;
-      //
-      //    span {
-      //      transform: translateX(100%);
-      //    }
-      //  }
-      //}
-      //
-      //&:hover {
-      //  color: #dcd8e9;
-      //}
-    //}
-
     &__compass {
       grid-area: compass;
       display: flex;
@@ -129,15 +62,10 @@
       justify-content: flex-start;
       border: none;
 
-      //background: #255763;
       background: transparent;
-      //box-shadow: inset -210px 0 0 100px rgba(28, 73, 84, 1);
-      //background: linear-gradient(90deg, rgba(28, 73, 84, 1) 210px, #255763 210px);
-      //background-position-x: 0;
       cursor: pointer;
       pointer-events: painted;
       text-transform: uppercase;
-      //transition: background-color 1.3s linear;
 
       &__icon{
         display: flex;
@@ -202,6 +130,10 @@
          transform: translate(0, 0);
        }
       }
+    }
+
+    &[data-type="complex"]{
+      display: grid;
     }
   }
 

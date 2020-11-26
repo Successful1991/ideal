@@ -6,6 +6,7 @@ function init() {
 	window.createMarkup = CreateMarkup
 	const config = {
 		complex: {
+			id: '#js-s3d__wrapper',
 			url: '',
 			imageUrl: '/wp-content/themes/idealist/assets/s3d/images/idealist/complex/',
 			class: 'js-s3d__wrapper',
@@ -22,7 +23,8 @@ function init() {
 		// 	id: 'js-s3d__wrapper',
 		// },
 		apart: {
-			id: 'js-s3d__wrapper',
+			id: '.js-s3d__slideModule',
+			// id: 'js-s3d__wrapper',
 		},
 	}
 
