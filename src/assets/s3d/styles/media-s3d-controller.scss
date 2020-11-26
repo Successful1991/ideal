@@ -1,0 +1,31 @@
+@media screen and (max-width:575px) {
+    .s3d-controller {
+        grid-gap: 0px;
+        padding-bottom: 0;
+        grid-template-columns: repeat(3, 33.3vw);
+    }
+    .s3d-controller__openFilter {
+        height: 37px;
+        width: 116px;
+        svg {
+            width: 16px;
+            height: 14px;
+        }
+    }
+    .s3d-controller__openFilter__icon {
+        width: 36px;
+        height: 36px;
+    }
+    .s3d-controller__openFilter__text {
+        padding: 10px 13px;
+        text-transform: lowercase;
+        font-size: 8px;
+        line-height: 8px;
+    }
+    .s3d-tell {
+        display: none;
+    }
+    .s3d-controller__compass {
+        display: none;
+    }
+}
