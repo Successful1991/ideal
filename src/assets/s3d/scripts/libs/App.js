@@ -83,9 +83,9 @@ class App {
 		// this.history = new History({ scrollToBlock: this.scrollToBlock })
 		this.history.init()
 
-		// this.getFlatList('/wp-content/themes/idealist/static/flats.json', this.filterInit)
+		this.getFlatList('/wp-content/themes/idealist/static/flats.json', this.filterInit)
 		// this.getFlatList('static/apPars.php', this.filterInit)
-		this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
+		// this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
 
 		this.loader.show()
 		const config = this.config.complex
@@ -103,8 +103,9 @@ class App {
 		this.createWrap(config, 'canvas')
 		this.complex = new Slider(config)
 		this.complex.init()
-		$('.js-s3d__wrapper__complex').css('z-index', '100')
 
+		$('.js-s3d-controller').data('type', 'complex')
+		$('.js-s3d__wrapper__complex').css('z-index', '100')
 		// $('.s3d-select__head').on('click', e => {
 		// 	const self = this
 		// 	const block = $(e.currentTarget).next()
@@ -210,21 +211,21 @@ class App {
 	}
 
 	getFlatList(url, callback) {
-		$.ajax({
-			url,
-			type: 'POST',
-			data: 'action=getFlats',
-			success: response => {
-				callback(JSON.parse(response))
-			},
-		})
 		// $.ajax({
 		// 	url,
-		// 	type: 'GET',
+		// 	type: 'POST',
+		// 	data: 'action=getFlats',
 		// 	success: response => {
-		// 		callback(response)
+		// 		callback(JSON.parse(response))
 		// 	},
 		// })
+		$.ajax({
+			url,
+			type: 'GET',
+			success: response => {
+				callback(response)
+			},
+		})
 	}
 
 	getFlatObj(id) {
@@ -281,16 +282,16 @@ class App {
 		// $('.s3d-pl__filter').append($('.s3d-filter'))
 	}
 
-	createWrap(conf, tag) {
-		// const wrap = createMarkup('div', `#${conf.id}`, { class: `s3d__wrap js-s3d__wrapper__${conf.idCopmlex} s3d__wrapper__${conf.idCopmlex}` })
-		// const wrap2 = createMarkup('div',`#${conf.id}`, { id: `js-s3d__wrapper__${conf.idCopmlex}`, style: 'position:relative;' })
-		createMarkup(tag, $(`.js-s3d__wrapper__${conf.idCopmlex}`), { class: `js-s3d__${conf.idCopmlex} s3d__${conf.idCopmlex}`, id: `js-s3d__${conf.idCopmlex}` })
-	}
 	// createWrap(conf, tag) {
-	// 	const wrap = createMarkup('div', `#${conf.id}`, { class: `s3d__wrap js-s3d__wrapper__${conf.idCopmlex} s3d__wrapper__${conf.idCopmlex}` })
-	// 	const wrap2 = createMarkup('div', wrap, { id: `js-s3d__wrapper__${conf.idCopmlex}`, style: 'position:relative;' })
-	// 	createMarkup(tag, wrap2, { id: `js-s3d__${conf.idCopmlex}` })
+	// 	// const wrap = createMarkup('div', `#${conf.id}`, { class: `s3d__wrap js-s3d__wrapper__${conf.idCopmlex} s3d__wrapper__${conf.idCopmlex}` })
+	// 	// const wrap2 = createMarkup('div',`#${conf.id}`, { id: `js-s3d__wrapper__${conf.idCopmlex}`, style: 'position:relative;' })
+	// 	createMarkup(tag, $(`.js-s3d__wrapper__${conf.idCopmlex}`), { class: `js-s3d__${conf.idCopmlex} s3d__${conf.idCopmlex}`, id: `js-s3d__${conf.idCopmlex}` })
 	// }
+	createWrap(conf, tag) {
+		const wrap = createMarkup('div', `${conf.id}`, { class: `s3d__wrap js-s3d__wrapper__${conf.idCopmlex} s3d__wrapper__${conf.idCopmlex}` })
+		const wrap2 = createMarkup('div', wrap, { id: `js-s3d__wrapper__${conf.idCopmlex}`, style: 'position:relative;' })
+		createMarkup(tag, wrap2, { id: `js-s3d__${conf.idCopmlex}` })
+	}
 
 	selectSlider(id, type, numSlide) {
 		// const houseNum = e.currentTarget.dataset.build || e.currentTarget.value
@@ -391,6 +392,7 @@ class App {
 			setTimeout(() => {
 				$(`.js-s3d-select__${this.activeSection}`).removeClass('active')
 				$(`.js-s3d-select__${block}`).addClass('active')
+				$('.js-s3d-controller')[0].dataset.type = block
 				switch (block) {
 				case 'apart':
 					this.complex.hiddenInfo()
@@ -405,11 +407,11 @@ class App {
 					this.compass.setFloor()
 					break
 				case 'plannings':
-					// $('.js-s3d-filter').addClass('plannings-filter')
-					$('.js-s3d-filter').removeClass('plannings-filter')
 					this.filter.show()
 					this.complex.hiddenInfo()
 					this.complex.hiddenInfoFloor()
+					// $('.js-s3d-filter').addClass('plannings-filter')
+					$('.js-s3d-filter').removeClass('plannings-filter')
 					this.compass.save(this.compass.current)
 					break
 				default:

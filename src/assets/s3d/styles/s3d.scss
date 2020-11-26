@@ -90,6 +90,10 @@
     .s3d__button{
       position: fixed;
     }
+
+    &-only:not(.rc){
+      display: none
+    }
   }
 
   &__slideModule {
@@ -369,7 +373,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-
+    z-index: 15;
     &__complex,&__house, &__floor, &__apart {
       display: flex;
       width: auto;
@@ -737,7 +741,9 @@ body{
 
 }
 @media screen and ( max-width : 1023px ){
-
+  .s3d-mobile-only:not(.rc){
+    display: inline-block;
+  }
 }
 
 @media screen and ( max-width : 992px ){

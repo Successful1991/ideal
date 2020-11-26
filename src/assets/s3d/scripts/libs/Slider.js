@@ -393,6 +393,7 @@ class Slider {
 	// меняет состояние инфоблока на активный
 	setStateInfoActive(elem) {
 		console.log('setStateInfoActiv', elem)
+		console.log('setStateInfoActiv', this)
 		// if ((e.target && e.target.dataset && typeof +e.target.dataset.id !== 'number') || typeof +e.id !== 'number') {
 		// 	return
 		// }
