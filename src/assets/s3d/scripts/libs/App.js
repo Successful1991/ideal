@@ -1,3 +1,5 @@
+/* beautify preserve:start */
+
 class App {
 	constructor(data) {
 		this.config = data
@@ -407,7 +409,10 @@ class App {
 					this.compass.setFloor()
 					break
 				case 'plannings':
-					this.filter.show()
+					if (document.documentElement.clientWidth > 768) {
+						this.filter.show()
+					}
+
 					this.complex.hiddenInfo()
 					this.complex.hiddenInfoFloor()
 					// $('.js-s3d-filter').addClass('plannings-filter')
@@ -515,3 +520,7 @@ class App {
 		this.complex.resizeCanvas()
 	}
 }
+
+
+
+/* beautify preserve:end */
