@@ -58,13 +58,13 @@ class App {
 				} else {
 					deg = this.compass.defaultDeg
 				}
-				$('.s3d-filter__compass svg').css('transform', `rotate(-${deg}deg)`)
+				$('.s3d-controller__compass svg').css('transform', `rotate(-${deg}deg)`)
 			},
 			setApart: () => {
-				$('.s3d-filter__compass svg').css('transform', `rotate(${this.compass.degApart}deg)`)
+				$('.s3d-controller__compass svg').css('transform', `rotate(${this.compass.degApart}deg)`)
 			},
 			setFloor: () => {
-				$('.s3d-filter__compass svg').css('transform', `rotate(${this.compass.degFloor}deg)`)
+				$('.s3d-controller__compass svg').css('transform', `rotate(${this.compass.degFloor}deg)`)
 			},
 			save: deg => {
 				this.compass.lastDeg = deg
@@ -189,7 +189,7 @@ class App {
 					this.scrollToBlock(600)(this.activeSectionList[0])
 				}
 			} else {
-				this.animateBlock('translate', 'down')
+				// this.animateBlock('translate', 'down')
 				this.scrollToBlock(600)(active)
 			}
 		}
