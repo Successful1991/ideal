@@ -206,7 +206,8 @@ class Slider {
 
 	update(config) {
 		this.setConfig(config)
-		this.updateImage()
+		// this.updateImage()
+		this.loader.hide(this.type)
 	}
 
 	// обновить картинки в канвасе
@@ -249,19 +250,11 @@ class Slider {
 		img.dataset.id = index
 		img.onload = function load() {
 			self.images[index] = this
-			// if (index === self.activeElem) {
-			// 	// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
-			// 	// $('.s3d-filter__compass svg').css('transform','rotate('+ deg +'deg)');
-			// 	self.compass.save(self.activeElem)
-			// 	self.ctx.drawImage(this, 0, 0, self.width, self.height)
-			// }
 			if (index === self.numberSlide.max) {
 				self.resizeCanvas()
 				self.ctx.drawImage(self.images[self.activeElem], 0, 0, self.width, self.height)
-				// setTimeout(() => {
 				self.unActive()
-				self.loader.hide(self.type)
-				// }, 10)
+				// self.loader.hide(self.type)
 				self.rotate = true
 				return index
 			}
@@ -391,8 +384,6 @@ class Slider {
 
 	// меняет состояние инфоблока на активный
 	setStateInfoActive(elem) {
-		console.log('setStateInfoActiv', elem)
-		console.log('setStateInfoActiv', this)
 		// if ((e.target && e.target.dataset && typeof +e.target.dataset.id !== 'number') || typeof +e.id !== 'number') {
 		// 	return
 		// }
