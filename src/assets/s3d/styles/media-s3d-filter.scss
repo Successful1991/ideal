@@ -130,6 +130,13 @@
     .s3d-filter-select__list {
         /*Высота цифры подсказки*/
         padding-top: calc(15px);
+        flex-wrap: wrap;
+        label {
+            order: 1;
+        }
+        input {
+            order: 2;
+        }
     }
     .s3d-filter__rooms--label {
         width: 30px;
