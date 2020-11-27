@@ -36,8 +36,11 @@ block content
                         .s3d-tell__text (067) 747-0151
                     .s3d-controller__elem.js-s3d-controller__elem
                         button(type="button" data-type="complex").s3d-select.active 3D генплан
-                        button(type="button" data-type="plannings").s3d-select ПЛАНировки
-                        button(type="button" data-type="favourites").s3d-select.js-s3d__favourites.s3d-mobile-only избраное
+                        button(type="button" data-type="plannings").s3d-select Планировки
+                        button(type="button" data-type="favourites").s3d-select.js-s3d__favourites.s3d-mobile-only Избраное
+                            svg
+                                use(xlink:href="#icon-favourites")
+                            span.s3d-pl__favourites-amount.js-s3d-favourites-amount 0
                     .s3d-title  Генплан
                     .js-s3d-infoBox.s3d-infoBox
                         .s3d-infoBox__static.js-s3d-blink
@@ -222,12 +225,14 @@ block content
                                             input( type="checkbox")
                                             svg( role="presentation")
                                                 use( xlink:href="#icon-favourites")
+                    .s3d-filter__mobile-delimiter
                     .s3d-filter__amount-flat
                         | Знайдено
                         span.s3d-filter__amount-flat__num.js-s3d__amount-flat__num 25
                         | из
                         span.s3d-filter__amount-flat__num.js-s3d__amount-flat__num-all 456
-
+                    img(src="./assets/s3d/images/filter-complex-image1.png").s3d-filter__complex-img
+                    .s3d-filter__result-button.button-mobile-show.closing.js-s3d-filter__close Применить
                 include ../includes/loader.html
                 //.js-s3d-point__help.s3d-point__help
                 //    .s3d-point__help-left

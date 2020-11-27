@@ -1,13 +1,10 @@
-@import "./assets/vars";  // переменные
+@import "./assets/vars"; // переменные
 // libraries
 @import "./libs";
-
 // assets
-@import "./assets/mixins";  // миксины
-@import "./assets/fonts";  // шрифты
-@import "./reset";  // сброс
-
-
+@import "./assets/mixins"; // миксины
+@import "./assets/fonts"; // шрифты
+@import "./reset"; // сброс
 // sass artem
 //@import './loader';
 @import "./s3d-helper";
@@ -22,3 +19,7 @@
 @import "./s3d-favourites";
 @import "./s3d-svg";
 @import "./s3d";
+@import "./media-s3d-controller";
+@import "./media-s3d";
+@import "./media-s3d-flat";
+@import "./media-s3d-filter";

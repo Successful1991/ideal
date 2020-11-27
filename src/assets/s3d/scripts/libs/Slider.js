@@ -206,7 +206,8 @@ class Slider {
 
 	update(config) {
 		this.setConfig(config)
-		this.updateImage()
+		// this.updateImage()
+		this.loader.hide(this.type)
 	}
 
 	// обновить картинки в канвасе
@@ -253,7 +254,7 @@ class Slider {
 				self.resizeCanvas()
 				self.ctx.drawImage(self.images[self.activeElem], 0, 0, self.width, self.height)
 				self.unActive()
-				self.loader.hide(self.type)
+				// self.loader.hide(self.type)
 				self.rotate = true
 				return index
 			}
@@ -383,8 +384,6 @@ class Slider {
 
 	// меняет состояние инфоблока на активный
 	setStateInfoActive(elem) {
-		console.log('setStateInfoActiv', elem)
-		console.log('setStateInfoActiv', this)
 		// if ((e.target && e.target.dataset && typeof +e.target.dataset.id !== 'number') || typeof +e.id !== 'number') {
 		// 	return
 		// }
