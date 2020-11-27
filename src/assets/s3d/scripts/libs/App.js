@@ -1,5 +1,3 @@
-/* beautify preserve:start */
-
 class App {
 	constructor(data) {
 		this.config = data
@@ -124,30 +122,20 @@ class App {
 
 		this.animateFlag = true
 
-		// scroll blocks
-		// $('body').on('mousewheel', (e) =>  {
-		//   if($(document).width() > 1024 && !$('.js-s3d__slideModule').hasClass('no-scroll')) this.scrollBlock(e,this.activeSection);
-		// });
-
 		$('.js-s3d-controller__elem').on('click', '.s3d-select', e => {
 			const { type } = e.currentTarget.dataset
+			if (type === 'favourites') {
+				return
+			}
 			if (type && type !== this.activeSection) {
 				this.history.update(type)
-				this.scrollBlock(e, type)
+				this.selectSlider(e, type)
 			}
 		})
 
 		const helper = new Helper()
 		helper.init()
 
-		// $('.js-s3d-controller__showFilter').on('click', () => {
-		// 	$('.js-s3d-controller__showFilter--input').prop('checked',
-		// 		!$('.js-s3d-controller__showFilter--input').prop('checked'))
-		// 	this.showAvailableFlat()
-		// })
-
-		// this.helpsInfo();
-		// this.loader.hide();
 		this.resize()
 	}
 
@@ -284,11 +272,6 @@ class App {
 		// $('.s3d-pl__filter').append($('.s3d-filter'))
 	}
 
-	// createWrap(conf, tag) {
-	// 	// const wrap = createMarkup('div', `#${conf.id}`, { class: `s3d__wrap js-s3d__wrapper__${conf.idCopmlex} s3d__wrapper__${conf.idCopmlex}` })
-	// 	// const wrap2 = createMarkup('div',`#${conf.id}`, { id: `js-s3d__wrapper__${conf.idCopmlex}`, style: 'position:relative;' })
-	// 	createMarkup(tag, $(`.js-s3d__wrapper__${conf.idCopmlex}`), { class: `js-s3d__${conf.idCopmlex} s3d__${conf.idCopmlex}`, id: `js-s3d__${conf.idCopmlex}` })
-	// }
 	createWrap(conf, tag) {
 		const wrap = createMarkup('div', `${conf.id}`, { class: `s3d__wrap js-s3d__wrapper__${conf.idCopmlex} s3d__wrapper__${conf.idCopmlex}` })
 		const wrap2 = createMarkup('div', wrap, { id: `js-s3d__wrapper__${conf.idCopmlex}`, style: 'position:relative;' })
@@ -312,6 +295,10 @@ class App {
 			// $('.fs-preloader').addClass('s3d-preloader__full')
 			this.selectSliderType(id, type, Apartments)
 			break
+		case 'plannings':
+			// $('.fs-preloader').addClass('s3d-preloader__full')
+			this.scrollBlock({}, type)
+			break
 		default:
 			break
 		}
@@ -321,20 +308,11 @@ class App {
 	selectSliderType(id, type, Fn, idApart) {
 		let config
 		this.history.update(type)
-		// console.log('selectSliderType(e, type, Fn)', type)
 		if (type === 'complex') {
 			config = this.config[type]
-			// config = this.config.house.config[this.activeHouse]
-			// config = this.config.house.config[houseNum];
-			// config.activeHouse = houseNum;
 			$('.js-s3d-select__number-house').html(this.activeHouse)
 		} else {
 			config = this.config[type]
-			// config.activeHouse = houseNum;
-			// if( e.currentTarget.dataset.house || e.target.dataset.build) config.house = e.currentTarget.dataset.house || e.currentTarget.dataset.build;
-			// if (e.currentTarget.dataset.section) config.section = e.currentTarget.dataset.section
-			// if (e.currentTarget.dataset.floor) config.floor = e.currentTarget.dataset.floor
-			// if(e.currentTarget.dataset.id) config.flat = e.currentTarget.dataset.id;
 			if (id) config.flat = id
 		}
 
@@ -354,9 +332,7 @@ class App {
 			if (idApart) {
 				this[type].toSlideNum(idApart)
 			}
-			// this.activeSectionList.push(config.idCopmlex);
 		} else {
-			console.log('else')
 			config.click = this.selectSlider
 			config.scrollBlock = this.scrollBlock.bind(this)
 			config.getFavourites = this.favourites.getFavourites
@@ -391,10 +367,10 @@ class App {
 			// if (block !== 'apart') {
 			// 	$('.fs-preloader').removeClass('s3d-preloader__full')
 			// }
+			$(`.js-s3d-select__${this.activeSection}`).removeClass('active')
+			$(`.js-s3d-select__${block}`).addClass('active')
+			$('.js-s3d-controller')[0].dataset.type = block
 			setTimeout(() => {
-				$(`.js-s3d-select__${this.activeSection}`).removeClass('active')
-				$(`.js-s3d-select__${block}`).addClass('active')
-				$('.js-s3d-controller')[0].dataset.type = block
 				switch (block) {
 				case 'apart':
 					this.complex.hiddenInfo()
@@ -412,7 +388,6 @@ class App {
 					if (document.documentElement.clientWidth > 768) {
 						this.filter.show()
 					}
-
 					this.complex.hiddenInfo()
 					this.complex.hiddenInfoFloor()
 					// $('.js-s3d-filter').addClass('plannings-filter')
@@ -520,7 +495,3 @@ class App {
 		this.complex.resizeCanvas()
 	}
 }
-
-
-
-/* beautify preserve:end */

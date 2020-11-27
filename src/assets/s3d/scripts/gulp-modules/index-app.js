@@ -26,6 +26,9 @@ function init() {
 			id: '.js-s3d__slideModule',
 			// id: 'js-s3d__wrapper',
 		},
+		plannings: {
+			id: '.js-s3d__slideModule',
+		},
 	}
 
 	let app
