@@ -249,19 +249,11 @@ class Slider {
 		img.dataset.id = index
 		img.onload = function load() {
 			self.images[index] = this
-			// if (index === self.activeElem) {
-			// 	// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
-			// 	// $('.s3d-filter__compass svg').css('transform','rotate('+ deg +'deg)');
-			// 	self.compass.save(self.activeElem)
-			// 	self.ctx.drawImage(this, 0, 0, self.width, self.height)
-			// }
 			if (index === self.numberSlide.max) {
 				self.resizeCanvas()
 				self.ctx.drawImage(self.images[self.activeElem], 0, 0, self.width, self.height)
-				// setTimeout(() => {
 				self.unActive()
 				self.loader.hide(self.type)
-				// }, 10)
 				self.rotate = true
 				return index
 			}
