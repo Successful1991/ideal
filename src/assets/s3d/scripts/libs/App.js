@@ -129,9 +129,13 @@ class App {
 
 		$('.js-s3d-controller__elem').on('click', '.s3d-select', e => {
 			const { type } = e.currentTarget.dataset
+			if (type !== 'favourites') {
+				$('.js-s3d__fv').removeClass('s3d__active')
+			}
 			if (type && type !== this.activeSection) {
 				this.history.update(type)
-				this.scrollBlock(e, type)
+				// this.scrollBlock(e, type)
+				this.selectSlider(e, type)
 			}
 		})
 
@@ -310,6 +314,10 @@ class App {
 			// $('.fs-preloader').addClass('s3d-preloader__full')
 			this.selectSliderType(id, type, Apartments)
 			break
+		case 'plannings':
+			// $('.fs-preloader').addClass('s3d-preloader__full')
+			this.scrollBlock({}, type)
+			break
 		default:
 			break
 		}
@@ -389,10 +397,10 @@ class App {
 			// if (block !== 'apart') {
 			// 	$('.fs-preloader').removeClass('s3d-preloader__full')
 			// }
+			$(`.js-s3d-select__${this.activeSection}`).removeClass('active')
+			$(`.js-s3d-select__${block}`).addClass('active')
+			$('.js-s3d-controller')[0].dataset.type = block
 			setTimeout(() => {
-				$(`.js-s3d-select__${this.activeSection}`).removeClass('active')
-				$(`.js-s3d-select__${block}`).addClass('active')
-				$('.js-s3d-controller')[0].dataset.type = block
 				switch (block) {
 				case 'apart':
 					this.complex.hiddenInfo()
@@ -407,7 +415,9 @@ class App {
 					this.compass.setFloor()
 					break
 				case 'plannings':
-					this.filter.show()
+					if (document.documentElement.clientWidth > 768) {
+						this.filter.show()
+					}
 					this.complex.hiddenInfo()
 					this.complex.hiddenInfoFloor()
 					// $('.js-s3d-filter').addClass('plannings-filter')
