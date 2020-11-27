@@ -228,10 +228,9 @@ class Slider {
 		img.src = `${this.imageUrl + index}.jpg`
 		img.dataset.id = index
 		img.onload = function load() {
-			console.log('first load', index)
 			self.images[index] = this
-			// let deg = self.startDegCompass * self.activeElem + (self.startDegCompass * 57);
-			// $('.s3d-filter__compass svg').css('transform','rotate('+ deg +'deg)');
+			const deg = (self.startDegCompass * self.activeElem) + (self.startDegCompass * 57)
+			$('.s3d-controller__compass svg').css('transform', `rotate(${deg}deg)`)
 			self.compass.save(index)
 			self.ctx.drawImage(this, 0, 0, self.width, self.height)
 			self.loader.hide(self.type)
