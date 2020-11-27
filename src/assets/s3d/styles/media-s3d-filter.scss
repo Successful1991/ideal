@@ -1,4 +1,5 @@
-.s3d-filter__result-button {
+.s3d-filter__result-button,
+.s3d-filter__mobile-delimiter {
     display: none;
 }
 
@@ -15,6 +16,8 @@
             display: flex;
             order: 3;
             margin-top: 20px;
+            line-height: 44px;
+            margin-bottom: 15px;
         }
     }
     .s3d-filter__result-button {
@@ -36,6 +39,7 @@
         overflow: scroll;
         .s3d-filter__close {
             // display: none;
+            display: flex;
             top: 1.6em;
             right: 30px;
             width: 13px;
@@ -51,15 +55,29 @@
             padding-left: 15px;
             padding-right: 15px;
             height: auto;
+            overflow: visible;
             &__title {
                 font-size: 28px;
                 line-height: 38px;
+                margin-bottom: 10px;
             }
             .irs--flat {
                 margin-right: 0;
                 margin-left: 0;
                 margin: 0 0 12px 0;
             }
+            &-select__title {
+                // margin-bottom: 0;
+            }
+            &-select__title label {
+                margin-bottom: 0;
+            }
+        }
+        .s3d-filter-select__list label {
+            margin-top: 0;
+        }
+        .s3d-filter-select__title {
+            margin-bottom: 5px;
         }
         .s3d-filter__table {
             display: none;
@@ -69,6 +87,15 @@
             margin: 0;
             background: var(--other-gray);
             width: 100%;
+        }
+        .s3d__favourites {
+            display: none;
+        }
+        .s3d-filter__mobile-delimiter {
+            width: 100%;
+            height: 1px;
+            background: var(--very-gray);
+            display: block;
         }
     }
     .s3d-filter {
@@ -87,6 +114,7 @@
             line-height: 24px;
             height: var(--bottom-block-height);
             align-items: flex-end;
+            padding-bottom: 5px;
         }
         &__button--reset-icon {
             margin-right: 7px;
@@ -118,11 +146,28 @@
 
 /*Фильтр не на генплане*/
 
-.s3d-filter-wrap:not(.plannings-filter) {
-    padding-top: 50px;
-    position: absolute;
-    left: 0;
-    top: 0;
+@media screen and (max-width:575px) {
+    .s3d-filter-wrap:not(.plannings-filter) {
+        padding-top: 50px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        transition: .3s ease-out;
+        &:not(.active) {
+            transform: translateX(-100vw);
+        }
+        .s3d-filter__rooms {
+            margin-bottom: 0;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .s3d-filter__amount-flat {
+            display: flex;
+        }
+        .s3d-filter__result-button {
+            margin-top: 10px;
+        }
+    }
 }
 
 
