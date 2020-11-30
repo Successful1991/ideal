@@ -37,7 +37,7 @@ block content
                     .s3d-controller__elem.js-s3d-controller__elem
                         button(type="button" data-type="complex").s3d-select.active 3D генплан
                         button(type="button" data-type="plannings").s3d-select Планировки
-                        button(type="button" data-type="favourites").s3d-select.js-s3d__favourites.s3d-mobile-only Избраное
+                        button(type="button" data-type="favourites" data-count=0).s3d-select.js-s3d__favourites.s3d-mobile-only Избраное
                             svg
                                 use(xlink:href="#icon-favourites")
                             span.s3d-pl__favourites-amount.js-s3d-favourites-amount 0
@@ -215,16 +215,6 @@ block content
                                     th Площадь м2
                                     th В избранное
                             tbody
-                                tr
-                                    td 2A
-                                    td 1
-                                    td 4
-                                    td 23 m2
-                                    td
-                                        label
-                                            input( type="checkbox")
-                                            svg( role="presentation")
-                                                use( xlink:href="#icon-favourites")
                     .s3d-filter__mobile-delimiter
                     .s3d-filter__amount-flat
                         | Знайдено
