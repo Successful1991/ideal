@@ -159,6 +159,7 @@ class Apartments {
 	}
 
 	addHtmlAll(elem) {
+		console.log(elem)
 		return JSON.stringify(`
 			<div class="s3d-flat js-s3d-flat">
 			 <button class="s3d-flat__back js-s3d-flat__back" type="button">
@@ -233,38 +234,6 @@ class Apartments {
                       <div class="s3d-flat__el__name">Спальня:</div>
                       <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
                     </div>
-                    <div class="s3d-flat__el">
-                      <div class="s3d-flat__el__name">Спальня:</div>
-                      <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
-                      <div class="s3d-flat__el__name">Спальня:</div>
-                      <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
-                      <div class="s3d-flat__el__name">Спальня:</div>
-                      <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
-                      <div class="s3d-flat__el__name">Спальня:</div>
-                      <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
-                      <div class="s3d-flat__el__name">Спальня:</div>
-                      <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
-                      <div class="s3d-flat__el__name">Спальня:</div>
-                      <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
-                      <div class="s3d-flat__el__name">Спальня:</div>
-                      <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
-                    <div class="s3d-flat__el">
-                      <div class="s3d-flat__el__name">Спальня:</div>
-                      <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
-                    </div>
                   </ul>
                 </div><a class="s3d-flat__tell s3d-tell s3d-genplan" type="tel">
                   <div class="s3d-tell__icon-wrap">
@@ -312,7 +281,7 @@ class Apartments {
                 	<button type="button" class="js-s3d__show-3d"><img src="assets/s3d/images/icon/house.svg">посмотреть в 3D</button>
                 	<button type="button" class="js-s3d-form--reservation__open"><img src="assets/s3d/images/icon/lock.svg">заявка на бронь</button>
 <!--                	<button type="button" class="js-s3d-add__favourites" data-id="${elem.id}"><img src="assets/s3d/images/icon/heart.svg">в избранное</button>-->
-                	<label data-id="${elem.id}" class="s3d-flat__like js-s3d-add__favourites">
+                	<label data-id=${elem.activeFlat.value} class="s3d-flat__like js-s3d-add__favourites">
 										<input type="checkbox">
 										<svg role="presentation"><use xlink:href="#icon-favourites"></use></svg>в избранное</label>
                 </div>
