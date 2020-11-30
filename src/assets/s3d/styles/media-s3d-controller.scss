@@ -96,6 +96,10 @@
                 content: '';
             }
         }
+        .s3d-select[data-count="0"] {
+            filter:grayscale(1.5);
+            pointer-events: none;
+        }
     }
 }
 
