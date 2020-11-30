@@ -4,17 +4,20 @@
         -webkit-box-flex: 1;
         -ms-flex: 1 1 100%;
         flex: 1 1 100%;
-        padding: 0 0 0 45px;
+        padding: 0 0 0 0px;
         
         overflow-y: auto;
     }
     .s3d-fv__title {
-        margin-left: 90px;
+        margin-left: 60px;
     }
     .s3d-fv__table table {
         width: 100%;
     }
     .s3d-fv__mouse {
+        display: none;
+    }
+    .s3d-pl__favourites-amount {
         display: none;
     }
 }
