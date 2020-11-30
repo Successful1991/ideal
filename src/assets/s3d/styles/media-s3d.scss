@@ -8,6 +8,12 @@
     --other-gray: #F2F2F2;
 }
 
+@media screen and (max-width:768px)  and (min-width:576px){
+    .s3d-title {
+        display: none;
+    }
+
+}
 @media screen and (max-width:575px) {
     .s3d__wrap {
         padding-bottom: 50px;

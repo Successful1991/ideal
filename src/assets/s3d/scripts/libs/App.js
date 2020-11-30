@@ -385,7 +385,7 @@ class App {
 					this.compass.setFloor()
 					break
 				case 'plannings':
-					if (document.documentElement.clientWidth > 768) {
+					if (document.documentElement.clientWidth > 767) {
 						this.filter.show()
 					}
 					this.complex.hiddenInfo()
