@@ -1,3 +1,5 @@
+
+
 @media screen and (min-width:575px) and (max-width:768px) {
     .s3d-flat {
         padding: 100px 0 0 15px;
@@ -115,4 +117,43 @@
             }
         }
     }
+}
+
+
+//hovers 
+
+
+@media screen and (min-width:769px){
+    .s3d-flat__back {
+        transition: background-color .3s;
+    }
+    .s3d-flat__back:hover {
+        background-color :#255763;
+    }
+    .s3d-flat__links .s3d-flat__like,
+    .s3d-flat__links a, .s3d-flat__links button
+    {
+        text-decoration: none;
+        text-decoration-line: none;
+    }
+    .s3d-flat__links>* span {
+        position: relative;
+    }
+    .s3d-flat__links>* span:before {
+       content: '';
+       height: 1px;
+       position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        background-color: #fff;
+        transform-origin: left;
+    }
+    .s3d-flat__links>*:hover span:before {
+        animation: x-scale .3s 1 ease-out;
+    }
+}
+@keyframes x-scale {
+    from{ transform: scaleX(0);}
+    to{transform: scaleX(1);}
 }

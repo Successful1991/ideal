@@ -220,3 +220,19 @@
 
 
 /*Фильтр не на генплане END*/
+
+
+//HOVERS 
+@media screen and (min-width:769px) {
+    .s3d-pl__favourites {
+        transition: color .3s;
+        cursor: pointer;
+
+    }
+    .s3d-pl__favourites:hover {
+        color: var(--blue);
+    }
+    .s3d-filter__button--reset:hover {
+        color: var(--blue);
+    }
+}
