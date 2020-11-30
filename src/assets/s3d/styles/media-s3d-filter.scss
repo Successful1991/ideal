@@ -2,7 +2,48 @@
 .s3d-filter__mobile-delimiter {
     display: none;
 }
-
+.s3d-filter-wrap.plannings-filter .s3d-filter__complex-img {
+    display: none;
+}
+@media screen and (max-width:768px)  and (min-width:576px) {
+    .s3d-filter {
+        padding: 0 15px ;
+    }
+    .s3d-filter__area, .s3d-filter__living-space, .s3d-filter__buttons, .s3d-filter__floor {
+        width: 100%;
+    }
+    .s3d-filter-select__list {
+        flex-wrap: wrap;
+    }
+    .s3d-filter-select__list>label{
+        order: 2;
+    }
+    .s3d-filter-select__list>span{
+        order: 1;
+    }
+    .s3d-filter .irs--flat {
+        margin: 0;
+        margin-bottom: 10px;
+    }
+    .s3d-filter__complex-img {
+        display: none;
+    }
+    //3d genplan filter 
+    .plannings-filter .s3d-filter {
+        padding:20px 15px 0;
+    }
+    .plannings-filter .s3d-filter__table {
+        padding: 0 0 15px 25px;
+        margin: 0 15px 0 0;
+    }
+    .plannings-filter .s3d-filter-select__list {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .plannings-filter .s3d-filter .irs--flat {
+        margin-bottom: 15px;
+    }
+}
 @media screen and (max-width:575px) {
     .s3d-filter-wrap .s3d-filter__complex-img {
         display: none;
@@ -179,3 +220,19 @@
 
 
 /*Фильтр не на генплане END*/
+
+
+//HOVERS 
+@media screen and (min-width:769px) {
+    .s3d-pl__favourites {
+        transition: color .3s;
+        cursor: pointer;
+
+    }
+    .s3d-pl__favourites:hover {
+        color: var(--blue);
+    }
+    .s3d-filter__button--reset:hover {
+        color: var(--blue);
+    }
+}

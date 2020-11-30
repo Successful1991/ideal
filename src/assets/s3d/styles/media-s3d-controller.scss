@@ -1,3 +1,13 @@
+@media screen and (min-width:576px) and (max-width:768px){
+    .s3d-select[data-type="favourites"] svg {
+        display: none;
+    }
+    .s3d-select[data-count="0"] {
+        display: none;
+    }
+    
+}
+
 @media screen and (max-width:575px) {
     .s3d-controller {
         display: grid !important;
@@ -95,6 +105,11 @@
                 height: 19px;
                 content: '';
             }
+        }
+        .s3d-select[data-count="0"] {
+            filter:grayscale(1.5);
+            pointer-events: none;
+            color: #b1b1b1;
         }
     }
 }

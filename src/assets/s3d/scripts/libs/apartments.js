@@ -277,13 +277,15 @@ class Apartments {
             </svg>
                 </div>
                 <div class="s3d-flat__links">
-                	<a href="#" class="js-s3d__create-pdf"><img src="assets/s3d/images/icon/pdf.svg">скачать буклет</a>
-                	<button type="button" class="js-s3d__show-3d"><img src="assets/s3d/images/icon/house.svg">посмотреть в 3D</button>
-                	<button type="button" class="js-s3d-form--reservation__open"><img src="assets/s3d/images/icon/lock.svg">заявка на бронь</button>
-<!--                	<button type="button" class="js-s3d-add__favourites" data-id="${elem.id}"><img src="assets/s3d/images/icon/heart.svg">в избранное</button>-->
+					<a href="#" class="js-s3d__create-pdf"><img src="assets/s3d/images/icon/pdf.svg">
+						<span>скачать буклет</span></a>
+					<button type="button" class="js-s3d__show-3d"><img src="assets/s3d/images/icon/house.svg">
+						<span>посмотреть в 3D</span></button>
+                	<button type="button" class="js-s3d-form--reservation__open"><img src="assets/s3d/images/icon/lock.svg"><span>заявка на бронь</span></button>
+<!--                	<button type="button" class="js-s3d-add__favourites" data-id="${elem.id}"><img src="assets/s3d/images/icon/heart.svg"><span>в избранное</span></button>-->
                 	<label data-id=${elem.activeFlat.value} class="s3d-flat__like js-s3d-add__favourites">
 										<input type="checkbox">
-										<svg role="presentation"><use xlink:href="#icon-favourites"></use></svg>в избранное</label>
+										<svg role="presentation"><use xlink:href="#icon-favourites"></use></svg><span>в избранное</span></label>
                 </div>
             </div>
 		`)
