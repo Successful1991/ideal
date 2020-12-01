@@ -57,6 +57,9 @@
 
 //HOVERS
 @media screen and (min-width:769px) {
+    .s3d-infoBox__close {
+        transition: .3s ease-out;
+    }
     .s3d-select:hover:not(.active):not([disabled]) {
         background-color: #e46c59;
     }
@@ -66,6 +69,9 @@
     .s3d-infoBox__link:hover {
         box-shadow: 0 4px 15px rgba(36, 22, 19, 0.3);
     } 
+    .s3d-infoBox__close:hover {
+        transform: rotate(180deg);
+    }
     .irs--flat .irs-handle i {
         transition: .3s ease-out;
     }

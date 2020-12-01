@@ -3,7 +3,7 @@ class Favourite {
 		this.listObj = conf.data
 		this.list = conf.list
 		this.wrap = conf.wrap
-
+		this.animationSpeed = 750;
 		$('.js-s3d__slideModule').on('click', '.js-s3d__favourites', () => {
 			this.createMarkup()
 			$('.js-s3d__fv').addClass('s3d__active')
@@ -15,14 +15,18 @@ class Favourite {
 
 			if (checkValue(id)) return
 			if (event.target.checked) {
-				this.addStorage(id);
+				setTimeout(() => {
+					this.addStorage(id);
+				}, this.animationSpeed);
 				if (event.target.closest('label') !== null) {
 					this.moveToFavouriteEffectHandler(event.target.closest('label'));
 				}
 				// console.log(document.querySelector('.js-s3d-controller').dataset.type);
 
 			} else {
-				this.removeElemStorage(id);
+				setTimeout(() => {
+					this.removeElemStorage(id);
+				}, this.animationSpeed);
 				if (event.target.closest('label') !== null) {
 					this.moveToFavouriteEffectHandler(event.target.closest('label'),true);
 				}
@@ -217,14 +221,14 @@ class Favourite {
 			position:fixed; 
 			left:${animatingElParams.left}px; 
 			top:${animatingElParams.top}px;`;
-		const speed = 1;
-		let tl = new TimelineMax({ ease: Power4.easeIn,repeat:0 });
+		const speed = this.animationSpeed / 1000;
+		let tl = new TimelineMax({delay:0,/* ease: Power4.easeIn,*/repeat:0 });
 		if (reverse===true) {
-			tl.from(element, { y: distance.y, duration: speed,ease: Power4.easeIn  }, )
-			tl.from(element, { x: distance.x, duration: speed/2 },`-=${speed/2}`)
+			tl.from(element, { y: distance.y, duration: speed,ease: Power1.easeIn  }, )
+			tl.from(element, { x: distance.x, duration: speed/2.5,ease: Power1.easeIn },`-=${speed/2.5}`)
 		}else {
-			tl.to(element, { y: distance.y, duration: speed,ease: Power4.easeIn  }, )
-			tl.to(element, { x: distance.x, duration: speed/2 },`-=${speed/2}`)
+			tl.to(element, { y: distance.y, duration: speed,ease: Power1.easeIn  }, )
+			tl.to(element, { x: distance.x, duration: speed/2.5,ease: Power1.easeIn },`-=${speed/2.5}`)
 		}
 		tl.set(element, { x: 0, y: 0 });
 		tl.set(element, {position:'',width:'',height:'',stroke:'', fill:'',top:'',left:'',x:'',y:''});
