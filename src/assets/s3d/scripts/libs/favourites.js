@@ -218,7 +218,7 @@ class Favourite {
 			left:${animatingElParams.left}px; 
 			top:${animatingElParams.top}px;`;
 		const speed = 1;
-		let tl = new TimelineMax({ ease: Power4.easeIn });
+		let tl = new TimelineMax({ ease: Power4.easeIn,repeat:0 });
 		if (reverse===true) {
 			tl.from(element, { y: distance.y, duration: speed,ease: Power4.easeIn  }, )
 			tl.from(element, { x: distance.x, duration: speed/2 },`-=${speed/2}`)
