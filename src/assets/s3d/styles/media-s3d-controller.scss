@@ -5,6 +5,17 @@
     .s3d-select[data-count="0"] {
         display: none;
     }
+    .s3d-controller{
+        grid-template-areas:
+                '. . .'
+                'filter . compass'
+                '. . .'
+                '. . info-flat'
+                'buttons buttons buttons';
+    }
+    .s3d-tell{
+        grid-area: 5/3/5/3;
+    }
     
 }
 

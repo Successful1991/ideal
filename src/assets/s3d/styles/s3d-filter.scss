@@ -9,7 +9,7 @@
         flex: 0 0 auto;
         //background: #F2F2F2;
         background: transparent;
-        padding: 20px 40px 10px;
+        padding: var(--header-height) 40px 10px;
         grid-area: filter;
         &-wrap {
             z-index: 120;
@@ -25,7 +25,6 @@
             min-width: 320px;
             transform: translate(0, 0);
             transition: all .1s ease-out 0.5s;
-            padding-top: 100px;
             grid-area: filter;
             visibility: hidden;
             opacity: 0;

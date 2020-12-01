@@ -207,8 +207,8 @@ class Slider {
 	}
 
 	centerSlider(elem) {
-		const scroll = (elem.scrollWidth / 2) - (document.documentElement.offsetWidth * 2)
-		$('.s3d__wrap').scrollLeft(scroll)
+		const scroll = (elem.scrollWidth - document.documentElement.offsetWidth) / 2
+		this.wrapper.scrollLeft(scroll)
 	}
 
 	update(config) {

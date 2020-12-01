@@ -740,13 +740,13 @@ body{
 
 }
 @media screen and ( max-width : 1023px ){
-  .s3d-mobile-only:not(.rc){
-    display: inline-block;
-  }
+
 }
 
 @media screen and ( max-width : 992px ){
-
+  .s3d-mobile-only:not(.rc){
+    display: inline-block;
+  }
 }
 @media screen and ( max-width : 767px ){
 
@@ -766,10 +766,6 @@ body{
 
 }
 @media screen and ( max-width : 768px ){
-
-  .s3d__slideModule{
-    height: calc(100vh - 59px);
-  }
 
 }
 
