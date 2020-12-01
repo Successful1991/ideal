@@ -57,6 +57,9 @@
 
 //HOVERS
 @media screen and (min-width:769px) {
+    .s3d-select:hover:not(.active):not([disabled]) {
+        background-color: #e46c59;
+    }
     .s3d-infoBox__link {
         transition: box-shadow .3s ease-out;
     }

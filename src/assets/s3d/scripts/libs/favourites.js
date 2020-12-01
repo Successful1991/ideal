@@ -11,17 +11,28 @@ class Favourite {
 
 		$('.js-s3d__slideModule').on('change', '.js-s3d-add__favourites', event => {
 			const id = $(event.currentTarget).data('id')
-			console.log('id', id)
+			console.log('id', id);
+
 			if (checkValue(id)) return
 			if (event.target.checked) {
-				this.addStorage(id)
+				this.addStorage(id);
+				if (event.target.closest('label') !== null) {
+					this.moveToFavouriteEffectHandler(event.target.closest('label'));
+				}
+				// console.log(document.querySelector('.js-s3d-controller').dataset.type);
+
 			} else {
-				this.removeElemStorage(id)
+				this.removeElemStorage(id);
+				if (event.target.closest('label') !== null) {
+					this.moveToFavouriteEffectHandler(event.target.closest('label'),true);
+				}
 			}
 		})
 
 		$('.js-s3d__fv').on('click', '.js-s3d__fv__close', () => {
-			$('.js-s3d__fv').removeClass('s3d__active')
+			$('.js-s3d__fv').removeClass('s3d__active');
+
+
 		})
 
 		$('.js-s3d__fv').on('click', '.js-s3d-fv__remove', e => {
@@ -29,10 +40,12 @@ class Favourite {
 			if (this.removeElemStorage(id)) {
 				$(e.target).closest('.js-s3d-fv__element').remove()
 			}
+
+			
 		})
 		this.init()
 	}
-
+	
 	init() {
 		// sessionStorage.clear()
 		this.createMarkup()
@@ -138,4 +151,89 @@ class Favourite {
 		$('.js-s3d__favourites').data('count', value);
 		document.querySelector('.js-s3d__favourites').dataset.count = value;
 	}
+	moveToFavouriteEffectHandler(target,reverse) {
+		var currentScreen = document.querySelector('.js-s3d-controller').dataset.type;
+		var iconToAnimate = target.querySelector('svg');
+		if (document.documentElement.clientWidth<576){
+			var distance =  this.getBetweenDistance(document.querySelector('.s3d-mobile-only[data-type="favourites"]'),iconToAnimate);
+			this.animateFavouriteElement(document.querySelector('.s3d-mobile-only[data-type="favourites"]'),iconToAnimate,distance,reverse)
+			console.log(distance);
+		}else {
+			switch (currentScreen) {
+				case 'complex':
+					var distance =  this.getBetweenDistance(document.querySelector('.s3d-filter-wrap .s3d__favourites'),iconToAnimate);
+					this.animateFavouriteElement(document.querySelector('.s3d-filter-wrap .s3d__favourites'),iconToAnimate,distance,reverse)
+					break;
+				case 'plannings':
+					var distance =  this.getBetweenDistance(document.querySelector('.s3d-pl__favourites-icon'),iconToAnimate);
+					this.animateFavouriteElement(document.querySelector('.s3d-pl__favourites-icon'),iconToAnimate,distance,reverse)
+					break;
+				case 'apart':
+					var distance =  this.getBetweenDistance(document.querySelector('.s3d-pl__favourites-icon'),iconToAnimate);
+					this.animateFavouriteElement(document.querySelector('.s3d-pl__favourites-icon'),iconToAnimate,distance,reverse)
+					break;
+			
+				default:
+					break;
+			}
+		}
+		
+	}
+	getBetweenDistance(elem1, elem2){
+		// get the bounding rectangles
+		var el1 = elem1.getBoundingClientRect();
+		var el2 = elem2.getBoundingClientRect();
+		// get div1's center point
+		var div1x = el1.left + el1.width / 2;
+		var div1y = el1.top + el1.height / 2;
+
+		// get div2's center point
+		var div2x = el2.left + el2.width / 2;
+		var div2y = el2.top + el2.height / 2;
+
+		// calculate the distance using the Pythagorean Theorem (a^2 + b^2 = c^2)
+		var distanceSquared = Math.pow(div1x - div2x, 2) + Math.pow(div1y - div2y, 2);
+		var distance = Math.sqrt(distanceSquared);
+
+		return {
+			x:div1x - div2x,
+			y:div1y - div2y,
+		}
+	}
+	animateFavouriteElement(destination, element, distance,reverse) {
+		if (gsap===undefined) return
+		// console.log(Math.abs(div1x - div2x), 'X');
+		// console.log(Math.abs(div1y - div2y), 'Y');
+		var animatingElParams = element.getBoundingClientRect();
+		element.style.cssText += ` 
+			width:${animatingElParams.width}px;
+			height:${animatingElParams.height}px;
+			transform-origin:top left;`;
+		element.style.cssText += `
+			fill:var(--blue);
+			position:relative; 
+			z-index:2000;
+			stroke:none;
+			position:fixed; 
+			left:${animatingElParams.left}px; 
+			top:${animatingElParams.top}px;`;
+		const speed = 1;
+		let tl = new TimelineMax({ ease: Power4.easeIn });
+		if (reverse===true) {
+			tl.from(element, { y: distance.y, duration: speed,ease: Power4.easeIn  }, )
+			tl.from(element, { x: distance.x, duration: speed/2 },`-=${speed/2}`)
+		}else {
+			tl.to(element, { y: distance.y, duration: speed,ease: Power4.easeIn  }, )
+			tl.to(element, { x: distance.x, duration: speed/2 },`-=${speed/2}`)
+		}
+		tl.set(element, { x: 0, y: 0 });
+		tl.set(element, {position:'',width:'',height:'',stroke:'', fill:'',top:'',left:'',x:'',y:''});
+		tl.set(element,{ clearProps: "all" });
+		
+		// console.log(div2x, 'X2');
+		return distance;
+	}
 }
+
+
+
