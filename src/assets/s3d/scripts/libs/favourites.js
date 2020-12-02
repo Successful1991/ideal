@@ -54,6 +54,7 @@ class Favourite {
 		// sessionStorage.clear()
 		this.createMarkup()
 		this.showSelectFlats()
+		this.addPulseCssEffect()
 	}
 
 	showSelectFlats() {
@@ -149,7 +150,19 @@ class Favourite {
         <tr>
 		`
 	}
-
+	addPulseCssEffect() {
+		this.animationPulseClass = 'pulse';
+		document.body.insertAdjacentHTML('beforeend',`
+		<style class="${this.animationPulseClass}">
+			.${this.animationPulseClass} {
+				border-radius: 50%;
+				cursor: pointer;
+				box-shadow: 0 0 0 rgba(255,255,255, 0.75);
+				animation: pulse 0.5s 1 ease-out;
+			}.${this.animationPulseClass}:hover {	animation: none;}@-webkit-keyframes ${this.animationPulseClass} {	0% {	  -webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	}	70% {		-webkit-box-shadow: 0 0 0 10px rgba(255,255,255, 0);	}	100% {		-webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0);	}}@keyframes pulse {	0% {	  -moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	  box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	}	70% {		-moz-box-shadow: 0 0 0 10px rgba(255,255,255, 0);		box-shadow: 0 0 0 10px rgba(255,255,255, 0);	}	100% {		-moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0);		box-shadow: 0 0 0 0 rgba(255,255,255, 0);	}}
+		</style>
+		`)
+	}
 	updateAmount(value) {
 		$('.js-s3d-favourites-amount').html(value);
 		$('.js-s3d__favourites').data('count', value);
@@ -222,18 +235,32 @@ class Favourite {
 			left:${animatingElParams.left}px; 
 			top:${animatingElParams.top}px;`;
 		const speed = this.animationSpeed / 1000;
-		let tl = new TimelineMax({delay:0,/* ease: Power4.easeIn,*/repeat:0 });
+		// element.classList.add(this.animationPulseClass)
+		let tl = new TimelineMax({
+			delay:0,/* ease: Power4.easeIn,*/
+			repeat:0,
+			paused:true,
+			onComplete: () =>{
+				element.classList.remove(this.animationPulseClass);
+				console.log(element.classList);
+				element.style.cssText = '';
+			},
+		
+		});
+
+
 		if (reverse===true) {
-			tl.from(element, { y: distance.y, duration: speed,ease: Power1.easeIn  }, )
+			tl.from(element, { y: distance.y, duration: speed,ease: Power1.easeIn,  } )
 			tl.from(element, { x: distance.x, duration: speed/2.5,ease: Power1.easeIn },`-=${speed/2.5}`)
 		}else {
-			tl.to(element, { y: distance.y, duration: speed,ease: Power1.easeIn  }, )
+			tl.set(element,{classList:`+=${this.animationPulseClass}`});
+			tl.to(element, { y: distance.y, duration: speed,ease: Power1.easeIn,  } )
 			tl.to(element, { x: distance.x, duration: speed/2.5,ease: Power1.easeIn },`-=${speed/2.5}`)
 		}
 		tl.set(element, { x: 0, y: 0 });
-		tl.set(element, {position:'',width:'',height:'',stroke:'', fill:'',top:'',left:'',x:'',y:''});
+		// tl.set(element, {position:'',width:'',height:'',stroke:'', fill:'',top:'',left:'',x:'',y:''});
 		tl.set(element,{ clearProps: "all" });
-		
+		tl.play();
 		// console.log(div2x, 'X2');
 		return distance;
 	}
