@@ -108,20 +108,6 @@ class App {
 
 		$('.js-s3d-controller').data('type', 'complex')
 		$('.js-s3d__wrapper__complex').css('z-index', '100')
-		// $('.s3d-select__head').on('click', e => {
-		// 	const self = this
-		// 	const block = $(e.currentTarget).next()
-		// 	block.css({ visibility: 'visible' })
-		// 	function select(ev) {
-		// 		if (ev.target.className === 's3d-select-value' && ev.target.dataset.house) {
-		// 			self.selectSlider(e, self.complex.type);
-		// 		}
-		// 		$('body').off('click', event => { select(event) })
-		// 		block.css({ visibility: 'hidden' })
-		// 	}
-		// 	$('body').on('mousedown', select)
-		// });
-
 		this.animateFlag = true
 
 		$('.js-s3d-controller__elem').on('click', '.s3d-select', e => {
@@ -138,17 +124,13 @@ class App {
 		const helper = new Helper()
 		helper.init()
 
-		this.resize()
+		// this.resize()
 	}
 
 	showAvailableFlat() {
-		// $('.js-s3d-controller__showFilter--input').click();
 		if ($('.js-s3d-controller__showFilter--input').prop('checked')) {
-			// $('.js-s3d-controller__showFilter--input').prop('checked',false);
 			$('.js-s3d-svg__point-group').css({ opacity: '1', display: 'flex' })
 		} else {
-			// $('.js-s3d-controller__showFilter--input').prop('checked',true);
-			// $('#js-s3d__wrapper polygon').css({'opacity': ''});
 			$('.js-s3d-svg__point-group').css({ opacity: '0', display: 'none' })
 		}
 	}
@@ -181,7 +163,6 @@ class App {
 					this.scrollToBlock(600)(this.activeSectionList[0])
 				}
 			} else {
-				// this.animateBlock('translate', 'down')
 				this.scrollToBlock(600)(active)
 			}
 		}
@@ -272,6 +253,11 @@ class App {
 			list: this.flatList,
 		})
 		// $('.s3d-pl__filter').append($('.s3d-filter'))
+
+		this.deb = this.debounce(this.resize.bind(this), 700)
+		$(window).resize(() => {
+			this.deb(this)
+		})
 	}
 
 	createWrap(conf, tag) {
@@ -481,37 +467,71 @@ class App {
 	//     }
 	// }
 
-	resize() {
-		const doc = $('.js-s3d__slideModule')
-		// let height = doc.height();
-		// const width = doc.width();
-		// if(height >= width) {
-		// if(height >= width*0.85) {
-		// if(height >= width*0.75) {
-		//     height = height/2;
-		//     $('.js-s3d__wrapper__complex').css({'height':'50%'});
-		//     $('.js-s3d__helper').css({'visibility':'visible'});
-		// $('.js-s3d__wrap').css({'height':'50vh'});
-		// $('.js-s3d-filter').addClass('filter-small');
-		// $('.js-s3d-controller').addClass('s3d-controller-small');
-		// if(width/height - 16/9 > 0) {
-		//     $('.js-s3d__slideModule').addClass('s3d-active-vertical');
-		// } else {
-		//     $('.js-s3d__slideModule').removeClass('active');
-		// }
+	// resize() {
+	// 	const doc = $('.js-s3d__slideModule')
+	// 	// let height = doc.height();
+	// 	// const width = doc.width();
+	// 	// if(height >= width) {
+	// 	// if(height >= width*0.85) {
+	// 	// if(height >= width*0.75) {
+	// 	//     height = height/2;
+	// 	//     $('.js-s3d__wrapper__complex').css({'height':'50%'});
+	// 	//     $('.js-s3d__helper').css({'visibility':'visible'});
+	// 	// $('.js-s3d__wrap').css({'height':'50vh'});
+	// 	// $('.js-s3d-filter').addClass('filter-small');
+	// 	// $('.js-s3d-controller').addClass('s3d-controller-small');
+	// 	// if(width/height - 16/9 > 0) {
+	// 	//     $('.js-s3d__slideModule').addClass('s3d-active-vertical');
+	// 	// } else {
+	// 	//     $('.js-s3d__slideModule').removeClass('active');
+	// 	// }
+	//
+	// 	// } else {
+	// 	// $('.js-s3d__wrap').css({'height':''});
+	// 	$('.js-s3d__wrapper__complex').css({ height: '' })
+	// 	// $('.js-s3d__helper').css({'visibility':'hidden'});
+	// 	// $('.js-s3d-filter').removeClass('filter-small');
+	// 	// $('.js-s3d-controller').removeClass('s3d-controller-small');
+	// 	// if(width/height - 16/9 < 0) {
+	// 	//     $('.js-s3d__slideModule').removeClass('s3d-active-vertical');
+	// 	// } else {
+	// 	//     $('.js-s3d__slideModule').addClass('active');
+	// 	// }
+	// 	// }
+	// 	this.complex.resizeCanvas()
+	// }
 
-		// } else {
-		// $('.js-s3d__wrap').css({'height':''});
-		$('.js-s3d__wrapper__complex').css({ height: '' })
-		// $('.js-s3d__helper').css({'visibility':'hidden'});
-		// $('.js-s3d-filter').removeClass('filter-small');
-		// $('.js-s3d-controller').removeClass('s3d-controller-small');
-		// if(width/height - 16/9 < 0) {
-		//     $('.js-s3d__slideModule').removeClass('s3d-active-vertical');
-		// } else {
-		//     $('.js-s3d__slideModule').addClass('active');
-		// }
-		// }
-		this.complex.resizeCanvas()
+	resize() {
+		console.log('resize', this)
+		const type = $('.js-s3d-controller')[0].dataset.type
+		console.log('resize type', type)
+		if (document.documentElement.offsetWidth < 768) {
+			if (type === 'plannings') {
+				this.filter.hidden()
+				$('.js-s3d-filter').removeClass('plannings-filter')
+			} else {
+				this.filter.hidden()
+				$('.js-s3d-filter').addClass('plannings-filter')
+			}
+		} else {
+			if (type === 'plannings') {
+				this.filter.show()
+				$('.js-s3d-filter').removeClass('plannings-filter')
+			} else {
+				this.filter.hidden()
+				$('.js-s3d-filter').addClass('plannings-filter')
+			}
+		}
+	}
+
+	debounce(f, t) {
+		return function (args) {
+			let previousCall = this.lastCall
+			this.lastCall = Date.now()
+			if (previousCall && ((this.lastCall - previousCall) <= t)) {
+				clearTimeout(this.lastCallTimer)
+			}
+			this.lastCallTimer = setTimeout(() => f(args), t)
+		}
 	}
 }

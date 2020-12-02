@@ -49,7 +49,6 @@ class Slider {
 		this.rotate = true
 		this.animates = () => {}
 		this.ActiveHouse = data.ActiveHouse
-		this.resize = this.resize.bind(this)
 		this.init = this.init.bind(this)
 		this.changeBlockIndex = data.changeBlockIndex
 		this.click = data.click
@@ -163,6 +162,30 @@ class Slider {
 		//   class:'s3d__helper js-s3d__helper',
 		//   content: '<img src="/wp-content/themes/idealist/assets/s3d/images/icon/help-arrow.svg" class="s3d-arrow"/><img src="/wp-content/themes/idealist/assets/s3d/images/icon/help-logo.svg" class="s3d__helper-logo"/> <div class="s3d__helper__text">Оберіть </br>будинок</div>'
 		// });
+
+		window.addEventListener('keydown', event => {
+			const data = {
+				dataset: {
+					type: '',
+				},
+			}
+			switch (event.keyCode) {
+			case 37:
+			case 100:
+				data.dataset.type = 'prev'
+				break
+			case 39:
+			case 102:
+				data.dataset.type = 'next'
+				break
+			default:
+				return false
+			}
+			this.checkDirectionRotate(data)
+		})
+		$(window).resize(() => {
+			this.resizeCanvas()
+		})
 	}
 
 	gyroscopeStart() {
@@ -241,9 +264,9 @@ class Slider {
 			$('.s3d-controller__compass svg').css('transform', `rotate(${deg}deg)`)
 			self.compass.save(index)
 			self.ctx.drawImage(this, 0, 0, self.width, self.height)
+			self.rotate = false
 			// self.loader.hide(self.type)
 			self.changeBlockIndex(self.type)
-			self.rotate = false
 			self.resizeCanvas()
 			self.loadImage(0)
 		}
@@ -313,18 +336,21 @@ class Slider {
 	resizeCanvas() {
 		const factorW = this.width / this.height
 		const factorH = this.height / this.width
-		const canvasWrapp = $('.js-s3d__wrapper__complex')
-		const canvas = $('#js-s3d__complex')
-		const diffW = this.width / canvasWrapp.width()
-		const diffH = this.height / canvasWrapp.height()
+		const canvasWrapp = this.wrapper
+		const canvas = $(`#js-s3d__${this.type}`)
+		const width = canvasWrapp.width()
+		const height = canvasWrapp.height()
+		const diffW = this.width / width
+		const diffH = this.height / height
 
 		if (diffW < diffH) {
-			canvas.width(canvasWrapp.width())
-			canvas.height(canvasWrapp.width() * factorH)
+			canvas.width(width)
+			canvas.height(width * factorH)
 		} else {
-			canvas.height(canvasWrapp.height())
-			canvas.width(canvasWrapp.height() * factorW)
+			canvas.height(height)
+			canvas.width(height * factorW)
 		}
+		this.centerSlider(this.wrapper[0])
 	}
 
 	// записывает позиции мышки
@@ -337,13 +363,13 @@ class Slider {
 		// $(this.activeSvg).css({ opacity: '0' })
 	}
 
-	resize() {
-		this.height = this.wrapper.height()
-		this.width = this.wrapper.width()
-		this.ctx.canvas.width = this.width
-		this.ctx.canvas.height = this.height
-		this.ctx.drawImage(this.images[this.activeElem], 0, 0, this.width, this.height)
-	}
+	// resize() {
+	// 	this.height = this.wrapper.height()
+	// 	this.width = this.wrapper.width()
+	// 	this.ctx.canvas.width = this.width
+	// 	this.ctx.canvas.height = this.height
+	// 	this.ctx.drawImage(this.images[this.activeElem], 0, 0, this.width, this.height)
+	// }
 
 	// инициализация svg слайдера
 	createSvg() {
