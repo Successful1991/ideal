@@ -51,6 +51,7 @@ class Slider {
 		this.ActiveHouse = data.ActiveHouse
 		this.resize = this.resize.bind(this)
 		this.init = this.init.bind(this)
+		this.changeBlockIndex = data.changeBlockIndex
 		this.click = data.click
 		this.getFlatObj = data.getFlatObj
 		this.setActiveSvg = this.setActiveSvg.bind(this)
@@ -62,6 +63,7 @@ class Slider {
 		this.loader = data.loader
 		this.addBlur = data.addBlur
 		this.unActive = data.unActive
+		this.progress = 0
 		this.loadImage = this.loadImage.bind(this)
 	}
 
@@ -144,6 +146,7 @@ class Slider {
 		this.createSvg()
 		this.createInfo()
 		this.createArrow()
+		this.createBackground()
 		this.infoBox.on('click', '.js-s3d-infoBox__close', () => {
 			this.hiddenInfo()
 		})
@@ -154,8 +157,7 @@ class Slider {
 			// this.click(event, this.type)
 			this.click(event.currentTarget.dataset.id, 'apart', event.currentTarget.dataset.id)
 		})
-		$('.js-s3d__wrap').scrollLeft($('.js-s3d__wrap').width() / 4)
-
+		this.centerSlider(this.wrapper[0])
 		$('.js-s3d-blink').on('click', () => this.flatBlink())
 		// createMarkup('div' , '#js-s3d__wrapper', {
 		//   class:'s3d__helper js-s3d__helper',
@@ -204,6 +206,11 @@ class Slider {
 		this.mouseSpeed = data.mouseSpeed || this.mouseSpeed
 	}
 
+	centerSlider(elem) {
+		const scroll = (elem.scrollWidth / 2) - (document.documentElement.offsetWidth * 2)
+		$('.s3d__wrap').scrollLeft(scroll)
+	}
+
 	update(config) {
 		this.setConfig(config)
 		// this.updateImage()
@@ -212,7 +219,7 @@ class Slider {
 
 	// обновить картинки в канвасе
 	updateImage() {
-		console.log('updateImage()')
+		this.progress = 0
 		this.ctx.canvas.width = this.width
 		this.ctx.canvas.height = this.height
 		this.loadImage(0, 'complex')
@@ -234,7 +241,8 @@ class Slider {
 			$('.s3d-controller__compass svg').css('transform', `rotate(${deg}deg)`)
 			self.compass.save(index)
 			self.ctx.drawImage(this, 0, 0, self.width, self.height)
-			self.loader.hide(self.type)
+			// self.loader.hide(self.type)
+			self.changeBlockIndex(self.type)
 			self.rotate = false
 			self.resizeCanvas()
 			self.loadImage(0)
@@ -250,11 +258,12 @@ class Slider {
 		img.dataset.id = index
 		img.onload = function load() {
 			self.images[index] = this
+			self.progressBarUpdate()
 			if (index === self.numberSlide.max) {
 				self.resizeCanvas()
 				self.ctx.drawImage(self.images[self.activeElem], 0, 0, self.width, self.height)
 				self.unActive()
-				// self.loader.hide(self.type)
+				self.loader.hide(self.type)
 				self.rotate = true
 				return index
 			}
@@ -286,6 +295,19 @@ class Slider {
 				data: res, action: '3dDebuger',
 			},
 		}).then(resolve => console.log(resolve))
+	}
+
+	progressBarUpdate() {
+		if (this.progress >= this.numberSlide.max) {
+			setTimeout(() => {
+				$('.fs-preloader').removeClass('preloader-active')
+			}, 300)
+			return
+		}
+		this.progress += 1
+		const prcent = this.progress * (100 / (this.numberSlide.max + 1))
+		$('.fs-preloader-amount').html(Math.ceil(prcent))
+		// $('.js-progress-bar__line').css('transform', 'translateX('+prcent+'%)');
 	}
 
 	resizeCanvas() {
@@ -342,6 +364,12 @@ class Slider {
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1.18021e-06 -2.38419e-06L7 4.5L0 9L5.00966e-07 5.17974L6.79242e-07 3.82025L1.18021e-06 -2.38419e-06Z" />
 </svg>`)
 		$('.js-s3d__button-right').on('click', event => this.checkDirectionRotate(event.target))
+	}
+
+	// плашки с затемнением для выделения текста
+	createBackground() {
+		createMarkup('div', this.wrapper, { class: 's3d__slider__bg s3d__slider__bg-top' })
+		createMarkup('div', this.wrapper, { class: 's3d__slider__bg s3d__slider__bg-bottom' })
 	}
 
 	// меняет активную svg в зависимости от кадра

@@ -103,6 +103,21 @@
       height: 100%;
       flex: 1 1 100%;
       overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 2px;
+      }
+      /* Track */
+      &::-webkit-scrollbar-track {
+        -webkit-box-shadow: none;
+      }
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: #EB8271;
+        -webkit-box-shadow: none;
+      }
+      &::-webkit-scrollbar-thumb:window-inactive {
+        background: #EB8271;
+      }
     }
     &__el{
       display: flex;
