@@ -153,14 +153,14 @@ class Favourite {
 	addPulseCssEffect() {
 		this.animationPulseClass = 'pulse';
 		document.body.insertAdjacentHTML('beforeend',`
-		<style class="${this.animationPulseClass}">
+		<!-- <style class="${this.animationPulseClass}">
 			.${this.animationPulseClass} {
 				border-radius: 50%;
 				cursor: pointer;
 				box-shadow: 0 0 0 rgba(255,255,255, 0.75);
 				animation: pulse 0.5s 1 ease-out;
 			}.${this.animationPulseClass}:hover {	animation: none;}@-webkit-keyframes ${this.animationPulseClass} {	0% {	  -webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	}	70% {		-webkit-box-shadow: 0 0 0 10px rgba(255,255,255, 0);	}	100% {		-webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0);	}}@keyframes pulse {	0% {	  -moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	  box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	}	70% {		-moz-box-shadow: 0 0 0 10px rgba(255,255,255, 0);		box-shadow: 0 0 0 10px rgba(255,255,255, 0);	}	100% {		-moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0);		box-shadow: 0 0 0 0 rgba(255,255,255, 0);	}}
-		</style>
+		</style> -->
 		`)
 	}
 	updateAmount(value) {
@@ -168,9 +168,11 @@ class Favourite {
 		$('.js-s3d__favourites').data('count', value);
 		document.querySelector('.js-s3d__favourites').dataset.count = value;
 	}
-	moveToFavouriteEffectHandler(target,reverse) {
+
+	moveToFavouriteEffectHandler(target, reverse) {
 		var currentScreen = document.querySelector('.js-s3d-controller').dataset.type;
 		var iconToAnimate = target.querySelector('svg');
+		
 		if (document.documentElement.clientWidth<576){
 			var distance =  this.getBetweenDistance(document.querySelector('.s3d-mobile-only[data-type="favourites"]'),iconToAnimate);
 			this.animateFavouriteElement(document.querySelector('.s3d-mobile-only[data-type="favourites"]'),iconToAnimate,distance,reverse)
@@ -218,6 +220,8 @@ class Favourite {
 		}
 	}
 	animateFavouriteElement(destination, element, distance,reverse) {
+
+		if (element.closest('.js-s3d-infoBox')) return;
 		if (gsap===undefined) return
 		// console.log(Math.abs(div1x - div2x), 'X');
 		// console.log(Math.abs(div1y - div2y), 'Y');
@@ -225,15 +229,21 @@ class Favourite {
 		element.style.cssText += ` 
 			width:${animatingElParams.width}px;
 			height:${animatingElParams.height}px;
-			transform-origin:top left;`;
+			transform-origin:center;
+			`;
 		element.style.cssText += `
-			fill:var(--blue);
 			position:relative; 
 			z-index:2000;
 			stroke:none;
 			position:fixed; 
 			left:${animatingElParams.left}px; 
-			top:${animatingElParams.top}px;`;
+			top:${animatingElParams.top}px;
+			`;
+		
+		let copiedElement = element.cloneNode(true);
+		copiedElement.style.cssText+='/*fill:var(--blue);*/ z-index:1999;opacity:0';
+		element.insertAdjacentElement('afterend',copiedElement);
+		if (reverse===true) copiedElement.style.cssText+='fill:#1C4954; z-index:1999;';
 		const speed = this.animationSpeed / 1000;
 		// element.classList.add(this.animationPulseClass)
 		let tl = new TimelineMax({
@@ -242,24 +252,33 @@ class Favourite {
 			paused:true,
 			onComplete: () =>{
 				element.classList.remove(this.animationPulseClass);
-				console.log(element.classList);
+				copiedElement.remove();
 				element.style.cssText = '';
 			},
 		
 		});
 
-
+		tl.to(element,{scale:0.75,duration:speed/10,ease: Power4.easeIn,})
+		tl.to(element,{scale:1,duration:0})
+		tl.to(copiedElement,{autoAlpha:1,duration:speed/10})
+		
+		tl.to(element,{scale:1.5, duration:speed/3},'<')
+		tl.to(element,{autoAlpha:0, duration:speed},'<')
 		if (reverse===true) {
-			tl.from(element, { y: distance.y, duration: speed,ease: Power1.easeIn,  } )
-			tl.from(element, { x: distance.x, duration: speed/2.5,ease: Power1.easeIn },`-=${speed/2.5}`)
+			tl.from(copiedElement, {  y: distance.y, duration: speed,ease: Power1.easeIn,  } ,'<')
+			tl.to(copiedElement, { fill:'#FFFFFF',  } ,'<')
+			tl.from(copiedElement, { x: distance.x, duration: speed/3,ease: Power1.easeIn },`<`)
+			tl.to(element,{autoAlpha:1,scale:1},'<')
 		}else {
-			tl.set(element,{classList:`+=${this.animationPulseClass}`});
-			tl.to(element, { y: distance.y, duration: speed,ease: Power1.easeIn,  } )
-			tl.to(element, { x: distance.x, duration: speed/2.5,ease: Power1.easeIn },`-=${speed/2.5}`)
+			// tl.set(copiedElement,{classList:`+=${this.animationPulseClass}`},'<');
+			tl.to(copiedElement, { fill:'#1C4954',y: distance.y, duration: speed,ease: Power1.easeIn,  },`-=${speed}` )
+			tl.to(copiedElement, { x: distance.x, duration: speed/3,ease: Power1.easeIn },`-=${speed/3}`)
+			tl.set(copiedElement, {autoAlpha: 0 })
+			tl.to(element,{autoAlpha:1,scale:1},'<')
 		}
-		tl.set(element, { x: 0, y: 0 });
+		
 		// tl.set(element, {position:'',width:'',height:'',stroke:'', fill:'',top:'',left:'',x:'',y:''});
-		tl.set(element,{ clearProps: "all" });
+		tl.set(copiedElement,{ clearProps: "all" });
 		tl.play();
 		// console.log(div2x, 'X2');
 		return distance;
