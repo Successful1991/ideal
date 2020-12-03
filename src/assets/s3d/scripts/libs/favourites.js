@@ -3,7 +3,7 @@ class Favourite {
 		this.listObj = conf.data
 		this.list = conf.list
 		this.wrap = conf.wrap
-		this.animationSpeed = 750;
+		this.animationSpeed = 750
 		$('.js-s3d__slideModule').on('click', '.js-s3d__favourites', () => {
 			this.createMarkup()
 			$('.js-s3d__fv').addClass('s3d__active')
@@ -11,32 +11,29 @@ class Favourite {
 
 		$('.js-s3d__slideModule').on('change', '.js-s3d-add__favourites', event => {
 			const id = $(event.currentTarget).data('id')
-			console.log('id', id);
+			console.log('id', id)
 
 			if (checkValue(id)) return
 			if (event.target.checked) {
 				setTimeout(() => {
-					this.addStorage(id);
-				}, this.animationSpeed);
+					this.addStorage(id)
+				}, this.animationSpeed)
 				if (event.target.closest('label') !== null) {
-					this.moveToFavouriteEffectHandler(event.target.closest('label'));
+					this.moveToFavouriteEffectHandler(event.target.closest('label'))
 				}
 				// console.log(document.querySelector('.js-s3d-controller').dataset.type);
-
 			} else {
 				setTimeout(() => {
-					this.removeElemStorage(id);
-				}, this.animationSpeed);
+					this.removeElemStorage(id)
+				}, this.animationSpeed)
 				if (event.target.closest('label') !== null) {
-					this.moveToFavouriteEffectHandler(event.target.closest('label'),true);
+					this.moveToFavouriteEffectHandler(event.target.closest('label'), true)
 				}
 			}
 		})
 
 		$('.js-s3d__fv').on('click', '.js-s3d__fv__close', () => {
-			$('.js-s3d__fv').removeClass('s3d__active');
-
-
+			$('.js-s3d__fv').removeClass('s3d__active')
 		})
 
 		$('.js-s3d__fv').on('click', '.js-s3d-fv__remove', e => {
@@ -44,12 +41,10 @@ class Favourite {
 			if (this.removeElemStorage(id)) {
 				$(e.target).closest('.js-s3d-fv__element').remove()
 			}
-
-			
 		})
 		this.init()
 	}
-	
+
 	init() {
 		// sessionStorage.clear()
 		this.createMarkup()
@@ -102,7 +97,7 @@ class Favourite {
 			$('.js-s3d-favorite__wrap').addClass('s3d-hidden')
 			$('.js-s3d__fv').removeClass('s3d__active')
 		}
-		return true
+		// return true;
 	}
 
 	clearStorage() {
@@ -115,7 +110,7 @@ class Favourite {
 
 	getFavourites() {
 		const storage = JSON.parse(sessionStorage.getItem('favourites'))
-		return storage ? storage : []
+		return storage || []
 	}
 
 	createMarkup() {
@@ -126,7 +121,7 @@ class Favourite {
 			$('.js-s3d-favorite__wrap').removeClass('s3d-hidden')
 		}
 		$(this.wrap).append(
-			favourites.map(el => this.createElemHtml(this.listObj[el]))
+			favourites.map(el => this.createElemHtml(this.listObj[el])),
 		)
 	}
 
@@ -150,9 +145,10 @@ class Favourite {
         <tr>
 		`
 	}
+
 	addPulseCssEffect() {
-		this.animationPulseClass = 'pulse';
-		document.body.insertAdjacentHTML('beforeend',`
+		this.animationPulseClass = 'pulse'
+		document.body.insertAdjacentHTML('beforeend', `
 		<!-- <style class="${this.animationPulseClass}">
 			.${this.animationPulseClass} {
 				border-radius: 50%;
@@ -163,127 +159,110 @@ class Favourite {
 		</style> -->
 		`)
 	}
+
 	updateAmount(value) {
-		$('.js-s3d-favourites-amount').html(value);
-		$('.js-s3d__favourites').data('count', value);
-		document.querySelector('.js-s3d__favourites').dataset.count = value;
+		$('.js-s3d-favourites-amount').html(value)
+		$('.js-s3d__favourites').data('count', value)
+		document.querySelector('.js-s3d__favourites').dataset.count = value
 	}
 
 	moveToFavouriteEffectHandler(target, reverse) {
-		var currentScreen = document.querySelector('.js-s3d-controller').dataset.type;
-		var iconToAnimate = target.querySelector('svg');
-		
-		if (document.documentElement.clientWidth<576){
-			var distance =  this.getBetweenDistance(document.querySelector('.s3d-mobile-only[data-type="favourites"]'),iconToAnimate);
-			this.animateFavouriteElement(document.querySelector('.s3d-mobile-only[data-type="favourites"]'),iconToAnimate,distance,reverse)
-			console.log(distance);
-		}else {
+		const currentScreen = document.querySelector('.js-s3d-controller').dataset.type
+		const iconToAnimate = target.querySelector('svg')
+		let distance
+		if (document.documentElement.clientWidth < 576) {
+			distance = this.getBetweenDistance(document.querySelector('.s3d-mobile-only[data-type="favourites"]'), iconToAnimate)
+			this.animateFavouriteElement(document.querySelector('.s3d-mobile-only[data-type="favourites"]'), iconToAnimate, distance, reverse)
+		} else {
 			switch (currentScreen) {
-				case 'complex':
-					var distance =  this.getBetweenDistance(document.querySelector('.s3d-filter-wrap .s3d__favourites'),iconToAnimate);
-					this.animateFavouriteElement(document.querySelector('.s3d-filter-wrap .s3d__favourites'),iconToAnimate,distance,reverse)
-					break;
-				case 'plannings':
-					var distance =  this.getBetweenDistance(document.querySelector('.s3d-pl__favourites-icon'),iconToAnimate);
-					this.animateFavouriteElement(document.querySelector('.s3d-pl__favourites-icon'),iconToAnimate,distance,reverse)
-					break;
-				case 'apart':
-					var distance =  this.getBetweenDistance(document.querySelector('.s3d-pl__favourites-icon'),iconToAnimate);
-					this.animateFavouriteElement(document.querySelector('.s3d-pl__favourites-icon'),iconToAnimate,distance,reverse)
-					break;
-			
-				default:
-					break;
+			case 'complex':
+				distance = this.getBetweenDistance(document.querySelector('.s3d-filter-wrap .s3d__favourites'), iconToAnimate)
+				this.animateFavouriteElement(document.querySelector('.s3d-filter-wrap .s3d__favourites'), iconToAnimate, distance, reverse)
+				break
+			case 'plannings':
+				distance = this.getBetweenDistance(document.querySelector('.s3d-pl__favourites-icon'), iconToAnimate)
+				this.animateFavouriteElement(document.querySelector('.s3d-pl__favourites-icon'), iconToAnimate, distance, reverse)
+				break
+			case 'apart':
+				distance = this.getBetweenDistance(document.querySelector('.s3d-pl__favourites-icon'), iconToAnimate)
+				this.animateFavouriteElement(document.querySelector('.s3d-pl__favourites-icon'), iconToAnimate, distance, reverse)
+				break
+
+			default:
+				break
 			}
 		}
-		
 	}
-	getBetweenDistance(elem1, elem2){
+
+	getBetweenDistance(elem1, elem2) {
 		// get the bounding rectangles
-		var el1 = elem1.getBoundingClientRect();
-		var el2 = elem2.getBoundingClientRect();
+		const el1 = elem1.getBoundingClientRect()
+		const el2 = elem2.getBoundingClientRect()
 		// get div1's center point
-		var div1x = el1.left + el1.width / 2;
-		var div1y = el1.top + el1.height / 2;
+		const div1x = el1.left + (el1.width / 2)
+		const div1y = el1.top + (el1.height / 2)
 
 		// get div2's center point
-		var div2x = el2.left + el2.width / 2;
-		var div2y = el2.top + el2.height / 2;
+		const div2x = el2.left + (el2.width / 2)
+		const div2y = el2.top + (el2.height / 2)
 
 		// calculate the distance using the Pythagorean Theorem (a^2 + b^2 = c^2)
-		var distanceSquared = Math.pow(div1x - div2x, 2) + Math.pow(div1y - div2y, 2);
-		var distance = Math.sqrt(distanceSquared);
+		const distanceSquared = Math.pow(div1x - div2x, 2) + Math.pow(div1y - div2y, 2)
+		// const distance = Math.sqrt(distanceSquared)
 
 		return {
-			x:div1x - div2x,
-			y:div1y - div2y,
+			x: div1x - div2x,
+			y: div1y - div2y,
 		}
 	}
-	animateFavouriteElement(destination, element, distance,reverse) {
 
-		if (element.closest('.js-s3d-infoBox')) return;
-		if (gsap===undefined) return
+	animateFavouriteElement(destination, element, distance, reverse) {
+		if (element.closest('.js-s3d-infoBox')) return
+		if (gsap === undefined) return
 		// console.log(Math.abs(div1x - div2x), 'X');
 		// console.log(Math.abs(div1y - div2y), 'Y');
-		var animatingElParams = element.getBoundingClientRect();
-		element.style.cssText += ` 
-			width:${animatingElParams.width}px;
-			height:${animatingElParams.height}px;
-			transform-origin:center;
-			`;
-		element.style.cssText += `
-			position:relative; 
-			z-index:2000;
-			stroke:none;
-			position:fixed; 
-			left:${animatingElParams.left}px; 
-			top:${animatingElParams.top}px;
-			`;
-		
-		let copiedElement = element.cloneNode(true);
-		copiedElement.style.cssText+='/*fill:var(--blue);*/ z-index:1999;opacity:0';
-		element.insertAdjacentElement('afterend',copiedElement);
-		if (reverse===true) copiedElement.style.cssText+='fill:#1C4954; z-index:1999;';
-		const speed = this.animationSpeed / 1000;
+		const animatingElParams = element.getBoundingClientRect()
+		element.style.cssText += ` width:${animatingElParams.width}px;height:${animatingElParams.height}px;transform-origin:center;`
+		element.style.cssText += `position:relative; z-index:2000;stroke:none;position:fixed; left:${animatingElParams.left}px; top:${animatingElParams.top}px;`
+		const copiedElement = element.cloneNode(true)
+		copiedElement.style.cssText += '/*fill:var(--blue);*/ z-index:1999;opacity:0'
+		element.insertAdjacentElement('afterend', copiedElement)
+		if (reverse === true) copiedElement.style.cssText += 'fill:#1C4954; z-index:1999;'
+		const speed = this.animationSpeed / 1000
 		// element.classList.add(this.animationPulseClass)
-		let tl = new TimelineMax({
-			delay:0,/* ease: Power4.easeIn,*/
-			repeat:0,
-			paused:true,
-			onComplete: () =>{
-				element.classList.remove(this.animationPulseClass);
-				copiedElement.remove();
-				element.style.cssText = '';
+		const tl = new TimelineMax({
+			delay: 0,
+			// ease: Power4.easeIn,
+			repeat: 0,
+			paused: true,
+			onComplete: () => {
+				element.classList.remove(this.animationPulseClass)
+				copiedElement.remove()
+				element.style.cssText = ''
 			},
-		
-		});
+		})
 
-		tl.to(element,{scale:0.75,duration:speed/10,ease: Power4.easeIn,})
-		tl.to(element,{scale:1,duration:0})
-		tl.to(copiedElement,{autoAlpha:1,duration:speed/10})
-		
-		tl.to(element,{scale:1.5, duration:speed/3},'<')
-		tl.to(element,{autoAlpha:0, duration:speed},'<')
-		if (reverse===true) {
-			tl.from(copiedElement, {  y: distance.y, duration: speed,ease: Power1.easeIn,  } ,'<')
-			tl.to(copiedElement, { fill:'#FFFFFF',  } ,'<')
-			tl.from(copiedElement, { x: distance.x, duration: speed/3,ease: Power1.easeIn },`<`)
-			tl.to(element,{autoAlpha:1,scale:1},'<')
-		}else {
+		tl.to(element, { scale: 0.75, duration: speed / 10, ease: Power4.easeIn })
+		tl.to(element, { scale: 1, duration: 0 })
+		tl.to(copiedElement, { autoAlpha: 1, duration: speed / 10 })
+		tl.to(element, { scale: 1.5, duration: speed / 3 }, '<')
+		tl.to(element, { autoAlpha: 0, duration: speed }, '<')
+		if (reverse === true) {
+			tl.from(copiedElement, { y: distance.y, duration: speed, ease: Power1.easeIn }, '<')
+			tl.to(copiedElement, { fill: '#FFFFFF' }, '<')
+			tl.from(copiedElement, { x: distance.x, duration: speed / 3, ease: Power1.easeIn }, '<')
+			tl.to(element, { autoAlpha: 1, scale: 1 }, '<')
+		} else {
 			// tl.set(copiedElement,{classList:`+=${this.animationPulseClass}`},'<');
-			tl.to(copiedElement, { fill:'#1C4954',y: distance.y, duration: speed,ease: Power1.easeIn,  },`-=${speed}` )
-			tl.to(copiedElement, { x: distance.x, duration: speed/3,ease: Power1.easeIn },`-=${speed/3}`)
-			tl.set(copiedElement, {autoAlpha: 0 })
-			tl.to(element,{autoAlpha:1,scale:1},'<')
+			tl.to(copiedElement, {
+				fill: '#1C4954', y: distance.y, duration: speed, ease: Power1.easeIn,
+			}, `-=${speed}`)
+			tl.to(copiedElement, { x: distance.x, duration: speed / 3, ease: Power1.easeIn }, `-=${speed / 3}`)
+			tl.set(copiedElement, { autoAlpha: 0 })
+			tl.to(element, { autoAlpha: 1, scale: 1 }, '<')
 		}
-		
 		// tl.set(element, {position:'',width:'',height:'',stroke:'', fill:'',top:'',left:'',x:'',y:''});
-		tl.set(copiedElement,{ clearProps: "all" });
-		tl.play();
-		// console.log(div2x, 'X2');
-		return distance;
+		tl.set(copiedElement, { clearProps: 'all' })
+		tl.play()
 	}
 }
-
-
-

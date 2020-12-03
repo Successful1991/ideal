@@ -183,7 +183,7 @@ gulp.task('clear', () => cache.clearAll());
 
 // lint
 function esLint() {
-	return gulp.src(['src/assets/s3d/scripts//*.js', 'src/assets/s3d/scripts/gulp-modules/*.js', '!node_modules/', '!src/assets/s3d/scripts//libs.js', '!src/assets/s3d/scripts/libs/jquery//*.js', '!src/assets/s3d/scripts/libs/ion.rangeSlider/**/*.js','!src/assets/s3d/scripts/gulp-modules/libs.js','!src/assets/s3d/scripts/gulp-modules/gsap.js', ])
+	return gulp.src(['src/assets/s3d/scripts/**/*.js', 'src/assets/s3d/scripts/gulp-modules/*.js', '!node_modules/**', '!src/assets/s3d/scripts/**/libs.js', '!src/assets/s3d/scripts/**/gsap.js', '!src/assets/s3d/scripts/libs/jquery/**/*.js', '!src/assets/s3d/scripts/libs/ion.rangeSlider/**/*.js'])
 	// eslint() attaches the lint output to the "eslint" property
 	// of the file object so it can be used by other modules.
 	// 	.pipe(eslint())
@@ -193,7 +193,7 @@ function esLint() {
 		.pipe(eslint.format())
 		// To have the process exit with an error code (1) on
 		// lint error, return the stream and pipe to failAfterError last.
-		// .pipe(eslint.failAfterError());
+		.pipe(eslint.failAfterError());
 }
 
 // gulp-scripts
