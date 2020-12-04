@@ -79,15 +79,15 @@ class Apartments {
 	// получаем разметку квартиры с планом этажа
 	getPlane(config) {
 		console.log('нужно раскоментировать')
-		this.setPlaneInPage(this.addHtmlAll(config))
-		// $.ajax({
-		// 	type: 'POST',
-		// 	// url: '/inc/functions.php',
-		// 	// url: './static/apPars.php',
-		// 	url: '/wp-admin/admin-ajax.php',
-		// 	data: `action=createFlat&id=${config.activeFlat.value}`,
-		// 	success: response => (this.setPlaneInPage(response)),
-		// })
+		// this.setPlaneInPage(this.addHtmlAll(config))
+		$.ajax({
+			type: 'POST',
+			// url: '/inc/functions.php',
+			// url: './static/apPars.php',
+			url: '/wp-admin/admin-ajax.php',
+			data: `action=createFlat&id=${config.activeFlat.value}`,
+			success: response => (this.setPlaneInPage(response)),
+		})
 	}
 
 	// вставляем разметку в DOM вешаем эвенты
@@ -244,7 +244,7 @@ class Apartments {
                     </div>
                   </div>
                   <div class="s3d-tell__text">(067) 747-0151</div></a>
-              <img class="s3d-flat__image" src="assets/s3d/images/KV.png">
+              <img class="s3d-flat__image  js-s3d-flat__image" src="assets/s3d/images/KV.png">
               
                 <div class="s3d-flat__favourites js-s3d-favorite__wrap s3d-hidden">Избранное
                   <div class="s3d-flat__favourites-icon js-s3d__favourites">

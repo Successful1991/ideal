@@ -64,9 +64,11 @@ class Slider {
 		this.unActive = data.unActive
 		this.progress = 0
 		this.loadImage = this.loadImage.bind(this)
+		this.gyroscope = this.gyroscope.bind(this)
 	}
 
 	init() {
+		// $('.gyroscope').on('click', event => this.gyroscopeStart())
 		if (isDevice('ios')) {
 			this.mouseSpeed = 0.5
 		}
@@ -182,6 +184,7 @@ class Slider {
 				return false
 			}
 			this.checkDirectionRotate(data)
+			return true
 		})
 		$(window).resize(() => {
 			this.resizeCanvas()
@@ -189,31 +192,30 @@ class Slider {
 	}
 
 	gyroscopeStart() {
+		const self = this
 		if (
 			DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function'
 		) {
 			DeviceMotionEvent.requestPermission()
+			// alert('requestPermission true')
+		} else {
+			// alert('requestPermission false')
 		}
-		// let isRunning = false
-		// if (isRunning) {
-		// 	// window.removeEventListener('devicemotion', handleMotion)
-		// 	window.removeEventListener('deviceorientation', this.gyroscope)
-		// 	isRunning = false
-		// } else {
-		// window.addEventListener('devicemotion', handleMotion)
+		self.activeAnimate(true)
 		window.addEventListener('deviceorientation', event => {
-			alert('event')
 			this.gyroscope(event)
-		})
-		// isRunning = true
-		// }
+		}, true)
 	}
 
 	gyroscope(event) {
-		alert('gyroscope')
 		$('.gyroscope').html(`X-axis', ${event.alpha}
 								Y-axis', ${event.beta}
-								Z-axis', ${event.gamma}`)
+								Z-axis', ${event.gamma}
+								${this.width}`)
+		const cur = Math.round((event.alpha.toFixed(2) / 2))
+		if (cur > this.currentSlide + 2 || cur < this.currentSlide - 2) {
+			this.ctx.drawImage(this.images[cur], 0, 0, this.width, this.height)
+		}
 	}
 
 	setConfig(data) {

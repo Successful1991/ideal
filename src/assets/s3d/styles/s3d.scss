@@ -1,6 +1,10 @@
 // .s3d__slideModule - корень всего
 // .s3d__wrap, .s3d__wrapper__complex, .s3d__wrapper__floor, .s3d__wrapper__apart - обертка для кнопок и блока с содержимым по размеру экрана
 // #s3d__wrapper__complex, #s3d__wrapper__floor, #s3d__wrapper__apart - обертка для canvas и Блока с svg. не фиксируется по ширине экрана
+:root{
+  --header-height: 80px;
+}
+
 *{
   box-sizing: border-box;
   &:focus{
@@ -771,16 +775,17 @@ body{
 }
 
 
-//.gyroscope{
-//  position: fixed;
-//  top: 50%;
-//  left: 50%;
-//  display: block;
-//  width: 30vw;
-//  height: 40vh;
-//  background: #c1b1e9;
-//  font-size: 10px;
-//  color: #0b0b0b;
-//  transform: translate(-50%, -50%);
-//  z-index: 5665;
-//}
+.gyroscope{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: block;
+
+  //width: 30vw;
+  //height: 40vh;
+  background: #c1b1e9;
+  font-size: 16px;
+  color: #0b0b0b;
+  transform: translate(-50%, -50%);
+  z-index: 5665;
+}

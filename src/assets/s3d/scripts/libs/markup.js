@@ -8,7 +8,6 @@ function CreateMarkup(tag, wrapper, config) {
 	if (config.placeholder) wrap.placeholder = config.placeholder
 	if (config.content) wrap.innerHTML = config.content
 
-	console.log(wrapper,'wrpare')
 	if (typeof wrapper === 'string') {
 		document.querySelector(wrapper).append(wrap)
 		// $(wrapper).append(wrap)
