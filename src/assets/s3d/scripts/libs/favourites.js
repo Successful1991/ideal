@@ -26,15 +26,13 @@ class Favourite {
 					this.removeElemStorage(id)
 				}, this.animationSpeed)
 				if (event.target.closest('label') !== null) {
-					this.moveToFavouriteEffectHandler(event.target.closest('label'),true);
+					this.moveToFavouriteEffectHandler(event.target.closest('label'), true)
 				}
 			}
 		})
 
 		$('.js-s3d__fv').on('click', '.js-s3d__fv__close', () => {
-			$('.js-s3d__fv').removeClass('s3d__active');
-
-
+			$('.js-s3d__fv').removeClass('s3d__active')
 		})
 
 		$('.js-s3d__fv').on('click', '.js-s3d-fv__remove', e => {
@@ -88,7 +86,7 @@ class Favourite {
 	removeElemStorage(id) {
 		const favourites = this.getFavourites()
 		const index = favourites.indexOf(id)
-		if (index === -1 || !favourites) return
+		if (index === -1 || !favourites) return false
 		favourites.splice(index, 1)
 		// this.listObj[id]['favourite'] = false
 		sessionStorage.setItem('favourites', JSON.stringify(favourites))
