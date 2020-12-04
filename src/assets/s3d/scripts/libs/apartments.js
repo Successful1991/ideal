@@ -125,6 +125,10 @@ class Apartments {
 			this.click(event.currentTarget.dataset.id, 'complex', this.activeFlat.value)
 		})
 
+		$('.js-s3d-flat__image').magnificPopup({
+			type: 'image',
+			showCloseBtn: true,
+		})
 		// меняет непонятные символы в ссылке
 		// this.conf = this.updateImage()
 		// проверяет есть ли эта планировка в 3d формате
@@ -235,7 +239,8 @@ class Apartments {
                       <div class="s3d-flat__el__value">12 м<sub>2</sub></div>
                     </div>
                   </ul>
-                </div><a class="s3d-flat__tell s3d-tell s3d-genplan" type="tel">
+                </div>
+                <a class="s3d-flat__tell s3d-tell s3d-genplan" type="tel">
                   <div class="s3d-tell__icon-wrap">
                     <div class="s3d-tell__icon">
                       <svg role="presentation">
@@ -244,7 +249,7 @@ class Apartments {
                     </div>
                   </div>
                   <div class="s3d-tell__text">(067) 747-0151</div></a>
-              <img class="s3d-flat__image  js-s3d-flat__image" src="assets/s3d/images/KV.png">
+              <img class="s3d-flat__image js-s3d-flat__image" src="assets/s3d/images/KV.png" data-mfp-src="assets/s3d/images/KV.png">
               
                 <div class="s3d-flat__favourites js-s3d-favorite__wrap s3d-hidden">Избранное
                   <div class="s3d-flat__favourites-icon js-s3d__favourites">

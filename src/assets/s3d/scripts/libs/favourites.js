@@ -3,6 +3,8 @@ class Favourite {
 		this.listObj = conf.data
 		this.list = conf.list
 		this.wrap = conf.wrap
+		this.click = conf.click
+		this.activeFlat = conf.activeFlat
 		this.animationSpeed = 750
 		$('.js-s3d__slideModule').on('click', '.js-s3d__favourites', () => {
 			this.createMarkup()
@@ -11,8 +13,6 @@ class Favourite {
 
 		$('.js-s3d__slideModule').on('change', '.js-s3d-add__favourites', event => {
 			const id = $(event.currentTarget).data('id')
-			console.log('id', id)
-
 			if (checkValue(id)) return
 			if (event.target.checked) {
 				setTimeout(() => {
@@ -122,6 +122,14 @@ class Favourite {
 		$(this.wrap).append(
 			favourites.map(el => this.createElemHtml(this.listObj[el])),
 		)
+		$('.js-s3d__fv').on('click', '.js-s3d-fv__element', event => {
+			if (event.target.classList.contains('js-s3d-fv__remove')) return
+			this.activeFlat.value = +event.currentTarget.dataset.id
+			this.click(+event.currentTarget.dataset.id, 'apart')
+			setTimeout(() => {
+				$('.js-s3d__fv').removeClass('s3d__active')
+			}, 300)
+		})
 	}
 
 	createElemHtml(el) {

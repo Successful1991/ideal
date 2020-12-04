@@ -48,8 +48,8 @@
       max-width: 80%;
       max-height: 80vh;
       margin: auto;
-
       grid-area: img;
+      cursor: pointer;
     }
     &__mini-info{
       display: flex;
@@ -69,6 +69,13 @@
       svg{
         width: 9px;
         height: 12px;
+        //transition: transform 0.3s ease-in-out;
+      }
+      &:hover{
+        svg{
+          //transform: translateX(-50%);
+          animation: back 1.5s linear infinite;
+        }
       }
     }
     &__table{
@@ -179,9 +186,10 @@
       }
     }
     &__links{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       padding: 35px 10px;
       background: #EB8271;
-      column-count: 2;
       margin: 0 0 0 auto;
 
       grid-area: links;
@@ -203,7 +211,6 @@
         text-transform: lowercase;
         color: #FFFFFF;
         cursor: pointer;
-        break-inside: avoid;
         *{
           pointer-events: none;
         }
@@ -285,7 +292,7 @@
         transition: all .3s ease-in;
       }
       a:hover polygon{
-        fill: #DDD9D3;
+        fill: #1C4954;
         opacity: .5;
       }
 
@@ -333,7 +340,32 @@
     }
   }
 }
+img.mfp-img{
+  background: #ffffff;
+  max-height: calc(90% - 50px);
+  max-width: calc(90% - 50px);
+}
+.mfp-image-holder .mfp-close, .mfp-iframe-holder .mfp-close{
+  top: -50px;
+  right: -50px;
+  color: #000000;
+}
 
+
+@keyframes back {
+  from{
+    transform: translateX(0%);
+  }
+  30%{
+    transform: translateX(-20%);
+  }
+  70%{
+    transform: translateX(20%);
+  }
+  to{
+    transform: translateX(0%);
+  }
+}
 @media screen and ( max-width : 1640px ) {
   .s3d {
     &-flat {

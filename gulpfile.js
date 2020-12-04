@@ -183,7 +183,7 @@ gulp.task('clear', () => cache.clearAll());
 
 // lint
 function esLint() {
-	return gulp.src(['src/assets/s3d/scripts/**/*.js', 'src/assets/s3d/scripts/gulp-modules/*.js', '!node_modules/**', '!src/assets/s3d/scripts/**/libs.js', '!src/assets/s3d/scripts/**/gsap.js', '!src/assets/s3d/scripts/libs/jquery/**/*.js', '!src/assets/s3d/scripts/libs/ion.rangeSlider/**/*.js'])
+	return gulp.src(['src/assets/s3d/scripts/**/*.js', 'src/assets/s3d/scripts/gulp-modules/*.js', '!node_modules/**', '!src/assets/s3d/scripts/**/libs.js', '!src/assets/s3d/scripts/**/gsap.js', '!src/assets/s3d/scripts/libs/jquery/**/*.js', '!src/assets/s3d/scripts/libs/ion.rangeSlider/**/*.js', '!src/assets/s3d/scripts/libs/magnific-popup/**/*.js'])
 	// eslint() attaches the lint output to the "eslint" property
 	// of the file object so it can be used by other modules.
 	// 	.pipe(eslint())

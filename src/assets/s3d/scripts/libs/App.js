@@ -22,7 +22,7 @@ class App {
 					$('.fs-preloader').removeClass('preloader-active')
 					$('.fs-preloader-bg').css({ filter: 'none' })
 					$('.first-loader').removeClass('first-loader')
-				}, 300)
+				}, 200)
 			},
 		}
 		this.configProject = {}
@@ -141,7 +141,7 @@ class App {
 			this.filter.hidden()
 		}
 
-		const ind = this.activeSectionList.findIndex(el => { if (el === active) return true })
+		const ind = this.activeSectionList.findIndex(el => (el === active))
 		if (this.animateFlag && this.activeSectionList.length >= 2) {
 			this.complex.hiddenInfo()
 			this.animateFlag = false
@@ -164,6 +164,7 @@ class App {
 					this.scrollToBlock(600)(this.activeSectionList[0])
 				}
 			} else {
+				this.animateBlock('translate', 'down')
 				this.scrollToBlock(600)(active)
 			}
 		}
@@ -252,6 +253,8 @@ class App {
 			wrap: '.js-s3d__fv tbody',
 			data: this.flatListObj,
 			list: this.flatList,
+			click: this.selectSlider,
+			activeFlat: this.activeFlat,
 		})
 		// $('.s3d-pl__filter').append($('.s3d-filter'))
 
@@ -268,31 +271,22 @@ class App {
 	}
 
 	selectSlider(id, type, numSlide) {
-		// const houseNum = e.currentTarget.dataset.build || e.currentTarget.value
-		// this.loader.show()
-		// this.animateBlock('translate', 'down')
 		switch (type) {
 		case 'complex':
-			// this.selectSliderType(e, 'house', Slider)
-			// this.selectSliderType(e, 'floor', Layout)
 			this.selectSliderType(id, type, Layout, numSlide)
 			break
-			// case 'house':
-			//     this.selectSliderType(e, 'floor', Layout);
-			//     break;
 		case 'apart':
-			// $('.fs-preloader').addClass('s3d-preloader__full')
 			this.selectSliderType(id, type, Apartments)
 			break
 		case 'plannings':
-			// $('.fs-preloader').addClass('s3d-preloader__full')
+			console.log(279, type)
 			this.scrollBlock({}, type)
 			break
 		default:
 			this.animateBlock('translate', 'down')
 			break
 		}
-		this.resize()
+		// this.resize()
 	}
 
 	selectSliderType(id, type, Fn, idApart) {
@@ -316,6 +310,7 @@ class App {
 		config.click = this.selectSlider
 		config.scrollBlock = this.scrollBlock.bind(this)
 		config.getFavourites = this.favourites.getFavourites
+
 		if ($(`#js-s3d__${type}`).length > 0) {
 			this.animateBlock('translate', 'down')
 			this[type].update(config)
@@ -324,6 +319,7 @@ class App {
 			}
 		} else {
 			if (type === 'courtyard' || type === 'complex') {
+				this.filter.hidden()
 				this.loader.show()
 			} else {
 				this.animateBlock('translate', 'down')
@@ -348,61 +344,33 @@ class App {
 	}
 
 	scrollToBlock(time = 600) {
-		if (this.filter) {
-			this.filter.hidden()
-		}
 		return block => {
-			// this.filter.hidden()
-			// setTimeout(() => {
-			// $('.js-s3d-filter').removeClass('plannings-filter')
-			// }, 500)
-			// if (block !== 'apart') {
-			// 	$('.fs-preloader').removeClass('s3d-preloader__full')
-			// }
-			// $(`.js-s3d-select__${this.activeSection}`).removeClass('active')
-			// $(`.js-s3d-select__${block}`).addClass('active')
-			// $('.js-s3d-controller')[0].dataset.type = block
 			setTimeout(() => {
+				if (this.filter) {
+					this.filter.hidden()
+				}
+				this.complex.hiddenInfo()
+				this.complex.hiddenInfoFloor()
+				this.compass.save(this.compass.current)
 				switch (block) {
 				case 'apart':
-					this.complex.hiddenInfo()
-					this.complex.hiddenInfoFloor()
-					this.compass.save(this.compass.current)
 					this.compass.setApart()
 					break
 				case 'floor':
-					this.complex.hiddenInfo()
-					this.complex.hiddenInfoFloor()
-					this.compass.save(this.compass.current)
 					this.compass.setFloor()
 					break
 				case 'plannings':
 					if (document.documentElement.clientWidth > 767) {
 						this.filter.show()
 					}
-					this.complex.hiddenInfo()
-					this.complex.hiddenInfoFloor()
-					// $('.js-s3d-filter').addClass('plannings-filter')
 					$('.js-s3d-filter').removeClass('plannings-filter')
-					this.compass.save(this.compass.current)
 					break
 				default:
 					$('.js-s3d-filter').addClass('plannings-filter')
-					// $('.js-s3d-filter').removeClass('plannings-filter')
-					this.complex.showInfoFloor()
 					this.compass.set(this.compass.lastDeg)
 				}
 
-				// this.filterButtonShowHide(block);
 				this.changeBlockIndex(block)
-				// this.sectionName.forEach(name => {
-				// 	if (name === block) {
-				// 		this.activeSection = name
-				// 		$(`.js-s3d__wrapper__${name}`).css('z-index', '100')
-				// 	} else {
-				// 		$(`.js-s3d__wrapper__${name}`).css('z-index', '')
-				// 	}
-				// })
 			}, time)
 		}
 	}
@@ -434,7 +402,10 @@ class App {
 		layers[0].classList.remove('translate-layer__down', 'translate-layer__up', 'active')
 		layers[0].classList.add(`translate-layer__${clas}`)
 		setTimeout(() => layers[0].classList.add('active'), 100)
-		setTimeout(() => this.animateFlag = true, 1000)
+		setTimeout(() => {
+			this.animateFlag = true
+			return true
+		}, 1000)
 	}
 
 	unActive() {
@@ -448,64 +419,9 @@ class App {
 		}, time || 700)
 	}
 
-	// helpsInfo(){
-	//     if(!window.localStorage.getItem('helps')) {
-	//         $('.js-first-info').css({'visibility' :'visible'});
-	//
-	//       $('.js-first-info__button').on('click', e => {
-	//         switch (e.target.dataset.type){
-	//           case 'next':
-	//             let step = $('.js-first-info-step.active').removeClass('active').data('step');
-	//             $(`.js-first-info-step[data-step="${step+1}"]`).addClass('active');
-	//             break;
-	//           case 'end':
-	//             $('.js-first-info-step.active').removeClass('active');
-	//             window.localStorage.setItem('helps',true);
-	//             $('.js-first-info').css({'visibility' : ''});
-	//             break;
-	//         }
-	//       })
-	//     }
-	// }
-
-	// resize() {
-	// 	const doc = $('.js-s3d__slideModule')
-	// 	// let height = doc.height();
-	// 	// const width = doc.width();
-	// 	// if(height >= width) {
-	// 	// if(height >= width*0.85) {
-	// 	// if(height >= width*0.75) {
-	// 	//     height = height/2;
-	// 	//     $('.js-s3d__wrapper__complex').css({'height':'50%'});
-	// 	//     $('.js-s3d__helper').css({'visibility':'visible'});
-	// 	// $('.js-s3d__wrap').css({'height':'50vh'});
-	// 	// $('.js-s3d-filter').addClass('filter-small');
-	// 	// $('.js-s3d-controller').addClass('s3d-controller-small');
-	// 	// if(width/height - 16/9 > 0) {
-	// 	//     $('.js-s3d__slideModule').addClass('s3d-active-vertical');
-	// 	// } else {
-	// 	//     $('.js-s3d__slideModule').removeClass('active');
-	// 	// }
-	//
-	// 	// } else {
-	// 	// $('.js-s3d__wrap').css({'height':''});
-	// 	$('.js-s3d__wrapper__complex').css({ height: '' })
-	// 	// $('.js-s3d__helper').css({'visibility':'hidden'});
-	// 	// $('.js-s3d-filter').removeClass('filter-small');
-	// 	// $('.js-s3d-controller').removeClass('s3d-controller-small');
-	// 	// if(width/height - 16/9 < 0) {
-	// 	//     $('.js-s3d__slideModule').removeClass('s3d-active-vertical');
-	// 	// } else {
-	// 	//     $('.js-s3d__slideModule').addClass('active');
-	// 	// }
-	// 	// }
-	// 	this.complex.resizeCanvas()
-	// }
-
 	resize() {
 		console.log('resize', this)
-		const type = $('.js-s3d-controller')[0].dataset.type
-		console.log('resize type', type)
+		const type = $('.js-s3d-controller')[0].dataset.type || ''
 		if (document.documentElement.offsetWidth < 768) {
 			if (type === 'plannings') {
 				this.filter.hidden()
@@ -514,20 +430,18 @@ class App {
 				this.filter.hidden()
 				$('.js-s3d-filter').addClass('plannings-filter')
 			}
+		} else if (type === 'plannings') {
+			this.filter.show()
+			$('.js-s3d-filter').removeClass('plannings-filter')
 		} else {
-			if (type === 'plannings') {
-				this.filter.show()
-				$('.js-s3d-filter').removeClass('plannings-filter')
-			} else {
-				this.filter.hidden()
-				$('.js-s3d-filter').addClass('plannings-filter')
-			}
+			this.filter.hidden()
+			$('.js-s3d-filter').addClass('plannings-filter')
 		}
 	}
 
 	debounce(f, t) {
 		return function (args) {
-			let previousCall = this.lastCall
+			const previousCall = this.lastCall
 			this.lastCall = Date.now()
 			if (previousCall && ((this.lastCall - previousCall) <= t)) {
 				clearTimeout(this.lastCallTimer)

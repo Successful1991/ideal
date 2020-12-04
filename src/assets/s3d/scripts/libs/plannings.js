@@ -11,8 +11,6 @@ class Plannings {
 	init() {
 		this.createList(this.list, this.wrap)
 		$('.js-s3d__pl__list').on('click', '.js-s3d-pl__link', event => {
-			console.log(($(event.currentTarget).closest('.s3d-pl__plane').data('id')))
-			console.log(this.inApart)
 			const id = $(event.currentTarget).closest('.s3d-pl__plane').data('id')
 			this.activeFlat.value = id
 			this.inApart(id, 'apart', id)
@@ -21,7 +19,8 @@ class Plannings {
 
 	createList(data, wrap) {
 		const result = []
-		data.forEach(el => {
+		data.forEach(elem => {
+			const el = elem
 			const nodeElem = this.createCard(el)
 			el['cardHtmlLink'] = nodeElem
 			result.push(nodeElem)

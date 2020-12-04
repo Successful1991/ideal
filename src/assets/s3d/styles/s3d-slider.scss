@@ -57,55 +57,25 @@
       //}
     }
   }
-
-  //&__infoBox {
-  //  z-index: 200;
-  //  position: absolute;
-  //  top: -10000px;
-  //  left: -10000px;
-  //  color: #140101;
-  //  border: none;
-  //  background: $wc;
-  //  font-size: 14px;
-  //  font-weight: 600;
-  //  line-height: 20px;
-  //  padding: 10px 30px;
-  //  pointer-events: none;
-  //  text-align: center;
-  //  text-transform: uppercase;
-  //  transform: translate(-50%, calc(-100% + 10px));
-  //  white-space: nowrap;
-  //
-  //  &__house {
-  //    color: $--bg;
-  //  }
-  //
-  //  &:after {
-  //    z-index: 199;
-  //    position: absolute;
-  //    top: 0;
-  //    left: 50%;
-  //    display: inline-block;
-  //    width: 30px;
-  //    height: 30px;
-  //    background: url("../images/icon/helper-logo.svg") no-repeat center /cover;
-  //    content: "";
-  //    transform: translate(-50%, -75%);
-  //  }
-  //
-  //  &:before {
-  //    z-index: 199;
-  //    position: absolute;
-  //    left: 50%;
-  //    bottom: -5px;
-  //    display: inline-block;
-  //    width: 10px;
-  //    height: 10px;
-  //    background: $wc;
-  //    content: "";
-  //    transform: translate(-50%, 0)rotate(45deg);
-  //  }
-  //}
+  &__slider{
+    &__bg{
+      position: fixed;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      height: 15vh;
+      width: 100%;
+      z-index: 155;
+      &-top{
+        top: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+      }
+      &-bottom{
+        bottom: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+      }
+    }
+  }
 
   &-infoBox{
     position: absolute;
