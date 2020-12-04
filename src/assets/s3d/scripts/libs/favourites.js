@@ -3,7 +3,7 @@ class Favourite {
 		this.listObj = conf.data
 		this.list = conf.list
 		this.wrap = conf.wrap
-		this.animationSpeed = 750;
+		this.animationSpeed = 750
 		$('.js-s3d__slideModule').on('click', '.js-s3d__favourites', () => {
 			this.createMarkup()
 			$('.js-s3d__fv').addClass('s3d__active')
@@ -11,7 +11,7 @@ class Favourite {
 
 		$('.js-s3d__slideModule').on('change', '.js-s3d-add__favourites', event => {
 			const id = $(event.currentTarget).data('id')
-			console.log('id', id);
+			console.log('id', id)
 
 			if (checkValue(id)) return
 			if (event.target.checked) {
@@ -19,20 +19,22 @@ class Favourite {
 					this.addStorage(id)
 				}, this.animationSpeed)
 				if (event.target.closest('label') !== null) {
-					this.moveToFavouriteEffectHandler(event.target.closest('label'));
+					this.moveToFavouriteEffectHandler(event.target.closest('label'))
 				}
 			} else {
 				setTimeout(() => {
 					this.removeElemStorage(id)
 				}, this.animationSpeed)
 				if (event.target.closest('label') !== null) {
-					this.moveToFavouriteEffectHandler(event.target.closest('label'), true)
+					this.moveToFavouriteEffectHandler(event.target.closest('label'),true);
 				}
 			}
 		})
 
 		$('.js-s3d__fv').on('click', '.js-s3d__fv__close', () => {
-			$('.js-s3d__fv').removeClass('s3d__active')
+			$('.js-s3d__fv').removeClass('s3d__active');
+
+
 		})
 
 		$('.js-s3d__fv').on('click', '.js-s3d-fv__remove', e => {
@@ -109,7 +111,7 @@ class Favourite {
 
 	getFavourites() {
 		const storage = JSON.parse(sessionStorage.getItem('favourites'))
-		return storage ? storage : []
+		return storage || []
 	}
 
 	createMarkup() {
@@ -120,7 +122,7 @@ class Favourite {
 			$('.js-s3d-favorite__wrap').removeClass('s3d-hidden')
 		}
 		$(this.wrap).append(
-			favourites.map(el => this.createElemHtml(this.listObj[el]))
+			favourites.map(el => this.createElemHtml(this.listObj[el])),
 		)
 	}
 
@@ -146,22 +148,22 @@ class Favourite {
 	}
 
 	updateAmount(value) {
-		$('.js-s3d-favourites-amount').html(value);
-		$('.js-s3d__favourites').data('count', value);
-		document.querySelector('.js-s3d__favourites').dataset.count = value;
+		$('.js-s3d-favourites-amount').html(value)
+		$('.js-s3d__favourites').data('count', value)
+		document.querySelector('.js-s3d__favourites').dataset.count = value
 	}
 
 	addPulseCssEffect() {
 		this.animationPulseClass = 'pulse'
 		document.body.insertAdjacentHTML('beforeend', `
-		<style class="${this.animationPulseClass}">
+		<!-- <style class="${this.animationPulseClass}">
 			.${this.animationPulseClass} {
 				border-radius: 50%;
 				cursor: pointer;
 				box-shadow: 0 0 0 rgba(255,255,255, 0.75);
 				animation: pulse 0.5s 1 ease-out;
 			}.${this.animationPulseClass}:hover {	animation: none;}@-webkit-keyframes ${this.animationPulseClass} {	0% {	  -webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	}	70% {		-webkit-box-shadow: 0 0 0 10px rgba(255,255,255, 0);	}	100% {		-webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0);	}}@keyframes pulse {	0% {	  -moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	  box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	}	70% {		-moz-box-shadow: 0 0 0 10px rgba(255,255,255, 0);		box-shadow: 0 0 0 10px rgba(255,255,255, 0);	}	100% {		-moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0);		box-shadow: 0 0 0 0 rgba(255,255,255, 0);	}}
-		</style>
+		</style> -->
 		`)
 	}
 
@@ -172,7 +174,6 @@ class Favourite {
 		if (document.documentElement.clientWidth < 576) {
 			distance = this.getBetweenDistance(document.querySelector('.s3d-mobile-only[data-type="favourites"]'), iconToAnimate)
 			this.animateFavouriteElement(document.querySelector('.s3d-mobile-only[data-type="favourites"]'), iconToAnimate, distance, reverse)
-			console.log(distance)
 		} else {
 			switch (currentScreen) {
 			case 'complex':
@@ -187,6 +188,7 @@ class Favourite {
 				distance = this.getBetweenDistance(document.querySelector('.s3d-pl__favourites-icon'), iconToAnimate)
 				this.animateFavouriteElement(document.querySelector('.s3d-pl__favourites-icon'), iconToAnimate, distance, reverse)
 				break
+
 			default:
 				break
 			}
@@ -206,8 +208,8 @@ class Favourite {
 		const div2y = el2.top + (el2.height / 2)
 
 		// calculate the distance using the Pythagorean Theorem (a^2 + b^2 = c^2)
-		const distanceSquared = window.Math.pow(div1x - div2x, 2) + window.Math.pow(div1y - div2y, 2)
-		const distance = Math.sqrt(distanceSquared)
+		const distanceSquared = Math.pow(div1x - div2x, 2) + Math.pow(div1y - div2y, 2)
+		// const distance = Math.sqrt(distanceSquared)
 
 		return {
 			x: div1x - div2x,
@@ -216,49 +218,50 @@ class Favourite {
 	}
 
 	animateFavouriteElement(destination, element, distance, reverse) {
+		if (element.closest('.js-s3d-infoBox')) return
 		if (gsap === undefined) return
-		// console.log(Math.abs(div1x - div2x), 'X');
-		// console.log(Math.abs(div1y - div2y), 'Y');
 		const animatingElParams = element.getBoundingClientRect()
-		// eslint-disable-next-line no-param-reassign
-		element.style.cssText += ` 
-			width:${animatingElParams.width}px;
-			height:${animatingElParams.height}px;
-			transform-origin:top left;`
-		element.style.cssText += `
-			fill:var(--blue);
-			position:relative; 
-			z-index:2000;
-			stroke:none;
-			position:fixed; 
-			left:${animatingElParams.left}px; 
-			top:${animatingElParams.top}px;`
+		element.style.cssText += ` width:${animatingElParams.width}px;height:${animatingElParams.height}px;transform-origin:center;`
+		element.style.cssText += `position:relative; z-index:2000;stroke:none;position:fixed; left:${animatingElParams.left}px; top:${animatingElParams.top}px;`
+		const copiedElement = element.cloneNode(true)
+		copiedElement.style.cssText += '/*fill:var(--blue);*/ z-index:1999;opacity:0'
+		element.insertAdjacentElement('afterend', copiedElement)
+		if (reverse === true) copiedElement.style.cssText += 'fill:#1C4954; z-index:1999;'
 		const speed = this.animationSpeed / 1000
 		// element.classList.add(this.animationPulseClass)
 		const tl = new TimelineMax({
 			delay: 0,
+			// ease: Power4.easeIn,
 			repeat: 0,
 			paused: true,
 			onComplete: () => {
 				element.classList.remove(this.animationPulseClass)
-				console.log(element.classList)
+				copiedElement.remove()
 				element.style.cssText = ''
 			},
 		})
-		if (reverse === true) {
-			tl.from(element, { y: distance.y, duration: speed, ease: Power1.easeIn })
-			tl.from(element, { x: distance.x, duration: speed / 2.5, ease: Power1.easeIn }, `-=${speed / 2.5}`)
-		} else {
-			tl.set(element, { classList: `+=${this.animationPulseClass}` })
-			tl.to(element, { y: distance.y, duration: speed, ease: Power1.easeIn })
-			tl.to(element, { x: distance.x, duration: speed / 2.5, ease: Power1.easeIn }, `-=${speed / 2.5}`)
-		}
-		tl.set(element, { x: 0, y: 0 })
-		// tl.set(element, {position:'',width:'',height:'',stroke:'', fill:'',top:'',left:'',x:'',y:''});
-		tl.set(element, { clearProps: 'all' })
-		tl.play()
-		// console.log(div2x, 'X2');
-		return distance
-	}
 
+		tl.to(element, { scale: 0.75, duration: speed / 10, ease: Power4.easeIn })
+		tl.to(element, { scale: 1, duration: 0 })
+		tl.to(copiedElement, { autoAlpha: 1, duration: speed / 10 })
+		tl.to(element, { scale: 1.5, duration: speed / 3 }, '<')
+		tl.to(element, { autoAlpha: 0, duration: speed }, '<')
+		if (reverse === true) {
+			tl.from(copiedElement, { y: distance.y, duration: speed, ease: Power1.easeIn }, '<')
+			tl.to(copiedElement, { fill: '#FFFFFF' }, '<')
+			tl.from(copiedElement, { x: distance.x, duration: speed / 3, ease: Power1.easeIn }, '<')
+			tl.to(element, { autoAlpha: 1, scale: 1 }, '<')
+		} else {
+			// tl.set(copiedElement,{classList:`+=${this.animationPulseClass}`},'<');
+			tl.to(copiedElement, {
+				fill: '#1C4954', y: distance.y, duration: speed, ease: Power1.easeIn,
+			}, `-=${speed}`)
+			tl.to(copiedElement, { x: distance.x, duration: speed / 3, ease: Power1.easeIn }, `-=${speed / 3}`)
+			tl.set(copiedElement, { autoAlpha: 0 })
+			tl.to(element, { autoAlpha: 1, scale: 1 }, '<')
+		}
+		// tl.set(element, {position:'',width:'',height:'',stroke:'', fill:'',top:'',left:'',x:'',y:''});
+		tl.set(copiedElement, { clearProps: 'all' })
+		tl.play()
+	}
 }
