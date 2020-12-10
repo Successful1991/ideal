@@ -79,15 +79,15 @@ class Apartments {
 	// получаем разметку квартиры с планом этажа
 	getPlane(config) {
 		console.log('нужно раскоментировать')
-		this.setPlaneInPage(this.addHtmlAll(config))
-		// $.ajax({
-		// 	type: 'POST',
-		// 	// url: '/inc/functions.php',
-		// 	// url: './static/apPars.php',
-		// 	url: '/wp-admin/admin-ajax.php',
-		// 	data: `action=createFlat&id=${config.activeFlat.value}`,
-		// 	success: response => (this.setPlaneInPage(response)),
-		// })
+		// this.setPlaneInPage(this.addHtmlAll(config))
+		$.ajax({
+			type: 'POST',
+			// url: '/inc/functions.php',
+			// url: './static/apPars.php',
+			url: '/wp-admin/admin-ajax.php',
+			data: `action=createFlat&id=${config.activeFlat.value}`,
+			success: response => (this.setPlaneInPage(response)),
+		})
 	}
 
 	// вставляем разметку в DOM вешаем эвенты
@@ -152,7 +152,8 @@ class Apartments {
 		const wrap = $('.js-s3d__wrapper__apart')
 		wrap.find('.js-s3d-flat__image').attr('src', flat.img)
 		wrap.find('.js-s3d-flat__image')[0].dataset.mfpSrc = flat.img
-		wrap.find('.js-s3d-flat__left').html(flat['left_block'])
+		wrap.find('.js-s3d-flat__mini-info').html(flat['miniInfoBlock'])
+		wrap.find('.js-s3d-flat__table').html(flat['tableBlock'])
 		wrap.find('.js-s3d__create-pdf').attr('href', flat.pdf)
 		wrap.find('.js-s3d-add__favourites')[0].dataset.id = id
 		$('.u-svg-plan--active').removeClass('u-svg-plan--active')
