@@ -79,15 +79,15 @@ class Apartments {
 	// получаем разметку квартиры с планом этажа
 	getPlane(config) {
 		console.log('нужно раскоментировать')
-		// this.setPlaneInPage(this.addHtmlAll(config))
-		$.ajax({
-			type: 'POST',
-			// url: '/inc/functions.php',
-			// url: './static/apPars.php',
-			url: '/wp-admin/admin-ajax.php',
-			data: `action=createFlat&id=${config.activeFlat.value}`,
-			success: response => (this.setPlaneInPage(response)),
-		})
+		this.setPlaneInPage(this.addHtmlAll(config))
+		// $.ajax({
+		// 	type: 'POST',
+		// 	// url: '/inc/functions.php',
+		// 	// url: './static/apPars.php',
+		// 	url: '/wp-admin/admin-ajax.php',
+		// 	data: `action=createFlat&id=${config.activeFlat.value}`,
+		// 	success: response => (this.setPlaneInPage(response)),
+		// })
 	}
 
 	// вставляем разметку в DOM вешаем эвенты
@@ -107,12 +107,7 @@ class Apartments {
 			this.addBlur('.s3d-flat__floor')
 			this.getNewFlat(event.currentTarget.dataset.id)
 		})
-		const favourite = this.getFavourites()
-		if (favourite.includes(+this.activeFlat.value)) {
-			$('.s3d-flat__favourites').removeClass('s3d-hidden')
-			$('.js-s3d-favourites-amount').html(favourite.length)
-			$('.s3d-flat__like input').prop('checked', true)
-		}
+		this.checkFavouriteApart()
 		// $('.js-s3d-popup__mini-plan svg').on('click', 'polygon', e => {
 		// 	this.activeSvg = $(e.target).closest('svg')
 		// 	$(this.activeSvg).css({ fill: '' })
@@ -156,10 +151,23 @@ class Apartments {
 	updateFlat(flat, id) {
 		const wrap = $('.js-s3d__wrapper__apart')
 		wrap.find('.js-s3d-flat__image').attr('src', flat.img)
+		wrap.find('.js-s3d-flat__image')[0].dataset.mfpSrc = flat.img
 		wrap.find('.js-s3d-flat__left').html(flat['left_block'])
 		wrap.find('.js-s3d__create-pdf').attr('href', flat.pdf)
+		wrap.find('.js-s3d-add__favourites')[0].dataset.id = id
 		$('.u-svg-plan--active').removeClass('u-svg-plan--active')
 		wrap.find(`.s3d-flat__floor [data-id=${id}]`).addClass('u-svg-plan--active')
+
+		this.checkFavouriteApart()
+	}
+
+	checkFavouriteApart() {
+		const favourite = this.getFavourites()
+		if (favourite.length > 0) {
+			$('.s3d-flat__favourites').removeClass('s3d-hidden')
+			$('.js-s3d-favourites-amount').html(favourite.length)
+		}
+		$('.s3d-flat__like input').prop('checked', favourite.includes(+this.activeFlat.value))
 	}
 
 	addHtmlAll(elem) {

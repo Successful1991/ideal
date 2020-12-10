@@ -12,7 +12,7 @@ class Favourite {
 		})
 
 		$('.js-s3d__slideModule').on('change', '.js-s3d-add__favourites', event => {
-			const id = $(event.currentTarget).data('id')
+			const id = +event.currentTarget.dataset.id
 			if (checkValue(id)) return
 			if (event.target.checked) {
 				setTimeout(() => {
@@ -70,9 +70,9 @@ class Favourite {
 	addStorage(id) {
 		let favourites = this.getFavourites()
 		if (checkValue(favourites)) {
-			favourites = [id]
+			favourites = [+id]
 		} else {
-			favourites.push(id)
+			favourites.push(+id)
 		}
 		if (favourites.length > 0) {
 			$('.js-s3d-favorite__wrap').removeClass('s3d-hidden')
@@ -80,18 +80,18 @@ class Favourite {
 		// this.listObj[id]['favourite'] = true
 		sessionStorage.setItem('favourites', JSON.stringify(favourites))
 		this.updateAmount(favourites.length)
-		this.checkedFlat(id, true)
+		this.checkedFlat(+id, true)
 	}
 
 	removeElemStorage(id) {
 		const favourites = this.getFavourites()
-		const index = favourites.indexOf(id)
+		const index = favourites.indexOf(+id)
 		if (index === -1 || !favourites) return false
 		favourites.splice(index, 1)
 		// this.listObj[id]['favourite'] = false
 		sessionStorage.setItem('favourites', JSON.stringify(favourites))
 		this.updateAmount(favourites.length)
-		this.checkedFlat(id, false)
+		this.checkedFlat(+id, false)
 		if (favourites.length === 0) {
 			$('.js-s3d-favorite__wrap').addClass('s3d-hidden')
 			$('.js-s3d__fv').removeClass('s3d__active')
@@ -109,7 +109,7 @@ class Favourite {
 
 	getFavourites() {
 		const storage = JSON.parse(sessionStorage.getItem('favourites'))
-		return storage || []
+		return (storage || []).filter(el => (!checkValue(el))).map(el => +el)
 	}
 
 	createMarkup() {
