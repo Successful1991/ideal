@@ -1,7 +1,7 @@
 class App {
 	constructor(data) {
 		this.config = data
-		this.id = data.id
+		// this.id = data.id
 		// this.sectionName = ['complex']
 		this.sectionName = ['complex', 'plannings', 'apart']
 		this.activeSectionList = ['complex', 'plannings', 'apart']
@@ -279,7 +279,6 @@ class App {
 			this.selectSliderType(id, type, Apartments)
 			break
 		case 'plannings':
-			console.log(279, type)
 			this.scrollBlock({}, type)
 			break
 		default:
@@ -420,7 +419,7 @@ class App {
 	}
 
 	resize() {
-		console.log('resize', this)
+		// console.log('resize', this)
 		const type = $('.js-s3d-controller')[0].dataset.type || ''
 		if (document.documentElement.offsetWidth < 768) {
 			if (type === 'plannings') {

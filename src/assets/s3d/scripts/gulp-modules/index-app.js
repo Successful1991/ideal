@@ -35,7 +35,7 @@ function init() {
 	new Promise(resolve => {
 		loader(resolve)
 	}).then(value => {
-		// console.log('load', value)
+		document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
 		if (!value.fastSpeed) {
 			// $('.js-s3d__slideModule').addClass('s3d-mobile')
 			config.complex.imageUrl += 'mobile/'
@@ -50,7 +50,8 @@ function init() {
 		app.init()
 
 		$(window).resize(() => {
-			app.resize()
+			// app.resize()
+			document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
 		})
 	})
 }

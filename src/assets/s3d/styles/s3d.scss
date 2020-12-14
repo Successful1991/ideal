@@ -107,7 +107,8 @@
 
     width: 100%;
     height: 100vh;
-    font-family: Gilroy;
+    height: calc(var(--vh, 1vh) * 100);
+    font-family: 'Gilroy';
     overflow: hidden;
   }
 
@@ -234,7 +235,7 @@
     }
 
     &__text{
-      font-family: Gilroy;
+      font-family: 'Gilroy';
       font-weight: bold;
       font-size: 18px;
       line-height: 24px;
@@ -307,7 +308,7 @@
     //display: flex;
     //align-items: center;
     margin-right: 30px;
-    font-family: Gilroy;
+    font-family: 'Gilroy';
     font-weight: 700;
     font-size: 44px;
     line-height: 1em;
@@ -319,7 +320,7 @@
 
   &__favourites{
     position: absolute;
-    top: 27px;
+    top: var(--header-height);
     right: 40px;
     width: 28px;
     height: 26px;
@@ -329,7 +330,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
 
-      font-family: Gilroy;
+      font-family: 'Gilroy';
       font-weight: 500;
       font-size: 12px;
       line-height: 1.5em;
@@ -374,6 +375,10 @@
     transition: filter 0.5s cubic-bezier(.54,.23,.37,.9);
     filter: blur(5px);
   }
+
+  &-header{
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+  }
 }
 
 #js-s3d{
@@ -393,8 +398,8 @@
 
     &__complex{
       justify-content: center;
-      align-items: center;
-      overflow: hidden;
+      align-items: stretch;
+      //overflow: hidden;
     }
 
     //&__apart{
@@ -562,7 +567,7 @@
     }
 
     .button_text{
-      font-family: Gilroy;
+      font-family: 'Gilroy';
     }
   }
 
@@ -584,7 +589,7 @@
     padding: 0 0 20px;
 
     .button_text{
-      font-family: Gilroy;
+      font-family: 'Gilroy';
       font-size: 10px;
     }
   }
@@ -733,7 +738,9 @@
 
 html,body, .page__inner{
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
   margin: 0;
   padding: 0;
 }

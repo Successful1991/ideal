@@ -49,6 +49,7 @@ class Slider {
 		this.rotate = true
 		this.animates = () => {}
 		this.ActiveHouse = data.ActiveHouse
+		// this.resize = this.resize.bind(this)
 		this.init = this.init.bind(this)
 		this.changeBlockIndex = data.changeBlockIndex
 		this.click = data.click
@@ -130,7 +131,7 @@ class Slider {
 		// this.updateImage()
 		this.firstLoadImage()
 
-		this.wrapper.on('click', 'polygon', e => {
+		this.wrapper.on('click touch', 'polygon', e => {
 			e.preventDefault()
 			this.infoBoxActive = true
 			this.setStateInfoActive(this.getFlatObj(e.target.dataset.id))
@@ -186,9 +187,15 @@ class Slider {
 			this.checkDirectionRotate(data)
 			return true
 		})
+
+		this.deb = this.debounce(this.resizeCanvas.bind(this), 300)
 		$(window).resize(() => {
-			this.resizeCanvas()
+			this.deb(this)
 		})
+
+		// $(window).resize(() => {
+		// 	this.resizeCanvas()
+		// })
 	}
 
 	gyroscopeStart() {
@@ -344,7 +351,11 @@ class Slider {
 		const height = canvasWrapp.height()
 		const diffW = this.width / width
 		const diffH = this.height / height
-
+		console.log('height', height)
+		console.log('height', this.wrapper.height())
+		setTimeout(() => {
+			console.log('height', this.wrapper.height())
+		}, 300)
 		if (diffW < diffH) {
 			canvas.width(width)
 			canvas.height(width * factorH)
@@ -572,7 +583,7 @@ class Slider {
 	flatBlink() {
 		for (let i = 1; i <= 4; i++) {
 			setTimeout(() => {
-				$('.s3d__svg__active polygon').css('opacity', (i % 2) ? 0.5 : 0)
+				$('.s3d__svg__active polygon').css('opacity', (i % 2) ? 0.5 : '')
 			}, (i * 200))
 		}
 	}
@@ -769,5 +780,15 @@ class Slider {
 		this.animates = requestAnimationFrame(this.animate.bind(this))
 	}
 
+	debounce(f, t) {
+		return function (args) {
+			const previousCall = this.lastCall
+			this.lastCall = Date.now()
+			if (previousCall && ((this.lastCall - previousCall) <= t)) {
+				clearTimeout(this.lastCallTimer)
+			}
+			this.lastCallTimer = setTimeout(() => f(args), t)
+		}
+	}
 	// end block  change slide functions
 }

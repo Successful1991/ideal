@@ -2,24 +2,27 @@
 
 @media screen and (min-width:575px) and (max-width:768px) {
     .s3d-flat {
-        padding: 100px 0 0 15px;
+        padding: var(--header-height) 0 0 15px;
 
         grid-template-columns: auto 3fr 4fr 3fr;
         grid-template-rows: auto auto 1fr 0.5fr auto auto;
         grid-template-areas: 'back mini . favourite'
-            'back mini img img'
+            'back mini . .'
             'info info img img'
-            'info info plane plane'
-            'info info links links'
+            'plane plane plane plane'
+            '. . links links'
             'tel tel links links';
+        overflow-y: auto;
         
     }
     .s3d-flat__links {
         column-count: 1;
         padding-top: 15px;
         padding-bottom: 15px;
-    } 
-    
+    }
+    .s3d-flat__floor{
+        margin: 0 auto;
+    }
     .s3d-flat__list {
         padding-left: 0;
     }
@@ -34,7 +37,7 @@
         overflow: scroll;
         max-height: 100%;
         width: 100vw;
-        padding: 50px 15px;
+        padding: var(--header-height) 50px 15px;
         --table-el-height: 42px;
         &__image {
             order: 2;
