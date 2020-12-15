@@ -88,3 +88,16 @@
     }
     
 }
+
+
+
+@media screen and (max-width:1024px){
+    .s3d__wrapper__complex{
+        justify-content: flex-start;
+        overflow-y: hidden;
+        overflow-x: auto;
+    }
+    .s3d__button{
+        position: fixed;
+    }
+}

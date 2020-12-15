@@ -351,10 +351,7 @@ class Slider {
 		const height = canvasWrapp.height()
 		const diffW = this.width / width
 		const diffH = this.height / height
-		console.log('height', height)
-		console.log('height', this.wrapper.height())
 		setTimeout(() => {
-			console.log('height', this.wrapper.height())
 		}, 300)
 		if (diffW < diffH) {
 			canvas.width(width)
