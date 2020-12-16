@@ -2,7 +2,7 @@
 
 @media screen and (min-width:575px) and (max-width:768px) {
     .s3d-flat {
-        padding: var(--header-height) 0 0 15px;
+        padding: var(--header-height) 15px 0 15px;
 
         grid-template-columns: auto 3fr 4fr 3fr;
         grid-template-rows: auto auto 1fr 0.5fr auto auto;
@@ -34,10 +34,10 @@
     .s3d-flat {
         display: flex;
         flex-wrap: wrap;
-        overflow: scroll;
+        overflow-y: auto;
         max-height: 100%;
         width: 100vw;
-        padding: var(--header-height) 50px 15px;
+        padding: var(--header-height) 15px 0;
         --table-el-height: 42px;
         &__image {
             order: 2;
@@ -70,6 +70,7 @@
             width: calc(100% + 30px);
             margin-left: -15px;
             margin-right: -15px;
+            padding: 20px 10px;
             order: 6;
             a,
             button,
@@ -88,9 +89,9 @@
             height: 36px;
         }
         &__list {
-            padding-left: 0px;
+            padding-left: 0;
             max-height: calc(var(--table-el-height) * 6);
-            overflow: scroll;
+            //overflow: scroll;
         }
         &__el {
             height: var(--table-el-height);

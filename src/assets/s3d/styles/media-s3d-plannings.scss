@@ -64,6 +64,9 @@
             width: 100%;
             overflow: scroll;
             overflow-x: hidden;
+            &__amount-flat{
+                margin: 0 0 0 auto;
+            }
         }
         &-pl__list {
             max-height: none;
@@ -77,7 +80,7 @@
             width: 100%;
         }
         &-pl__plane {
-            box-shadow: 0px 4px 20px rgba(28, 73, 84, 0.15);
+            box-shadow: 0 4px 20px rgba(28, 73, 84, 0.15);
         }
         &__wrapper__plannings .s3d-controller__elem {
             display: none;

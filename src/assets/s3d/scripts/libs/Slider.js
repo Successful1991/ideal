@@ -244,7 +244,7 @@ class Slider {
 	}
 
 	update(config) {
-		this.setConfig(config)
+		// this.setConfig(config)
 		// this.updateImage()
 		this.loader.hide(this.type)
 	}
@@ -462,7 +462,7 @@ class Slider {
 			this.infoBox.find('.s3d-infoBox__link')[0].dataset.id = elem.id
 			this.infoBox.find('.s3d-infoBox__add-favourites')[0].dataset.id = elem.id
 			this.updateInfo(elem, true)
-		}, 200)
+		}, 100)
 	}
 
 	// подставляет данные в инфобокс
