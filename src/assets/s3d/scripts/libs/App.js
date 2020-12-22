@@ -17,18 +17,18 @@ class App {
 			},
 			hide: block => {
 				if (block) this.scrollToBlock(600)(block)
-
+				// this.loader.miniOn()
 				setTimeout(() => {
 					$('.fs-preloader').removeClass('preloader-active')
 					$('.fs-preloader-bg').css({ filter: 'none' })
 					$('.first-loader').removeClass('first-loader')
 				}, 200)
-				this.loader.miniOn()
 			},
 			turnOn: el => {
 				console.log('turnOn', el)
 				if (el && el.length > 0) {
 					el.addClass('s3d-unActive').prop('disabled', true)
+					return
 				}
 				const arr = ['.s3d__button', '.js-s3d-select[data-type="plannings"]', '.js-s3d-controller__openFilter']
 				arr.forEach(name => {
@@ -47,9 +47,13 @@ class App {
 				})
 			},
 			miniOn: () => {
+				console.log('miniOn')
+				console.trace()
 				$('.js-fs-preloader-before').addClass('preloader-active')
 			},
 			miniOff: () => {
+				console.log('miniOff')
+				console.trace()
 				$('.js-fs-preloader-before').removeClass('preloader-active')
 			},
 		}
@@ -269,7 +273,7 @@ class App {
 		this.filter = new Filter(this.config, this.flatList, this.flatListObj, this.showSvgIn3D)
 		this.getMinMaxParam(this.flatList)
 		this.filter.init(this.configProject)
-
+		this.loader.turnOff($('.js-s3d-controller__openFilter'))
 		// plannings должен быть выше favourites.  plannings создает элементы записывает ссылку в обьект, favourites обращается по этой ссылке к элементу.
 		const plannings = new Plannings({
 			wrap: '.js-s3d__pl__list',
@@ -278,6 +282,7 @@ class App {
 			click: this.selectSlider,
 			activeFlat: this.activeFlat,
 		})
+		this.loader.turnOff($('.js-s3d-select[data-type="plannings"]'))
 		this.favourites = new Favourite({
 			wrap: '.js-s3d__fv tbody',
 			data: this.flatListObj,
