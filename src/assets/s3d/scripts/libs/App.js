@@ -23,6 +23,34 @@ class App {
 					$('.fs-preloader-bg').css({ filter: 'none' })
 					$('.first-loader').removeClass('first-loader')
 				}, 200)
+				this.loader.miniOn()
+			},
+			turnOn: el => {
+				console.log('turnOn', el)
+				if (el && el.length > 0) {
+					el.addClass('s3d-unActive').prop('disabled', true)
+				}
+				const arr = ['.s3d__button', '.js-s3d-select[data-type="plannings"]', '.js-s3d-controller__openFilter']
+				arr.forEach(name => {
+					$(name).addClass('s3d-unActive').prop('disabled', true)
+				})
+			},
+			turnOff: el => {
+				console.log('turnOff', el)
+				if (el && el.length > 0) {
+					el.removeClass('s3d-unActive').prop('disabled', false)
+					return
+				}
+				const arr = ['.s3d__button', '.js-s3d-select[data-type="plannings"]', '.js-s3d-controller__openFilter']
+				arr.forEach(name => {
+					$(name).removeClass('s3d-unActive').prop('disabled', false)
+				})
+			},
+			miniOn: () => {
+				$('.js-fs-preloader-before').addClass('preloader-active')
+			},
+			miniOff: () => {
+				$('.js-fs-preloader-before').removeClass('preloader-active')
 			},
 		}
 		this.configProject = {}
@@ -40,7 +68,7 @@ class App {
 		this.scrollToBlock = this.scrollToBlock.bind(this)
 		this.showSvgIn3D = this.showSvgIn3D.bind(this)
 		this.selectSlider = this.selectSlider.bind(this)
-		this.unActive = this.unActive.bind(this)
+		// this.unActive = this.unActive.bind(this)
 		this.addBlur = this.addBlur.bind(this)
 		this.changeBlockIndex = this.changeBlockIndex.bind(this)
 		// this.animateBlock = this.animateBlock.bind(this);
@@ -88,7 +116,8 @@ class App {
 		// this.getFlatList('static/apPars.php', this.filterInit)
 		this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
 
-		this.loader.show()
+		// this.loader.show()
+		this.loader.turnOn()
 		const config = this.config.complex
 		config.idCopmlex = 'complex'
 		config.type = 'complex'
@@ -99,7 +128,7 @@ class App {
 		config.ActiveHouse = this.ActiveHouse
 		config.compass = this.compass
 		config.addBlur = this.addBlur
-		config.unActive = this.unActive
+		// config.unActive = this.unActive
 		config.changeBlockIndex = this.changeBlockIndex
 
 		this.createWrap(config, 'canvas')
@@ -304,7 +333,7 @@ class App {
 		config.activeFlat = this.activeFlat
 		config.compass = this.compass
 		config.addBlur = this.addBlur
-		config.unActive = this.unActive
+		// config.unActive = this.unActive
 		config.changeBlockIndex = this.changeBlockIndex
 		config.click = this.selectSlider
 		config.scrollBlock = this.scrollBlock.bind(this)
@@ -407,9 +436,9 @@ class App {
 		}, 1000)
 	}
 
-	unActive() {
-		$('.js-s3d__slideModule').removeClass('s3d-unActive')
-	}
+	// unActive() {
+	// 	$('.js-s3d__slideModule').removeClass('s3d-unActive')
+	// }
 
 	addBlur(wrap, time) {
 		$(wrap).addClass('s3d-blur')

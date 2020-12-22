@@ -62,7 +62,7 @@ class Slider {
 		this.updateActiveFlat = this.updateActiveFlat.bind(this)
 		this.loader = data.loader
 		this.addBlur = data.addBlur
-		this.unActive = data.unActive
+		// this.unActive = data.unActive
 		this.progress = 0
 		this.loadImage = this.loadImage.bind(this)
 		this.gyroscope = this.gyroscope.bind(this)
@@ -259,7 +259,7 @@ class Slider {
 	}
 
 	firstLoadImage() {
-		$('.js-s3d__slideModule').addClass('s3d-unActive')
+		// $('.js-s3d__slideModule').addClass('s3d-unActive')
 		this.ctx.canvas.width = this.width
 		this.ctx.canvas.height = this.height
 		const self = this
@@ -273,6 +273,9 @@ class Slider {
 			$('.s3d-controller__compass svg').css('transform', `rotate(${deg}deg)`)
 			self.compass.save(index)
 			self.ctx.drawImage(this, 0, 0, self.width, self.height)
+			setTimeout(() => {
+				self.loader.hide(self.type)
+			}, 300)
 			self.rotate = false
 			// self.loader.hide(self.type)
 			self.changeBlockIndex(self.type)
@@ -294,8 +297,12 @@ class Slider {
 			if (index === self.numberSlide.max) {
 				self.resizeCanvas()
 				self.ctx.drawImage(self.images[self.activeElem], 0, 0, self.width, self.height)
-				self.unActive()
-				self.loader.hide(self.type)
+				setTimeout(() => {
+					self.loader.turnOff($(self.wrapper[0]).find('.s3d-button'))
+					self.loader.miniOff()
+				}, 300)
+				// self.unActive()
+				// self.loader.hide(self.type)
 				self.rotate = true
 				return index
 			}
@@ -331,9 +338,9 @@ class Slider {
 
 	progressBarUpdate() {
 		if (this.progress >= this.numberSlide.max) {
-			setTimeout(() => {
-				$('.fs-preloader').removeClass('preloader-active')
-			}, 300)
+			// setTimeout(() => {
+			// 	$('.fs-preloader').removeClass('preloader-active')
+			// }, 300)
 			return
 		}
 		this.progress += 1
@@ -389,13 +396,15 @@ class Slider {
 	}
 
 	createArrow() {
-		const arrowLeft = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-left js-s3d__button-left unselectable' })
+		const arrowLeft = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-left js-s3d__button-left unselectable s3d-unActive' })
 		arrowLeft.dataset.type = 'prev'
+		arrowLeft.disable = true
 		$(arrowLeft).append('<svg width="7" height="9" viewBox="0 0 7 9" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 9L-1.96701e-07 4.5L7 0L7 3.82025L7 5.17975L7 9Z"/></svg>')
 		$('.js-s3d__button-left').on('click', event => this.checkDirectionRotate(event.target))
 
-		const arrowRight = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-right js-s3d__button-right unselectable' })
+		const arrowRight = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-right js-s3d__button-right unselectable s3d-unActive' })
 		arrowRight.dataset.type = 'next'
+		arrowRight.disable = true
 		$(arrowRight).append(`<svg width="7" height="9" viewBox="0 0 7 9" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1.18021e-06 -2.38419e-06L7 4.5L0 9L5.00966e-07 5.17974L6.79242e-07 3.82025L1.18021e-06 -2.38419e-06Z" />
 </svg>`)
