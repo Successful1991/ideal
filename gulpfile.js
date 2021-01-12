@@ -169,7 +169,7 @@ function images() {
 		.pipe(gulp.dest(paths.images.dest))
 }
 
-gulp.task('clear', () => cache.clearAll());
+gulp.task('clear', () => cache.clearAll())
 
 // webpack
 // function scripts() {
