@@ -649,7 +649,7 @@ class Slider {
 				$('.s3d__svg-container').css({ opacity: 1 })
 				this.rotate = true
 			}
-		}, 30)
+		}, 22)
 	}
 
 	checkDirectionRotate(data) {
