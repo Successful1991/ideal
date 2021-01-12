@@ -7,6 +7,7 @@ block head
     link(rel='stylesheet' href="/wp-content/themes/idealist/assets/s3d/styles/3d.min.css")
 block scripts
     //script(src='/wp-content/themes/idealist/static/jquery.min.js')
+    script(src='/wp-content/themes/idealist/assets/s3d/scripts/gsap.js')
     script(src='/wp-content/themes/idealist/assets/s3d/scripts/libs.js')
     script(src='/wp-content/themes/idealist/assets/s3d/scripts/index-app.js')
 
@@ -138,17 +139,6 @@ block content
                                     span Площадь м2
                                 th 
                                     span Удалить
-                            //tr(data-id=1).s3d-fv__element.js-s3d-fv__element
-                            //    td
-                            //        img(src="assets/s3d/images/KV.png").s3d-fv__image
-                            //    td 23
-                            //    td 2А
-                            //    td 3
-                            //    td 5
-                            //    td 34
-                            //    td
-                            //        button(type="button").s3d-fv__table__remove.js-s3d-fv__remove
-                            //            +svg('reset').s3d-fv__table__icon
                     .s3d-fv__bottom
                         a(type="tel").s3d-tell.s3d-genplan
                             .s3d-tell__icon-wrap
@@ -200,9 +190,10 @@ block content
                                 .s3d-filter-select__input--wrap
                                     input.js-s3d-filter__rooms--input( type="checkbox" data-type="rooms" data-rooms="4" id="rooms-4")
                                     label.s3d-filter__rooms--label( for="rooms-4") 4
-                        .s3d-filter__close.js-s3d-filter__close
-                            span
-                            span
+                        .s3d-filter__close-wrap.js-s3d-filter__close
+                            .s3d-filter__close
+                                span
+                                span
                         button.js-s3d-filter__button--reset.s3d-filter__button--reset( type="button")
                             .s3d-filter__button--reset-icon
                                 svg( role="presentation")
@@ -231,18 +222,6 @@ block content
                     img(src="./assets/s3d/images/filter-complex-image1.png").s3d-filter__complex-img
                     .s3d-filter__result-button.button-mobile-show.closing.js-s3d-filter__close Применить
                 include ../includes/loader.html
-                //.js-s3d-point__help.s3d-point__help
-                //    .s3d-point__help-left
-                //        img(src="").s3d-point__help-img
-                //    .s3d-point__help-right
-                //        .s3d-point__help-close.js-s3d-point__help-close
-                //        .s3d-point__help-logo
-                //            img(src='/wp-content/themes/idealist/assets/s3d/images/Logo.svg')
-                //        img(src='/wp-content/themes/idealist/assets/s3d/images/bg.svg').s3d-point__help-bg
-                //        .s3d-point__help-title Скейт парк
-                //        .s3d-point__help-text Коли спорт захоплює – тіло дивує! Ми забезпечили сучасні можливості для крутих трюків – перевершуй себе!
-                //        a(href='#').s3d-point__help-button Дізнатися бітьше
-
 
 block footer
     footer.page__footer-wrapper.s3d__footer

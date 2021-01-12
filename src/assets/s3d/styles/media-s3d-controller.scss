@@ -1,19 +1,42 @@
-@media screen and (min-width:576px) and (max-width:768px){
+@media screen and (max-width:1024px){
     .s3d-select[data-type="favourites"] svg {
         display: none;
     }
     .s3d-select[data-count="0"] {
         display: none;
     }
-    
+    .s3d-controller{
+        grid-template-areas:
+                '. . .'
+                'filter . compass'
+                '. . .'
+                '. . info-flat'
+                'buttons buttons buttons';
+        &__compass{
+            margin: 0 30px 0 auto;
+        }
+        &__elem{
+            width: 100%;
+        }
+    }
+    .s3d-tell{
+        grid-area: 5/3/5/3;
+        margin: 0 15px 0 auto;
+        &__text{
+            font-size: 16px;
+            line-height: 20px;
+            letter-spacing: 0;
+        }
+    }
+    .s3d-title{
+        display: none;
+    }
 }
 
 @media screen and (max-width:575px) {
     .s3d-controller {
         display: grid !important;
-    }
-    .s3d-controller {
-        grid-gap: 0px;
+        grid-gap: 0;
         padding-bottom: 0;
     }
     .s3d-controller__elem {
@@ -174,11 +197,11 @@
         .s3d-infoBox {
             display: none;
         }
-        .s3d-controller__elem {
-            width: 100%;
-            position: fixed;
-            bottom: 60px;
-        }
+        //.s3d-controller__elem {
+        //    width: 100%;
+        //    position: fixed;
+        //    bottom: 60px;
+        //}
         .s3d-select[data-type="plannings"] {
             color: var(--white);
             background-color: var(--orange);
@@ -203,11 +226,11 @@
         .s3d-controller__openFilter {
             display: none;
         }
-        .s3d-controller__elem {
-            width: 100%;
-            position: fixed;
-            bottom: 60px;
-        }
+        //.s3d-controller__elem {
+        //    width: 100%;
+        //    position: fixed;
+        //    bottom: 60px;
+        //}
         .s3d-select[data-type="favourites"] {
             color: var(--white);
             background-color: var(--orange);
@@ -232,11 +255,11 @@
         .s3d-infoBox {
             display: none;
         }
-        .s3d-controller__elem {
-            width: 100%;
-            position: fixed;
-            bottom: 50px;
-        }
+        //.s3d-controller__elem {
+        //    width: 100%;
+        //    position: fixed;
+        //    bottom: 50px;
+        //}
         .s3d-controller__openFilter {
             display: none;
         }

@@ -49,7 +49,7 @@ class Slider {
 		this.rotate = true
 		this.animates = () => {}
 		this.ActiveHouse = data.ActiveHouse
-		this.resize = this.resize.bind(this)
+		// this.resize = this.resize.bind(this)
 		this.init = this.init.bind(this)
 		this.changeBlockIndex = data.changeBlockIndex
 		this.click = data.click
@@ -62,12 +62,14 @@ class Slider {
 		this.updateActiveFlat = this.updateActiveFlat.bind(this)
 		this.loader = data.loader
 		this.addBlur = data.addBlur
-		this.unActive = data.unActive
+		// this.unActive = data.unActive
 		this.progress = 0
 		this.loadImage = this.loadImage.bind(this)
+		this.gyroscope = this.gyroscope.bind(this)
 	}
 
 	init() {
+		// $('.gyroscope').on('click', event => this.gyroscopeStart())
 		if (isDevice('ios')) {
 			this.mouseSpeed = 0.5
 		}
@@ -127,9 +129,14 @@ class Slider {
 			})
 		}
 		// this.updateImage()
+
+		this.createSvg()
+		this.createInfo()
+		this.createArrow()
+		this.createBackground()
 		this.firstLoadImage()
 
-		this.wrapper.on('click', 'polygon', e => {
+		this.wrapper.on('click touch', 'polygon', e => {
 			e.preventDefault()
 			this.infoBoxActive = true
 			this.setStateInfoActive(this.getFlatObj(e.target.dataset.id))
@@ -143,10 +150,6 @@ class Slider {
 			this.compass.save(this.compass.current)
 		})
 
-		this.createSvg()
-		this.createInfo()
-		this.createArrow()
-		this.createBackground()
 		this.infoBox.on('click', '.js-s3d-infoBox__close', () => {
 			this.hiddenInfo()
 		})
@@ -163,34 +166,64 @@ class Slider {
 		//   class:'s3d__helper js-s3d__helper',
 		//   content: '<img src="/wp-content/themes/idealist/assets/s3d/images/icon/help-arrow.svg" class="s3d-arrow"/><img src="/wp-content/themes/idealist/assets/s3d/images/icon/help-logo.svg" class="s3d__helper-logo"/> <div class="s3d__helper__text">Оберіть </br>будинок</div>'
 		// });
+
+		window.addEventListener('keydown', event => {
+			const data = {
+				dataset: {
+					type: '',
+				},
+			}
+			switch (event.keyCode) {
+			case 37:
+			case 100:
+				data.dataset.type = 'prev'
+				break
+			case 39:
+			case 102:
+				data.dataset.type = 'next'
+				break
+			default:
+				return false
+			}
+			this.checkDirectionRotate(data)
+			return true
+		})
+
+		this.deb = this.debounce(this.resizeCanvas.bind(this), 300)
+		$(window).resize(() => {
+			this.deb(this)
+		})
+
+		// $(window).resize(() => {
+		// 	this.resizeCanvas()
+		// })
 	}
 
 	gyroscopeStart() {
+		const self = this
 		if (
 			DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function'
 		) {
 			DeviceMotionEvent.requestPermission()
+			// alert('requestPermission true')
+		} else {
+			// alert('requestPermission false')
 		}
-		// let isRunning = false
-		// if (isRunning) {
-		// 	// window.removeEventListener('devicemotion', handleMotion)
-		// 	window.removeEventListener('deviceorientation', this.gyroscope)
-		// 	isRunning = false
-		// } else {
-		// window.addEventListener('devicemotion', handleMotion)
+		self.activeAnimate(true)
 		window.addEventListener('deviceorientation', event => {
-			alert('event')
 			this.gyroscope(event)
-		})
-		// isRunning = true
-		// }
+		}, true)
 	}
 
 	gyroscope(event) {
-		alert('gyroscope')
 		$('.gyroscope').html(`X-axis', ${event.alpha}
 								Y-axis', ${event.beta}
-								Z-axis', ${event.gamma}`)
+								Z-axis', ${event.gamma}
+								${this.width}`)
+		const cur = Math.round((event.alpha.toFixed(2) / 2))
+		if (cur > this.currentSlide + 2 || cur < this.currentSlide - 2) {
+			this.ctx.drawImage(this.images[cur], 0, 0, this.width, this.height)
+		}
 	}
 
 	setConfig(data) {
@@ -207,12 +240,12 @@ class Slider {
 	}
 
 	centerSlider(elem) {
-		const scroll = (elem.scrollWidth / 2) - (document.documentElement.offsetWidth * 2)
-		$('.s3d__wrap').scrollLeft(scroll)
+		const scroll = (elem.scrollWidth - document.documentElement.offsetWidth) / 2
+		this.wrapper.scrollLeft(scroll)
 	}
 
 	update(config) {
-		this.setConfig(config)
+		// this.setConfig(config)
 		// this.updateImage()
 		this.loader.hide(this.type)
 	}
@@ -227,7 +260,8 @@ class Slider {
 	}
 
 	firstLoadImage() {
-		$('.js-s3d__slideModule').addClass('s3d-unActive')
+		// $('.js-s3d__slideModule').addClass('s3d-unActive')
+		this.loader.turnOn($(this.wrapper).find('.s3d__button'))
 		this.ctx.canvas.width = this.width
 		this.ctx.canvas.height = this.height
 		const self = this
@@ -241,9 +275,13 @@ class Slider {
 			$('.s3d-controller__compass svg').css('transform', `rotate(${deg}deg)`)
 			self.compass.save(index)
 			self.ctx.drawImage(this, 0, 0, self.width, self.height)
+			setTimeout(() => {
+				self.loader.hide(self.type)
+				self.loader.miniOn()
+			}, 300)
+			self.rotate = false
 			// self.loader.hide(self.type)
 			self.changeBlockIndex(self.type)
-			self.rotate = false
 			self.resizeCanvas()
 			self.loadImage(0)
 		}
@@ -251,6 +289,7 @@ class Slider {
 
 	loadImage(i, type) {
 		console.log('loadImage')
+
 		const self = this
 		const img = new Image()
 		const index = i
@@ -262,8 +301,12 @@ class Slider {
 			if (index === self.numberSlide.max) {
 				self.resizeCanvas()
 				self.ctx.drawImage(self.images[self.activeElem], 0, 0, self.width, self.height)
-				self.unActive()
-				self.loader.hide(self.type)
+				setTimeout(() => {
+					self.loader.turnOff($(self.wrapper[0]).find('.s3d-button'))
+					self.loader.miniOff()
+				}, 350)
+				// self.unActive()
+				// self.loader.hide(self.type)
 				self.rotate = true
 				return index
 			}
@@ -299,9 +342,9 @@ class Slider {
 
 	progressBarUpdate() {
 		if (this.progress >= this.numberSlide.max) {
-			setTimeout(() => {
-				$('.fs-preloader').removeClass('preloader-active')
-			}, 300)
+			// setTimeout(() => {
+			// 	$('.fs-preloader').removeClass('preloader-active')
+			// }, 300)
 			return
 		}
 		this.progress += 1
@@ -313,18 +356,22 @@ class Slider {
 	resizeCanvas() {
 		const factorW = this.width / this.height
 		const factorH = this.height / this.width
-		const canvasWrapp = $('.js-s3d__wrapper__complex')
-		const canvas = $('#js-s3d__complex')
-		const diffW = this.width / canvasWrapp.width()
-		const diffH = this.height / canvasWrapp.height()
-
+		const canvasWrapp = this.wrapper
+		const canvas = $(`#js-s3d__${this.type}`)
+		const width = canvasWrapp.width()
+		const height = canvasWrapp.height()
+		const diffW = this.width / width
+		const diffH = this.height / height
+		setTimeout(() => {
+		}, 300)
 		if (diffW < diffH) {
-			canvas.width(canvasWrapp.width())
-			canvas.height(canvasWrapp.width() * factorH)
+			canvas.width(width)
+			canvas.height(width * factorH)
 		} else {
-			canvas.height(canvasWrapp.height())
-			canvas.width(canvasWrapp.height() * factorW)
+			canvas.height(height)
+			canvas.width(height * factorW)
 		}
+		this.centerSlider(this.wrapper[0])
 	}
 
 	// записывает позиции мышки
@@ -337,13 +384,13 @@ class Slider {
 		// $(this.activeSvg).css({ opacity: '0' })
 	}
 
-	resize() {
-		this.height = this.wrapper.height()
-		this.width = this.wrapper.width()
-		this.ctx.canvas.width = this.width
-		this.ctx.canvas.height = this.height
-		this.ctx.drawImage(this.images[this.activeElem], 0, 0, this.width, this.height)
-	}
+	// resize() {
+	// 	this.height = this.wrapper.height()
+	// 	this.width = this.wrapper.width()
+	// 	this.ctx.canvas.width = this.width
+	// 	this.ctx.canvas.height = this.height
+	// 	this.ctx.drawImage(this.images[this.activeElem], 0, 0, this.width, this.height)
+	// }
 
 	// инициализация svg слайдера
 	createSvg() {
@@ -353,13 +400,15 @@ class Slider {
 	}
 
 	createArrow() {
-		const arrowLeft = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-left js-s3d__button-left unselectable' })
+		const arrowLeft = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-left js-s3d__button-left unselectable s3d-unActive' })
 		arrowLeft.dataset.type = 'prev'
+		arrowLeft.disable = true
 		$(arrowLeft).append('<svg width="7" height="9" viewBox="0 0 7 9" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 9L-1.96701e-07 4.5L7 0L7 3.82025L7 5.17975L7 9Z"/></svg>')
 		$('.js-s3d__button-left').on('click', event => this.checkDirectionRotate(event.target))
 
-		const arrowRight = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-right js-s3d__button-right unselectable' })
+		const arrowRight = createMarkup('button', this.wrapper, { class: 's3d__button s3d__button-right js-s3d__button-right unselectable s3d-unActive' })
 		arrowRight.dataset.type = 'next'
+		arrowRight.disable = true
 		$(arrowRight).append(`<svg width="7" height="9" viewBox="0 0 7 9" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1.18021e-06 -2.38419e-06L7 4.5L0 9L5.00966e-07 5.17974L6.79242e-07 3.82025L1.18021e-06 -2.38419e-06Z" />
 </svg>`)
@@ -426,7 +475,7 @@ class Slider {
 			this.infoBox.find('.s3d-infoBox__link')[0].dataset.id = elem.id
 			this.infoBox.find('.s3d-infoBox__add-favourites')[0].dataset.id = elem.id
 			this.updateInfo(elem, true)
-		}, 200)
+		}, 100)
 	}
 
 	// подставляет данные в инфобокс
@@ -544,7 +593,7 @@ class Slider {
 	flatBlink() {
 		for (let i = 1; i <= 4; i++) {
 			setTimeout(() => {
-				$('.s3d__svg__active polygon').css('opacity', (i % 2) ? 0.5 : 0)
+				$('.s3d__svg__active polygon').css('opacity', (i % 2) ? 0.5 : '')
 			}, (i * 200))
 		}
 	}
@@ -600,7 +649,7 @@ class Slider {
 				$('.s3d__svg-container').css({ opacity: 1 })
 				this.rotate = true
 			}
-		}, 30)
+		}, 22)
 	}
 
 	checkDirectionRotate(data) {
@@ -741,5 +790,15 @@ class Slider {
 		this.animates = requestAnimationFrame(this.animate.bind(this))
 	}
 
+	debounce(f, t) {
+		return function (args) {
+			const previousCall = this.lastCall
+			this.lastCall = Date.now()
+			if (previousCall && ((this.lastCall - previousCall) <= t)) {
+				clearTimeout(this.lastCallTimer)
+			}
+			this.lastCallTimer = setTimeout(() => f(args), t)
+		}
+	}
 	// end block  change slide functions
 }

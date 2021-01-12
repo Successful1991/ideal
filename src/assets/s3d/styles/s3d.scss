@@ -1,6 +1,10 @@
 // .s3d__slideModule - корень всего
 // .s3d__wrap, .s3d__wrapper__complex, .s3d__wrapper__floor, .s3d__wrapper__apart - обертка для кнопок и блока с содержимым по размеру экрана
 // #s3d__wrapper__complex, #s3d__wrapper__floor, #s3d__wrapper__apart - обертка для canvas и Блока с svg. не фиксируется по ширине экрана
+:root{
+  --header-height: 80px;
+}
+
 *{
   box-sizing: border-box;
   &:focus{
@@ -103,7 +107,8 @@
 
     width: 100%;
     height: 100vh;
-    font-family: Gilroy;
+    height: calc(var(--vh, 1vh) * 100);
+    font-family: 'Gilroy';
     overflow: hidden;
   }
 
@@ -118,7 +123,7 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    //overflow: hidden;
     align-items: center;
     background: #ffffff;
   }
@@ -230,7 +235,7 @@
     }
 
     &__text{
-      font-family: Gilroy;
+      font-family: 'Gilroy';
       font-weight: bold;
       font-size: 18px;
       line-height: 24px;
@@ -303,7 +308,7 @@
     //display: flex;
     //align-items: center;
     margin-right: 30px;
-    font-family: Gilroy;
+    font-family: 'Gilroy';
     font-weight: 700;
     font-size: 44px;
     line-height: 1em;
@@ -315,7 +320,7 @@
 
   &__favourites{
     position: absolute;
-    top: 27px;
+    top: var(--header-height);
     right: 40px;
     width: 28px;
     height: 26px;
@@ -325,7 +330,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
 
-      font-family: Gilroy;
+      font-family: 'Gilroy';
       font-weight: 500;
       font-size: 12px;
       line-height: 1.5em;
@@ -337,6 +342,12 @@
       width: 28px;
       fill: #1C4954;
       cursor: pointer;
+      transition: transform 0.4s ease-in-out;
+    }
+    &:hover{
+      svg{
+        transform: scale(1.2);
+      }
     }
   }
 
@@ -353,10 +364,24 @@
   }
 
   &-unActive{
-    //pointer-events: none!important;
     cursor: wait!important;
+    pointer-events: none;
+    background: #bbbbbb;
+    svg{
+      fill: #ffffff;
+    }
+    & > *{
+      background: #bbbbbb;
+    }
     *{
       pointer-events: none!important;
+
+    }
+    &:hover{
+      background: #bbbbbb;
+      svg{
+        fill: #ffffff;
+      }
     }
   }
 
@@ -364,6 +389,25 @@
     transition: filter 0.5s cubic-bezier(.54,.23,.37,.9);
     filter: blur(5px);
   }
+
+  &-header{
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+}
+::-webkit-scrollbar {
+  width: 2px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #EB8271!important;
+  -webkit-box-shadow: none;
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: #EB8271!important;
 }
 
 #js-s3d{
@@ -384,6 +428,7 @@
     &__complex{
       justify-content: center;
       align-items: center;
+      //overflow: hidden;
     }
 
     //&__apart{
@@ -420,7 +465,6 @@
     height: 100%;
   }
 }
-
 
 .translate-layer{
   z-index: 600;
@@ -551,7 +595,7 @@
     }
 
     .button_text{
-      font-family: Gilroy;
+      font-family: 'Gilroy';
     }
   }
 
@@ -573,7 +617,7 @@
     padding: 0 0 20px;
 
     .button_text{
-      font-family: Gilroy;
+      font-family: 'Gilroy';
       font-size: 10px;
     }
   }
@@ -722,7 +766,9 @@
 
 html,body, .page__inner{
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
   margin: 0;
   padding: 0;
 }
@@ -740,13 +786,13 @@ body{
 
 }
 @media screen and ( max-width : 1023px ){
-  .s3d-mobile-only:not(.rc){
-    display: inline-block;
-  }
+
 }
 
 @media screen and ( max-width : 992px ){
-
+  .s3d-mobile-only:not(.rc){
+    display: inline-block;
+  }
 }
 @media screen and ( max-width : 767px ){
 
@@ -767,23 +813,20 @@ body{
 }
 @media screen and ( max-width : 768px ){
 
-  .s3d__slideModule{
-    height: calc(100vh - 59px);
-  }
-
 }
 
 
-//.gyroscope{
-//  position: fixed;
-//  top: 50%;
-//  left: 50%;
-//  display: block;
-//  width: 30vw;
-//  height: 40vh;
-//  background: #c1b1e9;
-//  font-size: 10px;
-//  color: #0b0b0b;
-//  transform: translate(-50%, -50%);
-//  z-index: 5665;
-//}
+.gyroscope{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: block;
+
+  //width: 30vw;
+  //height: 40vh;
+  background: #c1b1e9;
+  font-size: 16px;
+  color: #0b0b0b;
+  transform: translate(-50%, -50%);
+  z-index: 5665;
+}

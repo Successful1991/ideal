@@ -5,9 +5,9 @@
 .s3d-filter-wrap.plannings-filter .s3d-filter__complex-img {
     display: none;
 }
-@media screen and (max-width:768px)  and (min-width:576px) {
+@media screen and (max-width:1024px)  and (min-width:576px) {
     .s3d-filter {
-        padding: 0 15px ;
+        padding: var(--header-height) 15px 0;
     }
     .s3d-filter__area, .s3d-filter__living-space, .s3d-filter__buttons, .s3d-filter__floor {
         width: 100%;
@@ -30,7 +30,7 @@
     }
     //3d genplan filter 
     .plannings-filter .s3d-filter {
-        padding:20px 15px 0;
+        padding: var(--header-height) 15px 0;
     }
     .plannings-filter .s3d-filter__table {
         padding: 0 0 15px 25px;

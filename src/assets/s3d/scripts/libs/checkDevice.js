@@ -1,6 +1,8 @@
 const isDevice = (type = 'mobile') => {
-	const list = ((type === 'ios') ? /iPhone|iPad|iPod/ : /Android|webOS|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|iPhone|iPad|iPod/)
-	return list.test(window.navigator.userAgent)
+	if (type === 'ios') {
+		return /iPhone|iPad|iPod/.test(navigator.userAgent)
+	}
+	return ((navigator.maxTouchPoints && navigator.maxTouchPoints > 2) || /Android|webOS|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|iPhone|iPad|iPod/.test(navigator.userAgent))
 }
 
 const isBrowser = () => {
@@ -39,9 +41,12 @@ const isBrowser = () => {
 		if (tem != null) return { name: tem[1].replace('OPR', 'Opera'), version: tem[2], platform: OS }
 	}
 	M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?']
-	if ((tem = ua.match(/version\/(\d+)/i)) != null)
-	M.splice(1, 1, tem[1])
-	return { name: M[0], version: M[1], platform: OS }
+	tem = ua.match(/version\/(\d+)/i)
+	if (tem != null) {
+		M.splice(1, 1, tem[1])
+		return { name: M[0], version: M[1], platform: OS }
+	}
+	return { name: 'error', version: 'error', platform: 'error' }
 
 	function searchString(data) {
 		for (let i = 0; i < data.length; i++) {
@@ -55,5 +60,6 @@ const isBrowser = () => {
 				return data[i].identity
 			}
 		}
+		return false
 	}
 }

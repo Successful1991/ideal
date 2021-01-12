@@ -5,14 +5,14 @@
   display: flex;
   height: 100%;
   width: 100%;
-  padding: 95px 0 0 0;
+  padding: var(--header-height) 0 0 0;
   flex-direction: column;
   background: #E5E5E5;
   opacity: 0;
   z-index: 2;
-  transition: opacity 0.6s cubic-bezier(.38,.43,.38,1);
+  transition: opacity 0.6s cubic-bezier(.38,.43,.38,1), z-index 0.1s linear .6s;
   &__title{
-    font-family: Gilroy;
+    font-family: 'Gilroy';
     font-weight: 500;
     font-size: 56px;
     line-height: 60px;
@@ -21,7 +21,7 @@
   }
   &__close{
     position: absolute;
-    top: 60px;
+    top: var(--header-height);
     right: 30px;
     height: 30px;
     width: 30px;
@@ -57,7 +57,7 @@
   &__table{
     margin: 50px 50px 80px;
     flex: 1 1 100%;
-    padding: 0 0 0 90px;
+    padding: 0 90px;
     overflow-y: auto;
 
     &::-webkit-scrollbar {
@@ -79,11 +79,17 @@
       background: #DDD9D3;
     }
     table{
-      width: 80%;
+      width: 100%;
       max-height: 100%;
+      margin: 0 auto;
     }
 
     tr{
+      transition: background-color 0.5s ease-in-out;
+      cursor: pointer;
+      &:hover{
+        background: #ffffff;
+      }
     }
     td{
       width: 10%;
@@ -92,7 +98,7 @@
       padding: 13px 0;
       border-bottom: 1px solid #DDD9D3;
 
-      font-family: Gilroy;
+      font-family: 'Gilroy';
       font-weight: 500;
       font-size: 24px;
       line-height: 56px;
@@ -106,7 +112,7 @@
       padding: 13px 0;
       border-bottom: 1px solid #DDD9D3;
       background: #E5E5E5;
-      font-family: Gilroy;
+      font-family: 'Gilroy';
       font-weight: 400;
       font-size: 14px;
       line-height: 24px;
@@ -119,22 +125,29 @@
       *{
         pointer-events: none;
       }
+      &:hover{
+        svg{
+          fill: #1C4954;
+        }
+      }
     }
     &__icon{
       width: 22px;
       height: 27px;
       fill: #EB8271;
+      transition: fill 0.4s ease-in-out;
     }
 
   }
 
   &__image{
     max-height: 100px;
+    object-fit: contain;
   }
   &__favourites{
     display: flex;
     align-items: center;
-    font-family: Gilroy;
+    font-family: 'Gilroy';
     font-weight: 500;
     font-size: 14px;
     line-height: 24px;
@@ -152,7 +165,7 @@
       left: 50%;
       transform: translate(-50%, -55%);
 
-      font-family: Gilroy;
+      font-family: 'Gilroy';
       font-weight: 500;
       font-size: 12px;
       line-height: 1.5em;
@@ -183,5 +196,8 @@
   }
   .s3d-tell__text{
     color: #221F20;
+  }
+  &.s3d__active{
+    transition: opacity 0.6s cubic-bezier(.38,.43,.38,1), z-index 0.01s linear;
   }
 }

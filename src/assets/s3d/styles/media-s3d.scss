@@ -57,12 +57,22 @@
 
 //HOVERS
 @media screen and (min-width:769px) {
+   
+    .s3d-infoBox__close {
+        transition: .3s ease-out;
+    }
+    .s3d-select:hover:not(.active):not([disabled]) {
+        background-color: #e46c59;
+    }
     .s3d-infoBox__link {
         transition: box-shadow .3s ease-out;
     }
     .s3d-infoBox__link:hover {
         box-shadow: 0 4px 15px rgba(36, 22, 19, 0.3);
     } 
+    .s3d-infoBox__close:hover {
+        transform: rotate(180deg);
+    }
     .irs--flat .irs-handle i {
         transition: .3s ease-out;
     }
@@ -77,4 +87,17 @@
         box-shadow: none;
     }
     
+}
+
+
+
+@media screen and (max-width:1024px){
+    .s3d__wrapper__complex{
+        justify-content: flex-start;
+        overflow-y: hidden;
+        overflow-x: auto;
+    }
+    .s3d__button{
+        position: fixed;
+    }
 }

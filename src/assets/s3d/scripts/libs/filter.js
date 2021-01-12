@@ -86,8 +86,10 @@ class Filter {
 
 	// подсвечивает квартиры на svg облёта
 	showSvgSelect(data) {
-		$('.js-s3d__wrapper__complex polygon').css({ opacity: 0 })
-		data.forEach(flat => $(`.js-s3d__wrapper__complex polygon[data-id=${flat.id}]`).css({ opacity: 0.5 }))
+		// $('.js-s3d__wrapper__complex polygon').css({ opacity: 0 })
+		$('.js-s3d__wrapper__complex polygon').removeClass('active-selected')
+		data.forEach(flat => $(`.js-s3d__wrapper__complex polygon[data-id=${flat.id}]`).addClass('active-selected'))
+		// data.forEach(flat => $(`.js-s3d__wrapper__complex polygon[data-id=${flat.id}]`).css({ opacity: 0.5 }))
 		// фильтр svg , ищет по дата атрибуту, нужно подстраивать атрибут и класс обертки
 		// for (const key in data) {
 		// 	// if ($('.js-s3d__svg-container__complex').length > 0) {
@@ -219,16 +221,24 @@ class Filter {
 	// сбросить значения фильтра
 	resetFilter() {
 		$('.js-s3d__svgWrap polygon').css({ opacity: '' })
+		$('.js-s3d__svgWrap .active-selected').removeClass('active-selected')
 
 		for (const key in this.filter) {
 			if (this.filter[key].type === 'range') {
 				// this.filter[key].elem.reset();
 				this.filter[key].elem.update({ from: this.filter[key].elem.result.min, to: this.filter[key].elem.result.max })
 			} else {
-				// this.filter[key].elem.each((i, el) => { el.checked ? el.checked = false : '' })
+				this.filter[key].elem.each((i, el) => {
+					// eslint-disable-next-line no-unused-expressions
+					el.checked ? el.checked = false : ''
+				})
 			}
 		}
 		// this.filterFlatStart()
+		this.flatList.forEach(flat => {
+			flat.listHtmlLink.style.display = ''
+			flat.cardHtmlLink.style.display = ''
+		})
 	}
 
 	// запустить фильтрацию

@@ -9,5 +9,5 @@
 /dist/
 /wp-content/
 /prod/
-/src/assets/s3d/scripts/gulp-modules/libs.js/
+/src/assets/s3d/scripts/gulp-modules/libs.js
 /src/assets/s3d/svg-sprite/sprite/symbol_sprite.php/

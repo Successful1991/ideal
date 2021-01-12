@@ -3,20 +3,31 @@ class Favourite {
 		this.listObj = conf.data
 		this.list = conf.list
 		this.wrap = conf.wrap
-
+		this.click = conf.click
+		this.activeFlat = conf.activeFlat
+		this.animationSpeed = 750
 		$('.js-s3d__slideModule').on('click', '.js-s3d__favourites', () => {
 			this.createMarkup()
 			$('.js-s3d__fv').addClass('s3d__active')
 		})
 
 		$('.js-s3d__slideModule').on('change', '.js-s3d-add__favourites', event => {
-			const id = $(event.currentTarget).data('id')
-			console.log('id', id)
+			const id = +event.currentTarget.dataset.id
 			if (checkValue(id)) return
 			if (event.target.checked) {
-				this.addStorage(id)
+				setTimeout(() => {
+					this.addStorage(id)
+				}, this.animationSpeed)
+				if (event.target.closest('label') !== null) {
+					this.moveToFavouriteEffectHandler(event.target.closest('label'))
+				}
 			} else {
-				this.removeElemStorage(id)
+				setTimeout(() => {
+					this.removeElemStorage(id)
+				}, this.animationSpeed)
+				if (event.target.closest('label') !== null) {
+					this.moveToFavouriteEffectHandler(event.target.closest('label'), true)
+				}
 			}
 		})
 
@@ -37,6 +48,7 @@ class Favourite {
 		// sessionStorage.clear()
 		this.createMarkup()
 		this.showSelectFlats()
+		this.addPulseCssEffect()
 	}
 
 	showSelectFlats() {
@@ -58,9 +70,9 @@ class Favourite {
 	addStorage(id) {
 		let favourites = this.getFavourites()
 		if (checkValue(favourites)) {
-			favourites = [id]
+			favourites = [+id]
 		} else {
-			favourites.push(id)
+			favourites.push(+id)
 		}
 		if (favourites.length > 0) {
 			$('.js-s3d-favorite__wrap').removeClass('s3d-hidden')
@@ -68,18 +80,18 @@ class Favourite {
 		// this.listObj[id]['favourite'] = true
 		sessionStorage.setItem('favourites', JSON.stringify(favourites))
 		this.updateAmount(favourites.length)
-		this.checkedFlat(id, true)
+		this.checkedFlat(+id, true)
 	}
 
 	removeElemStorage(id) {
 		const favourites = this.getFavourites()
-		const index = favourites.indexOf(id)
-		if (index === -1 || !favourites) return
+		const index = favourites.indexOf(+id)
+		if (index === -1 || !favourites) return false
 		favourites.splice(index, 1)
 		// this.listObj[id]['favourite'] = false
 		sessionStorage.setItem('favourites', JSON.stringify(favourites))
 		this.updateAmount(favourites.length)
-		this.checkedFlat(id, false)
+		this.checkedFlat(+id, false)
 		if (favourites.length === 0) {
 			$('.js-s3d-favorite__wrap').addClass('s3d-hidden')
 			$('.js-s3d__fv').removeClass('s3d__active')
@@ -97,7 +109,7 @@ class Favourite {
 
 	getFavourites() {
 		const storage = JSON.parse(sessionStorage.getItem('favourites'))
-		return storage ? storage : []
+		return (storage || []).filter(el => (!checkValue(el))).map(el => +el)
 	}
 
 	createMarkup() {
@@ -108,8 +120,16 @@ class Favourite {
 			$('.js-s3d-favorite__wrap').removeClass('s3d-hidden')
 		}
 		$(this.wrap).append(
-			favourites.map(el => this.createElemHtml(this.listObj[el]))
+			favourites.map(el => this.createElemHtml(this.listObj[el])),
 		)
+		$('.js-s3d__fv').on('click', '.js-s3d-fv__element', event => {
+			if (event.target.classList.contains('js-s3d-fv__remove')) return
+			this.activeFlat.value = +event.currentTarget.dataset.id
+			this.click(+event.currentTarget.dataset.id, 'apart')
+			setTimeout(() => {
+				$('.js-s3d__fv').removeClass('s3d__active')
+			}, 300)
+		})
 	}
 
 	createElemHtml(el) {
@@ -134,8 +154,120 @@ class Favourite {
 	}
 
 	updateAmount(value) {
-		$('.js-s3d-favourites-amount').html(value);
-		$('.js-s3d__favourites').data('count', value);
-		document.querySelector('.js-s3d__favourites').dataset.count = value;
+		$('.js-s3d-favourites-amount').html(value)
+		$('.js-s3d__favourites').data('count', value)
+		document.querySelector('.js-s3d__favourites').dataset.count = value
+	}
+
+	addPulseCssEffect() {
+		this.animationPulseClass = 'pulse'
+		document.body.insertAdjacentHTML('beforeend', `
+		<!-- <style class="${this.animationPulseClass}">
+			.${this.animationPulseClass} {
+				border-radius: 50%;
+				cursor: pointer;
+				box-shadow: 0 0 0 rgba(255,255,255, 0.75);
+				animation: pulse 0.5s 1 ease-out;
+			}.${this.animationPulseClass}:hover {	animation: none;}@-webkit-keyframes ${this.animationPulseClass} {	0% {	  -webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	}	70% {		-webkit-box-shadow: 0 0 0 10px rgba(255,255,255, 0);	}	100% {		-webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0);	}}@keyframes pulse {	0% {	  -moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	  box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);	}	70% {		-moz-box-shadow: 0 0 0 10px rgba(255,255,255, 0);		box-shadow: 0 0 0 10px rgba(255,255,255, 0);	}	100% {		-moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0);		box-shadow: 0 0 0 0 rgba(255,255,255, 0);	}}
+		</style> -->
+		`)
+	}
+
+	moveToFavouriteEffectHandler(target, reverse) {
+		const currentScreen = document.querySelector('.js-s3d-controller').dataset.type
+		const iconToAnimate = target.querySelector('svg')
+		let distance
+		if (document.documentElement.clientWidth < 576) {
+			distance = this.getBetweenDistance(document.querySelector('.s3d-mobile-only[data-type="favourites"]'), iconToAnimate)
+			this.animateFavouriteElement(document.querySelector('.s3d-mobile-only[data-type="favourites"]'), iconToAnimate, distance, reverse)
+		} else {
+			switch (currentScreen) {
+			case 'complex':
+				distance = this.getBetweenDistance(document.querySelector('.s3d-filter-wrap .s3d__favourites'), iconToAnimate)
+				this.animateFavouriteElement(document.querySelector('.s3d-filter-wrap .s3d__favourites'), iconToAnimate, distance, reverse)
+				break
+			case 'plannings':
+				distance = this.getBetweenDistance(document.querySelector('.s3d-pl__favourites-icon'), iconToAnimate)
+				this.animateFavouriteElement(document.querySelector('.s3d-pl__favourites-icon'), iconToAnimate, distance, reverse)
+				break
+			case 'apart':
+				distance = this.getBetweenDistance(document.querySelector('.s3d-pl__favourites-icon'), iconToAnimate)
+				this.animateFavouriteElement(document.querySelector('.s3d-pl__favourites-icon'), iconToAnimate, distance, reverse)
+				break
+
+			default:
+				break
+			}
+		}
+	}
+
+	getBetweenDistance(elem1, elem2) {
+		// get the bounding rectangles
+		const el1 = elem1.getBoundingClientRect()
+		const el2 = elem2.getBoundingClientRect()
+		// get div1's center point
+		const div1x = el1.left + (el1.width / 2)
+		const div1y = el1.top + (el1.height / 2)
+
+		// get div2's center point
+		const div2x = el2.left + (el2.width / 2)
+		const div2y = el2.top + (el2.height / 2)
+
+		// calculate the distance using the Pythagorean Theorem (a^2 + b^2 = c^2)
+		const distanceSquared = Math.pow(div1x - div2x, 2) + Math.pow(div1y - div2y, 2)
+		// const distance = Math.sqrt(distanceSquared)
+
+		return {
+			x: div1x - div2x,
+			y: div1y - div2y,
+		}
+	}
+
+	animateFavouriteElement(destination, element, distance, reverse) {
+		if (element.closest('.js-s3d-infoBox')) return
+		if (gsap === undefined) return
+		const animatingElParams = element.getBoundingClientRect()
+		element.style.cssText += ` width:${animatingElParams.width}px;height:${animatingElParams.height}px;transform-origin:center;`
+		element.style.cssText += `position:relative; z-index:2000;stroke:none;position:fixed; left:${animatingElParams.left}px; top:${animatingElParams.top}px;`
+		const copiedElement = element.cloneNode(true)
+		copiedElement.style.cssText += '/*fill:var(--blue);*/ z-index:1999;opacity:0'
+		element.insertAdjacentElement('afterend', copiedElement)
+		if (reverse === true) copiedElement.style.cssText += 'fill:#1C4954; z-index:1999;'
+		const speed = this.animationSpeed / 1000
+		// element.classList.add(this.animationPulseClass)
+		const tl = new TimelineMax({
+			delay: 0,
+			// ease: Power4.easeIn,
+			repeat: 0,
+			paused: true,
+			onComplete: () => {
+				element.classList.remove(this.animationPulseClass)
+				copiedElement.remove()
+				element.style.cssText = ''
+			},
+		})
+
+		tl.to(element, { scale: 0.75, duration: speed / 10, ease: Power4.easeIn })
+		tl.to(element, { scale: 1, duration: 0 })
+		tl.to(copiedElement, { autoAlpha: 1, duration: speed / 10 })
+		tl.to(element, { scale: 1.5, duration: speed / 3 }, '<')
+		tl.to(element, { autoAlpha: 0, duration: speed }, '<')
+		if (reverse === true) {
+			tl.from(copiedElement, { y: distance.y, duration: speed, ease: Power1.easeIn }, '<')
+			tl.to(copiedElement, { fill: '#FFFFFF' }, '<')
+			tl.from(copiedElement, { x: distance.x, duration: speed / 3, ease: Power1.easeIn }, '<')
+			tl.to(element, { autoAlpha: 1, scale: 1 }, '<')
+		} else {
+			// tl.set(copiedElement,{classList:`+=${this.animationPulseClass}`},'<');
+			tl.to(copiedElement, {
+				fill: '#1C4954', y: distance.y, duration: speed, ease: Power1.easeIn,
+			}, `-=${speed}`)
+			tl.to(copiedElement, { x: distance.x, duration: speed / 3, ease: Power1.easeIn }, `-=${speed / 3}`)
+			tl.set(copiedElement, { autoAlpha: 0 })
+			tl.to(element, { autoAlpha: 1, scale: 1 }, '<')
+		}
+		// tl.set(element, {position:'',width:'',height:'',stroke:'', fill:'',top:'',left:'',x:'',y:''});
+		tl.set(copiedElement, { clearProps: 'all' })
+		tl.play()
 	}
 }

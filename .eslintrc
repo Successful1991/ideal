@@ -26,6 +26,10 @@
     "no-restricted-globals": [
       "off", "isNaN"
     ],
+    "no-restricted-properties": [2,{
+      "object": "window",
+      "property": "Math"
+    }],
     "eqeqeq": "warn",
     "no-else-return": "warn",
     "dot-notation": ["off"],
@@ -38,6 +42,7 @@
     "no-restricted-syntax": "off",
     "guard-for-in": "off",
     "no-plusplus": "off",
+    "no-param-reassign": "warn",
     "prefer-destructuring": ["error", {"object": true, "array": false}],
     "no-tabs": "off",
     "no-underscore-dangle": "off",
