@@ -45,7 +45,6 @@ function init() {
 			// config.complex.imageUrl += 'mobile/'
 		}
 		config.complex['browser'] = Object.assign(isBrowser(), value)
-		// console.log(config.complex['browser'])
 		app = new App(config)
 		app.init()
 
