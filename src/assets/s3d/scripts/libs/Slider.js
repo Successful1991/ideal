@@ -472,7 +472,7 @@ class Slider {
 	// this.infoBox.css({ opacity: '1' })
 	// this.infoBox.css({ top: Yinner - 40 })
 	// this.infoBox.css({ left: Xinner })
-
+		const { soldTitle } = this.infoBox.find('.js-s3d-infoBox__sold')[0].dataset
 		if (this.infoBox.hasClass('s3d-infoBox-active') && !ignore) {
 			return
 		} else if (!this.infoBox.hasClass('s3d-infoBox-hover')) {
@@ -483,6 +483,8 @@ class Slider {
 		this.infoBox.find('.js-s3d-infoBox__table-floor')[0].innerHTML = `${e.floor || ''}`
 		this.infoBox.find('.js-s3d-infoBox__table-room')[0].innerHTML = `${e.rooms || ''}`
 		this.infoBox.find('.js-s3d-infoBox__type')[0].innerHTML = `${e.type || ''}`
+		this.infoBox.find('.js-s3d-infoBox__sold')[0].innerHTML = e.sale === '1' ? '' : soldTitle
+		this.infoBox.find('.js-s3d-infoBox__sold')[0].style.left = `${getComputedStyle(this.infoBox.find('.js-s3d-infoBox__type')[0]).width}`
 		this.infoBox.find('.js-s3d-infoBox__table-area')[0].innerHTML = `${e['all_room'] || ''}`
 		this.infoBox.find('.js-s3d-infoBox__image')[0].src = `${e['img_small'] || ''}`
 		this.infoBox.find('.js-s3d-infoBox__hover__text')[0].innerHTML = `${e.number || ''}`

@@ -109,8 +109,8 @@ class App {
 		this.history.init()
 
 		// this.getFlatList('/wp-content/themes/idealist/static/flats.json', this.filterInit)
-		// this.getFlatList('static/apPars.php', this.filterInit)
-		this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
+		this.getFlatList('static/apPars.php', this.filterInit)
+		// this.getFlatList('/wp-admin/admin-ajax.php', this.filterInit)
 
 		// this.loader.show()
 		this.loader.turnOn()

@@ -33,7 +33,7 @@
     "eqeqeq": "warn",
     "no-else-return": "warn",
     "dot-notation": ["off"],
-    "linebreak-style": ["error", "windows"],
+    "linebreak-style": 0,
     "quotes": ["error", "single"],
     "no-undef": "off",
     "no-use-before-define": ["error", { "functions": false, "classes": false }],
