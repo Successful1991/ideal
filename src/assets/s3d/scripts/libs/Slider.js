@@ -271,9 +271,9 @@ class Slider {
 		img.dataset.id = index
 		img.onload = function load() {
 			self.images[index] = this
-			const deg = (self.startDegCompass * self.activeElem) + (self.startDegCompass * 57)
-			$('.s3d-controller__compass svg').css('transform', `rotate(${deg}deg)`)
 			self.compass.save(index)
+			self.compass.set(index)
+
 			self.ctx.drawImage(this, 0, 0, self.width, self.height)
 			setTimeout(() => {
 				self.loader.hide(self.type)
@@ -288,8 +288,6 @@ class Slider {
 	}
 
 	loadImage(i, type) {
-		console.log('loadImage')
-
 		const self = this
 		const img = new Image()
 		const index = i
@@ -439,19 +437,6 @@ class Slider {
 	getNumSvgWithFlat(id) {
 		return $(`.js-s3d__svgWrap polygon[data-id=${id}]`).map((i, poly) => +poly.closest('.js-s3d__svgWrap').dataset.id).toArray()
 	}
-
-	// createInfo() {
-	// 	const infoBox = createMarkup('div', '.js-s3d__slideModule', { class: 'js-s3d-infoBox s3d-infoBox' })
-	//
-	// 	const infoBoxContent = `<ul>
-	//       <li class="js-s3d-infoBox__house s3d-infoBox__house">house: <span>5</span></li>
-	//       <!--<li class="js-s3d-infoBox__section">section: <span>7</span>-->
-	//       <!--<li class="js-s3d-infoBox__apartments">apartments: <span>10</span></li>-->
-	//       <li class="js-s3d-infoBox__floor s3d-infoBox__floor">floor: <span>10</span></li>
-	//   </ul>`
-	// 	$(infoBox).append(infoBoxContent)
-	// 	this.infoBox = $(infoBox)
-	// }
 
 	// start info functions ---------------
 	// создает блок с инфой
@@ -653,11 +638,9 @@ class Slider {
 	}
 
 	checkDirectionRotate(data) {
-		console.log('checkDirectionRotate', data, this.rotate)
 		if (!this.rotate) return
 		// this.rotate = false
 		let direction = 'prev'
-		console.log('checkDirectionRotate', data)
 		if ((data && data.dataset && data.dataset.type === 'next')) {
 			direction = 'next'
 		} else if (!data && ((this.result.max - this.result.min) / 2) + this.result.min <= this.activeElem) {
@@ -710,7 +693,6 @@ class Slider {
 
 	// меняет слайд на следующий
 	changeNext() {
-		// console.log('changeNext', this.activeElem)
 		if (this.activeElem === this.numberSlide.max) {
 			this.result.max = this.controlPoint[0]
 			this.result.min = -1

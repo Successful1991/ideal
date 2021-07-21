@@ -86,27 +86,8 @@ class Filter {
 
 	// подсвечивает квартиры на svg облёта
 	showSvgSelect(data) {
-		// $('.js-s3d__wrapper__complex polygon').css({ opacity: 0 })
 		$('.js-s3d__wrapper__complex polygon').removeClass('active-selected')
 		data.forEach(flat => $(`.js-s3d__wrapper__complex polygon[data-id=${flat.id}]`).addClass('active-selected'))
-		// data.forEach(flat => $(`.js-s3d__wrapper__complex polygon[data-id=${flat.id}]`).css({ opacity: 0.5 }))
-		// фильтр svg , ищет по дата атрибуту, нужно подстраивать атрибут и класс обертки
-		// for (const key in data) {
-		// 	// if ($('.js-s3d__svg-container__complex').length > 0) {
-		// 	// 	console.log('showSvgSelect', data, this.flatListObj[key])
-		// 	// 	console.log('showSvgSelect', key, this.flatListObj)
-		// 	// 	$(`.js-s3d__wrapper__complex polygon[data-id=${this.flatListObj[key].id}]`).css({ opacity: 0.5 })
-		// 	// }
-		// 	if (+data[key].length > 0) {
-		// 		// $('#js-s3d__wrapper__complex polygon[data-build="'+key+'"]').css({'opacity':0.5});
-		// 		console.log('showSvgSelect(data) data[key]', data[key])
-		// 		data[key].forEach(
-		// 			flat => {
-		// 				if ($('.js-s3d__svg-container__complex').length > 0) { $(`.js-s3d__wrapper__complex polygon[data-id="${flat}"]`).css({ opacity: 0.5 }) }
-		// 			},
-		// 		)
-		// 	}
-		// }
 	}
 
 	// скрывает - показывает квартиры на svg облёта
@@ -246,7 +227,6 @@ class Filter {
 		this.clearFilterParam()
 		this.checkFilter()
 		this.getFilterParam()
-		console.log('applyFilter')
 		return this.filterFlat(data, this.filter, this.filterName, this.nameFilterFlat)
 	}
 
@@ -271,7 +251,6 @@ class Filter {
 		// if (filter.house.value.length === 0 || filter.rooms.value.length === 0) {
 		// 	return {}
 		// }
-		console.log(data)
 		this.currentAmountFlat = 0
 		const select = data.filter(flat => {
 			flat.listHtmlLink.style.display = 'none'

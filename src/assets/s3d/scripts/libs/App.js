@@ -25,7 +25,6 @@ class App {
 				}, 200)
 			},
 			turnOn: el => {
-				console.log('turnOn', el)
 				if (el && el.length > 0) {
 					el.addClass('s3d-unActive').prop('disabled', true)
 					return
@@ -36,7 +35,6 @@ class App {
 				})
 			},
 			turnOff: el => {
-				console.log('turnOff', el)
 				if (el && el.length > 0) {
 					el.removeClass('s3d-unActive').prop('disabled', false)
 					return
@@ -47,13 +45,9 @@ class App {
 				})
 			},
 			miniOn: () => {
-				console.log('miniOn')
-				console.trace()
 				$('.js-fs-preloader-before').addClass('preloader-active')
 			},
 			miniOff: () => {
-				console.log('miniOff')
-				console.trace()
 				$('.js-fs-preloader-before').removeClass('preloader-active')
 			},
 		}
@@ -85,13 +79,11 @@ class App {
 		this.compass = {
 			set: active => {
 				let deg = 0
-				if (active) {
-					this.compass.current = active
-					deg = (360 / 180 * active) + (360 / 180 * this.compass.default)
-				} else {
-					deg = this.compass.defaultDeg
+				if (active !== undefined) {
+					this.compass.current = active + 1
+					deg = (360 / 180 * (active + 1)) + (360 / 180 * this.compass.default)
 				}
-				$('.s3d-controller__compass svg').css('transform', `rotate(-${deg}deg)`)
+				$('.s3d-controller__compass svg').css('transform', `rotate(${deg}deg)`)
 			},
 			setApart: () => {
 				$('.s3d-controller__compass svg').css('transform', `rotate(${this.compass.degApart}deg)`)
@@ -453,7 +445,6 @@ class App {
 	}
 
 	resize() {
-		// console.log('resize', this)
 		const type = $('.js-s3d-controller')[0].dataset.type || ''
 		if (document.documentElement.offsetWidth < 768) {
 			if (type === 'plannings') {

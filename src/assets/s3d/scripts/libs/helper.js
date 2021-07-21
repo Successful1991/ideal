@@ -77,8 +77,6 @@ class Helper {
 		const x = this.checkPosContent(centerX, size, $('.js-s3d__helper__content').width(), $('.js-s3d__helper').width() / 2, scale, 20)
 		let y = this.checkPosContent(centerY, size, $('.js-s3d__helper__content').height(), $('.js-s3d__helper').height() / 2, scale, 20)
 
-		// console.log('x', x)
-		// console.log('y', y)
 		// else position in center screen translate on top
 		if (x === centerX && y === centerY) y = centerY - (size / 2) - 20 - ($('.js-s3d__helper__content').height() / 2)
 

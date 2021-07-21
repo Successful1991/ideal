@@ -78,7 +78,6 @@ class Apartments {
 
 	// получаем разметку квартиры с планом этажа
 	getPlane(config) {
-		console.log('нужно раскоментировать')
 		// this.setPlaneInPage(this.addHtmlAll(config))
 		$.ajax({
 			type: 'POST',
