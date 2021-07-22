@@ -225,6 +225,7 @@
       line-height: 24px;
       text-align: center;
       color: #221F20;
+      z-index: 10;
     }
     &__sold:empty {
       display: none;
