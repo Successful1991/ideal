@@ -289,6 +289,7 @@ class Apartments {
             </svg>
                 </div>
                 <div class="s3d-flat__links">
+					<span class="sold-detailed-flat js-sold-detailed-flat"></span>
 					<a href="#" class="js-s3d__create-pdf"><img src="assets/s3d/images/icon/pdf.svg">
 						<span>скачать буклет</span></a>
 					<button type="button" class="js-s3d__show-3d"><img src="assets/s3d/images/icon/house.svg">

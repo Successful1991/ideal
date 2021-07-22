@@ -191,6 +191,22 @@
       margin: 0 0 0 auto;
 
       grid-area: links;
+      position: relative;
+      .sold-detailed-flat {
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        background: #F2F2F2;
+        /* padding-left: 10px; */
+        /* padding-right: 10px; */
+        color: #221f20;
+        padding: 10px 20px;
+        font-size: 14px;
+        line-height: 100%;
+      }
+      .sold-detailed-flat:empty {
+        display: none;
+      }
       a, button{
         position: relative;
 
