@@ -226,7 +226,13 @@
       text-align: center;
       color: #221F20;
       z-index: 10;
+      display: none;
     }
+    &.s3d-infoBox-active &__sold,
+    &.s3d-infoBox-hover  &__sold{
+      display: initial;
+    }
+
     &__sold:empty {
       display: none;
     }
